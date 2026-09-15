@@ -1,0 +1,6 @@
+# The seeded design canvas: a ~2.5 MB payload regenerated from
+# "Energy News Landing.dc.html" + canvas.json in one command (see README).
+energy-news-landing.html
+
+node_modules/
+.DS_Store

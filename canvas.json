@@ -1,0 +1,38 @@
+{
+  "artboards": [
+    {
+      "file": "Energy News Landing.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 2880,
+      "title": "Energy News Landing",
+      "expand": "fill",
+      "print": "flow"
+    }
+  ],
+  "annotations": [
+    {
+      "id": "media-slots",
+      "x": 1560,
+      "y": 0,
+      "w": 300,
+      "text": "Media slots\n\nSix placeholders: lead-photo, story-1-chart, story-2-photo, story-3-photo, and the two data panels (prices-chart, flows-map) which ship with a drawn sample.\n\nOn the canvas, seed an image with --image and reference it by bare filename. In the repo, add it to assets/manifest.json instead."
+    },
+    {
+      "id": "live-data",
+      "x": 1560,
+      "y": 320,
+      "w": 300,
+      "text": "Live data app\n\nSet the liveDataUrl tweak above the artboard. Until it has a value the market rail is labelled SAMPLE FEED and the call to action points at an anchor rather than pretending to be wired up."
+    },
+    {
+      "id": "sample-copy",
+      "x": 1560,
+      "y": 600,
+      "w": 300,
+      "text": "Copy\n\nHeadlines and standfirsts are drafted, illustrative editorial. Every hard fact is bracketed — [XX]%, [MONTH], [REPORTER NAME], [YEAR] — so nothing reads as a claim until it is filled in."
+    }
+  ],
+  "launch": { "view": "focused", "file": "Energy News Landing.dc.html" }
+}

@@ -1,0 +1,683 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <style>
+    /* Mirrors _ds/organic-0b63b13d-34bf-4cfa-86d1-fa35ca34c91c/styles.css.
+       Inlined because a canvas artboard runs in a sandboxed iframe that cannot
+       fetch sibling stylesheets. Change both together. */
+    :root {
+      --ink: #14110e;
+      --ink-raised: #221e1a;
+      --ink-sunk: #0d0b09;
+      --paper: #f6f3ee;
+      --muted: #97918a;
+      --muted-deep: #6d6861;
+      --rule: rgba(246, 243, 238, 0.14);
+      --rule-strong: rgba(246, 243, 238, 0.28);
+      --accent: #e7963d;
+      --renewable: #00c7a6;
+      --series-3: #b995f6;
+      --up: #3fbf7f;
+      --down: #e5644a;
+      --display: "Newsreader", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+      --body: "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      --gutter: clamp(20px, 4vw, 56px);
+      --page-max: 1240px;
+      --band: 96px;
+    }
+
+    html, body { margin: 0; background: #14110e; }
+    * { box-sizing: border-box; }
+
+    a { color: #e7963d; text-decoration: none; }
+    a:hover { color: #fdb770; text-decoration: underline; text-underline-offset: 3px; }
+
+    .ed-root {
+      background: var(--ink);
+      color: var(--paper);
+      font-family: var(--body);
+      font-size: 16px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      text-wrap: pretty;
+    }
+    .ed-root--compact { --band: 56px; }
+
+    .ed-wrap { max-width: var(--page-max); margin: 0 auto; padding-inline: var(--gutter); }
+
+    .ed-kicker {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin: 0;
+    }
+    .ed-num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+    .ed-hairline { height: 1px; background: var(--rule); border: 0; margin: 0; }
+
+    h1, h2, h3 { font-family: var(--display); font-weight: 500; margin: 0; letter-spacing: -0.012em; }
+    h1 { font-size: clamp(40px, 5.4vw, 68px); line-height: 1.02; }
+    h2 { font-size: clamp(26px, 2.6vw, 34px); line-height: 1.12; }
+    h3 { font-size: 22px; line-height: 1.2; }
+    p { margin: 0; }
+
+    .ed-story-link { color: inherit; text-decoration: none; display: block; }
+    .ed-story-link:hover { color: inherit; text-decoration: none; }
+    .ed-story-link:hover h1,
+    .ed-story-link:hover h3 { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+
+    /* --- media slots ---------------------------------------------------- */
+    .ed-slot {
+      position: relative;
+      display: block;
+      margin: 0;
+      overflow: hidden;
+      background: var(--ink-sunk);
+      border: 1px solid var(--rule);
+      border-radius: 3px;
+    }
+    .ed-slot > img, .ed-slot > video, .ed-slot > iframe { display: block; width: 100%; height: 100%; object-fit: cover; border: 0; }
+    .ed-slot > svg { display: block; width: 100%; height: 100%; }
+    .ed-slot--empty {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      text-align: center;
+      color: var(--muted);
+      background:
+        repeating-linear-gradient(135deg, rgba(246,243,238,0.028) 0 2px, transparent 2px 9px),
+        var(--ink-sunk);
+    }
+    .ed-slot__id { font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; color: var(--accent); }
+    .ed-slot__spec { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: var(--muted-deep); }
+    .ed-slot__caption { font-size: 12px; line-height: 1.45; color: var(--muted); padding-top: 8px; }
+
+    /* --- primary action -------------------------------------------------- */
+    .ed-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 48px;
+      padding: 0 24px;
+      background: var(--accent);
+      color: #14110e;
+      font-family: var(--body);
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      border: 0;
+      border-radius: 3px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .ed-cta:hover { background: #fdb770; color: #14110e; text-decoration: none; }
+    .ed-cta--ghost { background: transparent; color: var(--paper); border: 1px solid var(--rule-strong); }
+    .ed-cta--ghost:hover { background: rgba(246,243,238,0.06); color: var(--paper); border-color: var(--paper); }
+
+    .ed-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 2px;
+      border: 1px solid var(--rule-strong);
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .ed-chip--live { color: var(--renewable); border-color: rgba(0,199,166,0.45); }
+
+    .ed-chart-scroll { overflow-x: auto; }
+    .ed-navlink { color: var(--paper); font-size: 14px; letter-spacing: 0.01em; text-decoration: none; }
+    .ed-navlink:hover { color: var(--accent); text-decoration: none; }
+
+    /* The rail is a flex child, so it needs min-width: 0 before overflow can do
+       anything — without it the row of quotes widens the whole page instead. */
+    .ed-rail-list { min-width: 0; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; }
+    .ed-rail-list::-webkit-scrollbar { display: none; }
+
+    @media (max-width: 980px) {
+      .ed-hero-grid { grid-template-columns: minmax(0, 1fr) !important; gap: 32px !important; }
+      .ed-story-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+      .ed-data-grid { grid-template-columns: minmax(0, 1fr) !important; }
+    }
+    @media (max-width: 760px) {
+      .ed-masthead { flex-wrap: wrap; row-gap: 16px; }
+      .ed-nav { width: 100%; justify-content: space-between; gap: 12px !important; }
+      .ed-nav .ed-navlink { font-size: 13px; }
+      .ed-foot-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+    }
+    @media (max-width: 680px) {
+      .ed-story-grid { grid-template-columns: minmax(0, 1fr) !important; }
+      /* A 960-unit viewBox squeezed into a 350px column puts the axis type at
+         about 7px. Let the chart keep a readable scale and scroll instead —
+         the panel around it still fits the screen. */
+      .ed-chart-scroll > .ed-slot { min-width: 560px; }
+      .ed-panel { padding: 18px !important; }
+    }
+  </style>
+</helmet>
+
+<div class="ed-root ed-root--{{density}}" style="--accent: {{accent}}">
+
+  <!-- ===================================================================
+       Market rail. Values come from SAMPLE_RAIL in the logic block below.
+       Point liveDataUrl at the live data app and the chip flips to LIVE;
+       swap SAMPLE_RAIL for a fetch in componentDidMount to wire it for real.
+       =================================================================== -->
+  <sc-if value="{{showMarketRail}}" hint-placeholder-val="{{true}}">
+  <div style="background: #0d0b09; border-bottom: 1px solid rgba(246,243,238,0.14)">
+    <div class="ed-wrap" style="display: flex; align-items: center; gap: 20px; min-height: 46px">
+      <span class="ed-chip {{feed.chipClass}}">{{feed.label}}</span>
+      <div class="ed-rail-list" style="display: flex; align-items: center; gap: 28px; flex-grow: 1">
+        <sc-for list="{{rail}}" as="row" hint-placeholder-count="6">
+          <div style="display: flex; align-items: baseline; gap: 8px; white-space: nowrap">
+            <span style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; color: #97918a">{{row.code}}</span>
+            <span class="ed-num" style="font-size: 13px; color: #f6f3ee">{{row.value}}</span>
+            <span class="ed-num" style="font-size: 11px; color: {{row.color}}">{{row.change}}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ===== Masthead ==================================================== -->
+  <header class="ed-wrap ed-masthead" style="display: flex; align-items: center; justify-content: space-between; gap: 32px; padding-block: 26px">
+    <div style="display: flex; align-items: baseline; gap: 14px">
+      <!-- Slot: masthead-logo. Optional — remove this wordmark if you fill it. -->
+      <span style="font-family: var(--display); font-size: 27px; font-weight: 600; letter-spacing: -0.02em; color: #f6f3ee">Energy&nbsp;Desk</span>
+      <span style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #6d6861">Est.&nbsp;[YEAR]</span>
+    </div>
+    <nav class="ed-nav" style="display: flex; align-items: center; gap: 26px">
+      <a class="ed-navlink" href="#markets">Markets</a>
+      <a class="ed-navlink" href="#policy">Policy</a>
+      <a class="ed-navlink" href="#grid">Grid</a>
+      <a class="ed-navlink" href="#renewables">Renewables</a>
+      <a class="ed-cta ed-cta--ghost" style="min-height: 40px; padding: 0 16px; font-size: 14px" href="#subscribe">Subscribe</a>
+    </nav>
+  </header>
+  <hr class="ed-hairline">
+
+  <!-- ===== Hero ======================================================== -->
+  <section class="ed-wrap" style="padding-block: 56px 0">
+    <div class="ed-hero-grid" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px; align-items: start">
+
+      <div style="display: flex; flex-direction: column; gap: 22px">
+        <p class="ed-kicker">Lead &middot; Gas</p>
+        <a class="ed-story-link" href="#lead">
+          <h1>Europe goes into winter with storage full and nerves frayed</h1>
+        </a>
+        <p style="font-family: var(--display); font-size: 20px; line-height: 1.45; color: #cfc8bf; max-width: 46ch">
+          Inventories closed the injection season at [XX]% &mdash; the [Nth]-highest on record &mdash; yet the January
+          curve still carries a cold-snap premium. Traders are hedging weather, not supply.
+        </p>
+        <p style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #6d6861">
+          By [REPORTER NAME] &middot; [PUBLISHED TIME]
+        </p>
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 14px; padding-top: 6px">
+          <a class="ed-cta" href="{{liveDataHref}}" target="_blank" rel="noopener">
+            {{liveDataLabel}}
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M12.5 6l6 6-6 6"></path></svg>
+          </a>
+          <a class="ed-cta ed-cta--ghost" href="#briefing">Today&#39;s briefing</a>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column">
+        <figure class="ed-slot ed-slot--empty" data-slot="lead-photo" data-kind="photo" data-ratio="16/9" data-min-width="2000" style="aspect-ratio: 16 / 9">
+          <span style="color: #97918a">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5.5h4l1.4-2h7.2L17 5.5h4v13H3z"></path><circle cx="12" cy="12" r="3.6"></circle></svg>
+          </span>
+          <span class="ed-slot__id">lead-photo</span>
+          <span class="ed-slot__spec">photo &middot; 16:9 &middot; 2000px min</span>
+        </figure>
+        <figcaption class="ed-slot__caption">[PHOTO CAPTION] &middot; [CREDIT]</figcaption>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== Secondary stories =========================================== -->
+  <section class="ed-wrap" style="padding-block: 72px 0" id="grid">
+    <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 20px; padding-bottom: 20px">
+      <h2 style="font-size: 24px">More from the desk</h2>
+      <a href="#all" style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase">All stories</a>
+    </div>
+    <hr class="ed-hairline">
+
+    <div class="ed-story-grid" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 36px; padding-top: 32px">
+
+      <article style="display: flex; flex-direction: column; gap: 14px">
+        <figure class="ed-slot ed-slot--empty" data-slot="story-1-chart" data-kind="chart" data-ratio="4/3" data-min-width="1200" style="aspect-ratio: 4 / 3">
+          <span style="color: #00c7a6">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V9.5M10 20V4.5M16 20v-7M22 20H2"></path></svg>
+          </span>
+          <span class="ed-slot__id">story-1-chart</span>
+          <span class="ed-slot__spec">chart &middot; 4:3 &middot; 1200px min</span>
+        </figure>
+        <p class="ed-kicker">Grid</p>
+        <a class="ed-story-link" href="#story-1"><h3>Battery queues clear faster than the lines they plug into</h3></a>
+        <p style="font-size: 15px; line-height: 1.5; color: #a9a29a">[REGION] approved [XX]&nbsp;GW of storage interconnection in the third quarter &mdash; more than the previous four combined.</p>
+      </article>
+
+      <article style="display: flex; flex-direction: column; gap: 14px">
+        <figure class="ed-slot ed-slot--empty" data-slot="story-2-photo" data-kind="photo" data-ratio="4/3" data-min-width="1200" style="aspect-ratio: 4 / 3">
+          <span style="color: #97918a">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5.5h4l1.4-2h7.2L17 5.5h4v13H3z"></path><circle cx="12" cy="12" r="3.6"></circle></svg>
+          </span>
+          <span class="ed-slot__id">story-2-photo</span>
+          <span class="ed-slot__spec">photo &middot; 4:3 &middot; 1200px min</span>
+        </figure>
+        <p class="ed-kicker">Policy</p>
+        <a class="ed-story-link" href="#story-2"><h3>The 2040 target vote slips to [MONTH]</h3></a>
+        <p style="font-size: 15px; line-height: 1.5; color: #a9a29a">[N] member states want the industrial carve-out settled before they commit to a headline number.</p>
+      </article>
+
+      <article style="display: flex; flex-direction: column; gap: 14px">
+        <figure class="ed-slot ed-slot--empty" data-slot="story-3-photo" data-kind="photo" data-ratio="4/3" data-min-width="1200" style="aspect-ratio: 4 / 3">
+          <span style="color: #97918a">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5.5h4l1.4-2h7.2L17 5.5h4v13H3z"></path><circle cx="12" cy="12" r="3.6"></circle></svg>
+          </span>
+          <span class="ed-slot__id">story-3-photo</span>
+          <span class="ed-slot__spec">photo &middot; 4:3 &middot; 1200px min</span>
+        </figure>
+        <p class="ed-kicker">Renewables</p>
+        <a class="ed-story-link" href="#story-3"><h3>Module exports fall for a fourth straight month</h3></a>
+        <p style="font-size: 15px; line-height: 1.5; color: #a9a29a">Prices held at [$X.XX]/W through the quarter. The fall is volume, not value &mdash; and it is concentrated in [MARKET].</p>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ===================================================================
+       Data panels. Both slots ship with a drawn sample so the layout reads
+       before any asset exists. Filling the slot in assets/manifest.json
+       replaces the drawing — with a file, a pasted SVG, or a live embed URL
+       from the data app.
+       =================================================================== -->
+  <section class="ed-wrap" style="padding-block: 80px 0" id="markets">
+    <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 20px; padding-bottom: 20px">
+      <h2 style="font-size: 24px">The numbers behind the story</h2>
+      <span class="ed-chip {{feed.chipClass}}">{{feed.label}}</span>
+    </div>
+    <hr class="ed-hairline">
+
+    <div class="ed-data-grid" style="display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 32px; padding-top: 32px">
+
+      <!-- Panel: day-ahead power ---------------------------------------- -->
+      <div class="ed-panel" style="display: flex; flex-direction: column; gap: 16px; padding: 24px; background: #0d0b09; border: 1px solid rgba(246,243,238,0.14); border-radius: 3px">
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 16px">
+          <div style="display: flex; flex-direction: column; gap: 4px">
+            <h3 style="font-size: 18px">Day-ahead power, 30 days</h3>
+            <p style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: #6d6861">&euro;/MWh &middot; baseload</p>
+          </div>
+        </div>
+
+        <div class="ed-chart-scroll">
+        <figure class="ed-slot" data-slot="prices-chart" data-kind="chart" data-ratio="16/9" data-min-width="1800" style="aspect-ratio: 16 / 9; background: transparent; border: 0">
+          <svg viewBox="0 0 960 420" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Day-ahead baseload power prices over thirty days for three markets">
+            <path d="{{chart.gridPath}}" fill="none" stroke="rgba(246,243,238,0.10)" stroke-width="1"></path>
+            <text x="60" y="{{chart.g0.ty}}" text-anchor="end" fill="#6d6861" font-family="IBM Plex Mono, monospace" font-size="19">{{chart.g0.label}}</text>
+            <text x="60" y="{{chart.g1.ty}}" text-anchor="end" fill="#6d6861" font-family="IBM Plex Mono, monospace" font-size="19">{{chart.g1.label}}</text>
+            <text x="60" y="{{chart.g2.ty}}" text-anchor="end" fill="#6d6861" font-family="IBM Plex Mono, monospace" font-size="19">{{chart.g2.label}}</text>
+            <text x="60" y="{{chart.g3.ty}}" text-anchor="end" fill="#6d6861" font-family="IBM Plex Mono, monospace" font-size="19">{{chart.g3.label}}</text>
+            <text x="60" y="{{chart.g4.ty}}" text-anchor="end" fill="#6d6861" font-family="IBM Plex Mono, monospace" font-size="19">{{chart.g4.label}}</text>
+            <line x1="68" x2="880" y1="372" y2="372" stroke="rgba(246,243,238,0.22)" stroke-width="1"></line>
+            <text x="{{chart.t0.x}}" y="408" text-anchor="middle" fill="#6d6861" font-family="IBM Plex Mono, monospace" font-size="19">{{chart.t0.label}}</text>
+            <text x="{{chart.t1.x}}" y="408" text-anchor="middle" fill="#6d6861" font-family="IBM Plex Mono, monospace" font-size="19">{{chart.t1.label}}</text>
+            <text x="{{chart.t2.x}}" y="408" text-anchor="middle" fill="#6d6861" font-family="IBM Plex Mono, monospace" font-size="19">{{chart.t2.label}}</text>
+            <text x="{{chart.t3.x}}" y="408" text-anchor="middle" fill="#6d6861" font-family="IBM Plex Mono, monospace" font-size="19">{{chart.t3.label}}</text>
+            <text x="{{chart.t4.x}}" y="408" text-anchor="middle" fill="#6d6861" font-family="IBM Plex Mono, monospace" font-size="19">{{chart.t4.label}}</text>
+            <path d="{{chart.s0.d}}" fill="none" stroke="{{chart.s0.color}}" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"></path>
+            <path d="{{chart.s1.d}}" fill="none" stroke="{{chart.s1.color}}" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"></path>
+            <path d="{{chart.s2.d}}" fill="none" stroke="{{chart.s2.color}}" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"></path>
+            <text x="890" y="{{chart.s0.ly}}" fill="{{chart.s0.color}}" font-family="IBM Plex Mono, monospace" font-size="20" font-weight="500">{{chart.s0.label}}</text>
+            <text x="890" y="{{chart.s1.ly}}" fill="{{chart.s1.color}}" font-family="IBM Plex Mono, monospace" font-size="20" font-weight="500">{{chart.s1.label}}</text>
+            <text x="890" y="{{chart.s2.ly}}" fill="{{chart.s2.color}}" font-family="IBM Plex Mono, monospace" font-size="20" font-weight="500">{{chart.s2.label}}</text>
+          </svg>
+        </figure>
+        </div>
+
+        <p style="font-size: 12px; line-height: 1.5; color: #6d6861">
+          Sample series, drawn from <span class="ed-num">SAMPLE_PRICES</span> in this artboard&#39;s logic block.
+          Replace it with the live series, or fill the <span class="ed-num">prices-chart</span> slot with the data app&#39;s embed.
+        </p>
+      </div>
+
+      <!-- Panel: cross-border flows -------------------------------------- -->
+      <div class="ed-panel" style="display: flex; flex-direction: column; gap: 16px; padding: 24px; background: #0d0b09; border: 1px solid rgba(246,243,238,0.14); border-radius: 3px">
+        <div style="display: flex; flex-direction: column; gap: 4px">
+          <h3 style="font-size: 18px">Cross-border flows</h3>
+          <p style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: #6d6861">North-west Europe &middot; net MW</p>
+        </div>
+
+        <figure class="ed-slot" data-slot="flows-map" data-kind="map" data-ratio="4/3" data-min-width="1400" style="aspect-ratio: 4 / 3; background: transparent; border: 0">
+          <svg viewBox="0 0 640 480" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Schematic map of net cross-border electricity flows in north-west Europe">
+            <defs>
+              <marker id="ed-flow-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="14" markerHeight="14"
+                      markerUnits="userSpaceOnUse" orient="auto-start-reverse">
+                <path d="M0 1 L9 5 L0 9 z" fill="#e7963d"></path>
+              </marker>
+            </defs>
+            <line x1="{{map.l0.x1}}" y1="{{map.l0.y1}}" x2="{{map.l0.x2}}" y2="{{map.l0.y2}}" stroke="{{map.l0.color}}" stroke-width="{{map.l0.width}}" stroke-linecap="round" marker-end="url(#ed-flow-arrow)"></line>
+            <line x1="{{map.l1.x1}}" y1="{{map.l1.y1}}" x2="{{map.l1.x2}}" y2="{{map.l1.y2}}" stroke="{{map.l1.color}}" stroke-width="{{map.l1.width}}" stroke-linecap="round" marker-end="url(#ed-flow-arrow)"></line>
+            <line x1="{{map.l2.x1}}" y1="{{map.l2.y1}}" x2="{{map.l2.x2}}" y2="{{map.l2.y2}}" stroke="{{map.l2.color}}" stroke-width="{{map.l2.width}}" stroke-linecap="round" marker-end="url(#ed-flow-arrow)"></line>
+            <line x1="{{map.l3.x1}}" y1="{{map.l3.y1}}" x2="{{map.l3.x2}}" y2="{{map.l3.y2}}" stroke="{{map.l3.color}}" stroke-width="{{map.l3.width}}" stroke-linecap="round" marker-end="url(#ed-flow-arrow)"></line>
+            <line x1="{{map.l4.x1}}" y1="{{map.l4.y1}}" x2="{{map.l4.x2}}" y2="{{map.l4.y2}}" stroke="{{map.l4.color}}" stroke-width="{{map.l4.width}}" stroke-linecap="round" marker-end="url(#ed-flow-arrow)"></line>
+            <line x1="{{map.l5.x1}}" y1="{{map.l5.y1}}" x2="{{map.l5.x2}}" y2="{{map.l5.y2}}" stroke="{{map.l5.color}}" stroke-width="{{map.l5.width}}" stroke-linecap="round" marker-end="url(#ed-flow-arrow)"></line>
+            <line x1="{{map.l6.x1}}" y1="{{map.l6.y1}}" x2="{{map.l6.x2}}" y2="{{map.l6.y2}}" stroke="{{map.l6.color}}" stroke-width="{{map.l6.width}}" stroke-linecap="round" marker-end="url(#ed-flow-arrow)"></line>
+            <line x1="{{map.l7.x1}}" y1="{{map.l7.y1}}" x2="{{map.l7.x2}}" y2="{{map.l7.y2}}" stroke="{{map.l7.color}}" stroke-width="{{map.l7.width}}" stroke-linecap="round" marker-end="url(#ed-flow-arrow)"></line>
+            <line x1="{{map.l8.x1}}" y1="{{map.l8.y1}}" x2="{{map.l8.x2}}" y2="{{map.l8.y2}}" stroke="{{map.l8.color}}" stroke-width="{{map.l8.width}}" stroke-linecap="round" marker-end="url(#ed-flow-arrow)"></line>
+            <circle cx="{{map.n0.x}}" cy="{{map.n0.y}}" r="30" fill="#14110e" stroke="rgba(246,243,238,0.28)" stroke-width="1"></circle>
+            <circle cx="{{map.n1.x}}" cy="{{map.n1.y}}" r="30" fill="#14110e" stroke="rgba(246,243,238,0.28)" stroke-width="1"></circle>
+            <circle cx="{{map.n2.x}}" cy="{{map.n2.y}}" r="30" fill="#14110e" stroke="rgba(246,243,238,0.28)" stroke-width="1"></circle>
+            <circle cx="{{map.n3.x}}" cy="{{map.n3.y}}" r="30" fill="#14110e" stroke="rgba(246,243,238,0.28)" stroke-width="1"></circle>
+            <circle cx="{{map.n4.x}}" cy="{{map.n4.y}}" r="30" fill="#14110e" stroke="rgba(246,243,238,0.28)" stroke-width="1"></circle>
+            <circle cx="{{map.n5.x}}" cy="{{map.n5.y}}" r="30" fill="#14110e" stroke="rgba(246,243,238,0.28)" stroke-width="1"></circle>
+            <circle cx="{{map.n6.x}}" cy="{{map.n6.y}}" r="30" fill="#14110e" stroke="rgba(246,243,238,0.28)" stroke-width="1"></circle>
+            <text x="{{map.n0.x}}" y="{{map.n0.ty}}" text-anchor="middle" fill="#f6f3ee" font-family="IBM Plex Mono, monospace" font-size="22" font-weight="500">{{map.n0.code}}</text>
+            <text x="{{map.n1.x}}" y="{{map.n1.ty}}" text-anchor="middle" fill="#f6f3ee" font-family="IBM Plex Mono, monospace" font-size="22" font-weight="500">{{map.n1.code}}</text>
+            <text x="{{map.n2.x}}" y="{{map.n2.ty}}" text-anchor="middle" fill="#f6f3ee" font-family="IBM Plex Mono, monospace" font-size="22" font-weight="500">{{map.n2.code}}</text>
+            <text x="{{map.n3.x}}" y="{{map.n3.ty}}" text-anchor="middle" fill="#f6f3ee" font-family="IBM Plex Mono, monospace" font-size="22" font-weight="500">{{map.n3.code}}</text>
+            <text x="{{map.n4.x}}" y="{{map.n4.ty}}" text-anchor="middle" fill="#f6f3ee" font-family="IBM Plex Mono, monospace" font-size="22" font-weight="500">{{map.n4.code}}</text>
+            <text x="{{map.n5.x}}" y="{{map.n5.ty}}" text-anchor="middle" fill="#f6f3ee" font-family="IBM Plex Mono, monospace" font-size="22" font-weight="500">{{map.n5.code}}</text>
+            <text x="{{map.n6.x}}" y="{{map.n6.ty}}" text-anchor="middle" fill="#f6f3ee" font-family="IBM Plex Mono, monospace" font-size="22" font-weight="500">{{map.n6.code}}</text>
+          </svg>
+        </figure>
+
+        <div style="display: flex; align-items: center; gap: 14px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: #6d6861">
+          <span style="display: inline-flex; align-items: center; gap: 6px">
+            <svg width="22" height="8" viewBox="0 0 22 8" aria-hidden="true"><line x1="1" y1="4" x2="16" y2="4" stroke="#e7963d" stroke-width="2" stroke-linecap="round"></line><path d="M15 1 L21 4 L15 7 z" fill="#e7963d"></path></svg>
+            net flow
+          </span>
+          <span>width = share of capacity</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== Live data app band ========================================== -->
+  <section style="margin-top: var(--band); background: #221e1a; border-block: 1px solid rgba(246,243,238,0.14)">
+    <div class="ed-wrap" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 32px; padding-block: 52px">
+      <div style="display: flex; flex-direction: column; gap: 12px; max-width: 58ch">
+        <p class="ed-kicker">The live data app</p>
+        <h2 style="font-size: 32px">Prices, flows, outages and curves &mdash; the whole desk, continuously</h2>
+        <p style="font-size: 16px; line-height: 1.55; color: #a9a29a">
+          Every figure on this page is a view onto the same feed. Open it to drill into a market, pin a curve,
+          or export the series behind any chart.
+        </p>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px; align-items: flex-start">
+        <a class="ed-cta" href="{{liveDataHref}}" target="_blank" rel="noopener">
+          {{liveDataLabel}}
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"></path></svg>
+        </a>
+        <span class="ed-num" style="font-size: 11px; letter-spacing: 0.04em; color: {{feed.hintColor}}">{{feed.hint}}</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Footer ====================================================== -->
+  <footer class="ed-wrap" style="padding-block: 56px 64px">
+    <div class="ed-foot-grid" style="display: grid; grid-template-columns: minmax(0, 1.6fr) repeat(3, minmax(0, 1fr)); gap: 40px">
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <span style="font-family: var(--display); font-size: 22px; font-weight: 600; letter-spacing: -0.02em">Energy&nbsp;Desk</span>
+        <p style="font-size: 14px; line-height: 1.5; color: #97918a; max-width: 34ch">
+          Markets, policy and the grid, reported daily from [CITY].
+        </p>
+        <p style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: #6d6861">[CONTACT EMAIL]</p>
+      </div>
+      <sc-for list="{{footer}}" as="col" hint-placeholder-count="3">
+        <div style="display: flex; flex-direction: column; gap: 10px">
+          <p class="ed-kicker" style="color: #6d6861">{{col.title}}</p>
+          <sc-for list="{{col.links}}" as="link" hint-placeholder-count="4">
+            <a class="ed-navlink" style="font-size: 14px" href="{{link.href}}">{{link.label}}</a>
+          </sc-for>
+        </div>
+      </sc-for>
+    </div>
+    <hr class="ed-hairline" style="margin-top: 44px">
+    <p style="padding-top: 20px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: #6d6861">
+      &copy; [YEAR] [PUBLISHER] &middot; Market data shown on this page is sample data until the live data app is connected.
+    </p>
+  </footer>
+
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{
+  "liveDataUrl": {"editor": "text", "default": "", "tsType": "string", "section": "Live data"},
+  "liveDataLabel": {"editor": "text", "default": "Open the live data app", "tsType": "string", "section": "Live data"},
+  "accent": {"editor": "color", "default": "#e7963d", "options": ["#e7963d", "#00c7a6", "#b995f6", "#f6f3ee"], "section": "Theme"},
+  "density": {"editor": "enum", "options": ["editorial", "compact"], "default": "editorial", "section": "Theme"},
+  "showMarketRail": {"editor": "boolean", "default": true, "section": "Layout"},
+  "$preview": {"width": 1440, "height": 2880}
+}'>
+class Component extends DCLogic {
+
+  /* -----------------------------------------------------------------------
+     Sample data. Everything below is illustrative and marked as such in the
+     UI until `liveDataUrl` is set. To go live, replace these three constants
+     with a fetch in componentDidMount() and call this.setState(...).
+     ----------------------------------------------------------------------- */
+
+  static get SAMPLE_RAIL() {
+    return [
+      { code: 'BRENT F',   value: '71.40',  change: -0.62 },
+      { code: 'TTF M+1',   value: '34.85',  change: 1.94 },
+      { code: 'HH M+1',    value: '3.28',   change: 0.31 },
+      { code: 'EUA DEC',   value: '68.10',  change: -1.05 },
+      { code: 'DE BASE',   value: '92.60',  change: 4.38 },
+      { code: 'ERCOT N',   value: '41.75',  change: -2.20 }
+    ];
+  }
+
+  static get SAMPLE_PRICES() {
+    return [
+      { label: 'DE', color: '#e7963d', values: [78,84,91,62,49,88,95,102,88,71,54,47,83,90,86,79,73,58,44,81,94,118,135,122,97,80,66,52,89,96] },
+      { label: 'FR', color: '#00c7a6', values: [58,61,64,52,47,62,66,68,63,57,50,46,60,63,62,59,57,51,45,59,63,70,74,71,66,60,54,48,62,65] },
+      { label: 'NL', color: '#b995f6', values: [71,76,82,60,50,80,86,91,80,68,55,49,76,81,79,73,69,58,47,75,84,99,108,101,86,73,63,53,80,86] }
+    ];
+  }
+
+  /* Schematic, not geographic: nodes are bidding zones, edges are
+     interconnectors. `share` is the fraction of capacity in use. */
+  static get SAMPLE_FLOWS() {
+    return {
+      nodes: [
+        { code: 'NO', x: 150, y: 62 },
+        { code: 'DK', x: 356, y: 78 },
+        { code: 'UK', x: 92,  y: 244 },
+        { code: 'NL', x: 306, y: 202 },
+        { code: 'DE', x: 486, y: 226 },
+        { code: 'BE', x: 246, y: 316 },
+        { code: 'FR', x: 214, y: 414 }
+      ],
+      links: [
+        { from: 'NO', to: 'UK', share: 0.82 },
+        { from: 'NO', to: 'NL', share: 0.61 },
+        { from: 'NO', to: 'DK', share: 0.44 },
+        { from: 'DK', to: 'DE', share: 0.73 },
+        { from: 'UK', to: 'NL', share: 0.35 },
+        { from: 'FR', to: 'UK', share: 0.88 },
+        { from: 'NL', to: 'DE', share: 0.52 },
+        { from: 'NL', to: 'BE', share: 0.41 },
+        { from: 'FR', to: 'BE', share: 0.67 }
+      ]
+    };
+  }
+
+  /* -----------------------------------------------------------------------
+     Chart and map geometry.
+
+     Both emit numbered keys (chart.s0, map.n3, ...) rather than arrays, because
+     the markup inside <svg> is written out element by element: a template tag
+     such as <sc-for> inside an <svg> is parsed into the SVG namespace, where it
+     is not a control-flow element. Keeping the SVG free of custom elements is
+     what makes these panels render the same way in the canvas, in the standalone
+     preview and in a PNG/PDF export.
+
+     The counts are therefore fixed by the markup: 3 series, 5 gridlines,
+     5 x-axis ticks, 7 nodes, 9 links. Add a series and you add its two SVG
+     elements too.
+     ----------------------------------------------------------------------- */
+
+  buildChart() {
+    const series = Component.SAMPLE_PRICES;
+    const L = 68, R = 880, T = 26, B = 372;    // plot box inside the 960x420 viewBox
+    const lo = 40, hi = 140, step = 25;        // rounded axis bounds around the data
+    const n = series[0].values.length;
+
+    const px = (i) => L + (R - L) * (i / (n - 1));
+    const py = (v) => B - (B - T) * ((v - lo) / (hi - lo));
+
+    const out = {};
+
+    // One path for every gridline keeps the background to a single element.
+    const grid = [];
+    let g = 0;
+    for (let v = lo; v <= hi; v += step) {
+      const y = py(v);
+      grid.push('M' + L + ' ' + y.toFixed(1) + 'H' + R);
+      out['g' + g] = { ty: (y + 4).toFixed(1), label: String(v) };
+      g += 1;
+    }
+    out.gridPath = grid.join(' ');
+
+    const tickAt = [0, 7, 14, 21, n - 1];
+    for (let t = 0; t < tickAt.length; t += 1) {
+      const i = tickAt[t];
+      out['t' + t] = {
+        x: px(i).toFixed(1),
+        label: i === n - 1 ? 'today' : 'D-' + (n - 1 - i)
+      };
+    }
+
+    // Nudge the right-hand labels apart so two close series never collide.
+    const ends = series
+      .map((sr, i) => ({ i, y: py(sr.values[n - 1]) }))
+      .sort((a, b) => a.y - b.y);
+    const labelY = [];
+    let last = -Infinity;
+    for (const e of ends) {
+      const y = Math.max(e.y, last + 23);
+      labelY[e.i] = y;
+      last = y;
+    }
+
+    for (let i = 0; i < series.length; i += 1) {
+      out['s' + i] = {
+        label: series[i].label,
+        color: series[i].color,
+        d: series[i].values
+          .map((v, j) => (j ? 'L' : 'M') + px(j).toFixed(1) + ' ' + py(v).toFixed(1))
+          .join(' '),
+        ly: (labelY[i] + 7).toFixed(1)
+      };
+    }
+
+    return out;
+  }
+
+  buildMap() {
+    const { nodes, links } = Component.SAMPLE_FLOWS;
+    const at = {};
+    for (const nd of nodes) at[nd.code] = nd;
+
+    const out = {};
+
+    for (let i = 0; i < nodes.length; i += 1) {
+      out['n' + i] = { code: nodes[i].code, x: nodes[i].x, y: nodes[i].y, ty: nodes[i].y + 8 };
+    }
+
+    for (let i = 0; i < links.length; i += 1) {
+      const l = links[i];
+      const a = at[l.from], b = at[l.to];
+      // Pull both ends back to the node rim so the arrowhead sits clear of it.
+      const dx = b.x - a.x, dy = b.y - a.y;
+      const len = Math.hypot(dx, dy) || 1;
+      const r = 34;
+      out['l' + i] = {
+        x1: (a.x + (dx / len) * r).toFixed(1),
+        y1: (a.y + (dy / len) * r).toFixed(1),
+        x2: (b.x - (dx / len) * r).toFixed(1),
+        y2: (b.y - (dy / len) * r).toFixed(1),
+        width: (2 + l.share * 7).toFixed(2),
+        color: l.share >= 0.6 ? '#e7963d' : '#7d6a52'
+      };
+    }
+
+    return out;
+  }
+
+  /* --- render ------------------------------------------------------------ */
+
+  renderVals() {
+    const url = (this.props.liveDataUrl ?? '').trim();
+    const wired = url.length > 0;
+
+    return {
+      accent: this.props.accent ?? '#e7963d',
+      density: this.props.density ?? 'editorial',
+      showMarketRail: this.props.showMarketRail ?? true,
+
+      liveDataHref: wired ? url : '#live-data-app',
+      liveDataLabel: this.props.liveDataLabel ?? 'Open the live data app',
+
+      feed: wired
+        ? { label: 'Live', chipClass: 'ed-chip--live', hint: url, hintColor: '#6d6861' }
+        : { label: 'Sample feed', chipClass: '', hint: '[SET liveDataUrl TO YOUR LIVE DATA APP]', hintColor: '#e7963d' },
+
+      rail: Component.SAMPLE_RAIL.map((r) => ({
+        code: r.code,
+        value: r.value,
+        change: (r.change > 0 ? '+' : '') + r.change.toFixed(2) + '%',
+        color: r.change > 0 ? '#3fbf7f' : r.change < 0 ? '#e5644a' : '#97918a'
+      })),
+
+      chart: this.buildChart(),
+      map: this.buildMap(),
+
+      footer: [
+        { title: 'Sections', links: [
+          { label: 'Markets', href: '#markets' },
+          { label: 'Policy', href: '#policy' },
+          { label: 'Grid', href: '#grid' },
+          { label: 'Renewables', href: '#renewables' }
+        ] },
+        { title: 'Data', links: [
+          { label: 'Live data app', href: wired ? url : '#live-data-app' },
+          { label: 'Methodology', href: '#methodology' },
+          { label: 'Series export', href: '#export' }
+        ] },
+        { title: 'Desk', links: [
+          { label: 'About', href: '#about' },
+          { label: 'Newsletter', href: '#subscribe' },
+          { label: 'Contact', href: '#contact' }
+        ] }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

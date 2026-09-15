@@ -1,0 +1,21 @@
+{
+  "brand": {
+    "name": "Energy Desk",
+    "tagline": "Markets, policy and the grid, reported daily.",
+    "city": "[CITY]",
+    "contact": "[CONTACT EMAIL]"
+  },
+
+  "liveDataApp": {
+    "comment": "Set url to the live data app. Until it is set, the landing page labels its market rail as a sample feed and the call to action points at an anchor rather than pretending to be wired up.",
+    "url": "",
+    "label": "Open the live data app",
+    "embedBase": ""
+  },
+
+  "theme": {
+    "accent": "#e7963d",
+    "density": "editorial",
+    "showMarketRail": true
+  }
+}

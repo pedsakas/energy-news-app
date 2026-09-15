@@ -1,0 +1,158 @@
+/* ---------------------------------------------------------------------------
+   Energy Desk — design-system tokens
+   Design system id: organic-0b63b13d-34bf-4cfa-86d1-fa35ca34c91c
+
+   This is the single source of truth for the palette, type ramp and spacing
+   used by `preview.html`. `Energy News Landing.dc.html` mirrors these values
+   inside its <helmet> block, because a design canvas artboard runs in a
+   sandboxed iframe that cannot fetch sibling stylesheets. If you change a
+   token here, change it in the artboard's <helmet> too.
+
+   Palette is defined in oklch (accents share L=0.74 / C=0.14 and vary only in
+   hue, so they carry equal visual weight). sRGB hex fallbacks are given first
+   for renderers without oklch — notably PNG/PDF export.
+   --------------------------------------------------------------------------- */
+
+:root {
+  /* Surfaces — warm-toned ink and paper, saturation kept under 0.02 */
+  --ink:        #14110e;
+  --ink-raised: #221e1a;
+  --ink-sunk:   #0d0b09;
+  --paper:      #f6f3ee;
+  --paper-dim:  #eae5dd;
+
+  /* Text */
+  --text-on-ink:     #f6f3ee;
+  --text-on-paper:   #14110e;
+  --muted-on-ink:    #97918a;
+  --muted-on-paper:  #6d6861;
+
+  /* Rules and edges */
+  --rule-on-ink:   rgba(246, 243, 238, 0.14);
+  --rule-on-paper: rgba(20, 17, 14, 0.14);
+  --rule-strong:   rgba(246, 243, 238, 0.28);
+
+  /* Accents — thermal (amber) vs. renewable (teal); a third hue for a
+     categorical third series only. Never decorative. */
+  --thermal:        #e7963d;
+  --thermal:        oklch(0.74 0.14 65);
+  --thermal-dim:    #bb731b;
+  --thermal-dim:    oklch(0.62 0.13 65);
+  --thermal-bright: #fdb770;
+  --thermal-bright: oklch(0.83 0.12 65);
+
+  --renewable:      #00c7a6;
+  --renewable:      oklch(0.74 0.14 175);
+  --renewable-dim:  #009f82;
+  --renewable-dim:  oklch(0.62 0.13 175);
+
+  --series-3:       #b995f6;
+  --series-3:       oklch(0.74 0.14 300);
+
+  /* Market direction — these two are semantic, not brand */
+  --up:   oklch(0.74 0.14 150);
+  --down: oklch(0.68 0.16 28);
+
+  /* Type */
+  --display: "Newsreader", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --body:    "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --mono:    "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  /* Type ramp */
+  --fs-display: clamp(40px, 6.2vw, 78px);
+  --fs-h2:      clamp(26px, 3.0vw, 36px);
+  --fs-h3:      21px;
+  --fs-lead:    clamp(17px, 1.5vw, 20px);
+  --fs-body:    16px;
+  --fs-small:   14px;
+  --fs-micro:   12px;
+
+  /* Spacing — 4px base, but values are chosen, not snapped */
+  --gap-xs: 6px;
+  --gap-s:  12px;
+  --gap-m:  20px;
+  --gap-l:  36px;
+  --gap-xl: 64px;
+  --gap-2xl: 96px;
+
+  --radius: 3px;          /* editorial, not pill-shaped */
+  --page-max: 1240px;
+  --gutter: clamp(20px, 4vw, 56px);
+}
+
+/* --- Base ---------------------------------------------------------------- */
+
+.ed-root {
+  margin: 0;
+  background: var(--ink);
+  color: var(--text-on-ink);
+  font-family: var(--body);
+  font-size: var(--fs-body);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+.ed-root a { color: var(--thermal); text-decoration: none; }
+.ed-root a:hover { color: var(--thermal-bright); text-decoration: underline; text-underline-offset: 3px; }
+
+.ed-wrap { max-width: var(--page-max); margin: 0 auto; padding-inline: var(--gutter); }
+
+.ed-kicker {
+  font-family: var(--mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--thermal);
+}
+
+.ed-num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+/* --- Media slots (see image-slot.js) ------------------------------------- */
+
+.ed-slot {
+  position: relative;
+  display: block;
+  margin: 0;
+  overflow: hidden;
+  background: var(--ink-sunk);
+  border: 1px solid var(--rule-on-ink);
+  border-radius: var(--radius);
+}
+.ed-slot > img,
+.ed-slot > video,
+.ed-slot > iframe,
+.ed-slot > svg { display: block; width: 100%; height: 100%; object-fit: cover; border: 0; }
+
+.ed-slot--empty {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-s);
+  align-items: center;
+  justify-content: center;
+  padding: var(--gap-m);
+  text-align: center;
+  color: var(--muted-on-ink);
+  background:
+    repeating-linear-gradient(135deg,
+      rgba(246,243,238,0.028) 0 2px,
+      transparent 2px 9px),
+    var(--ink-sunk);
+}
+.ed-slot--empty .ed-slot__id {
+  font-family: var(--mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.06em;
+  color: var(--thermal);
+}
+.ed-slot--empty .ed-slot__spec {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--muted-on-paper);
+}
+.ed-slot__caption {
+  font-size: var(--fs-micro);
+  line-height: 1.45;
+  color: var(--muted-on-ink);
+  padding-top: var(--gap-xs);
+}
