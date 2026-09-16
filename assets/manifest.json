@@ -1,38 +1,44 @@
 {
-  "comment": "Media import map. Every picture, graph, map and video on the landing page is a slot declared in _ds/organic-0b63b13d-34bf-4cfa-86d1-fa35ca34c91c/_ds_bundle.js. Add an entry here under the slot id to fill it; nothing in the markup changes. Then rebuild the preview: node tools/build-preview.mjs",
+  "comment": "Media import map. Every picture, graph, map and video on the site is a slot declared in _ds/organic-0b63b13d-34bf-4cfa-86d1-fa35ca34c91c/_ds_bundle.js. Add an entry here under the slot id to fill it; nothing in the markup changes. Then rebuild: node tools/build-site.mjs",
 
   "assets": {},
 
   "examples": {
     "comment": "Move any of these into \"assets\" and adjust. Paths are relative to assets/ unless they start with http, / or data:.",
 
-    "lead-photo": {
+    "finland-photo": {
       "type": "image",
-      "src": "media/lead-photo.jpg",
-      "alt": "Gas storage site at dusk"
+      "src": "media/finland-lead.jpg",
+      "alt": "Olkiluoto 3 seen across the sound at dusk"
     },
 
     "prices-chart": {
       "type": "embed",
-      "src": "https://[LIVE-DATA-APP-HOST]/embed/day-ahead?zones=DE,FR,NL&days=30&theme=dark",
-      "alt": "Day-ahead baseload prices, 30 days"
+      "src": "https://[LIVE-DATA-APP-HOST]/embed/day-ahead?zones=FI,SE3,LT&days=30&theme=dark",
+      "alt": "Day-ahead baseload prices for FI, SE3 and LT, 30 days"
     },
 
     "flows-map": {
       "type": "embed",
-      "src": "https://[LIVE-DATA-APP-HOST]/embed/flows?region=nwe&theme=dark",
-      "alt": "Cross-border flows, north-west Europe"
+      "src": "https://[LIVE-DATA-APP-HOST]/embed/flows?region=nordic-baltic&theme=dark",
+      "alt": "Net cross-border flows across the Nordic-Baltic corridor"
     },
 
-    "story-1-chart": {
+    "lithuania-chart": {
       "type": "inline",
       "svg": "<svg viewBox=\"0 0 400 300\">…paste a vector export here…</svg>"
     },
 
-    "story-2-photo": {
+    "finland-chart": {
+      "type": "image",
+      "src": "media/finland-balancing.png",
+      "alt": "Finnish day-ahead price against aFRR and mFRR activation prices"
+    },
+
+    "lithuania-grid-chart": {
       "type": "video",
-      "src": "media/clip.mp4",
-      "poster": "media/clip-poster.jpg"
+      "src": "media/queue-animation.mp4",
+      "poster": "media/queue-poster.jpg"
     }
   }
 }

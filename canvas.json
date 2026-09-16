@@ -5,33 +5,40 @@
       "x": 0,
       "y": 0,
       "w": 1440,
-      "h": 2880,
-      "title": "Energy News Landing",
+      "h": 3400,
+      "title": "Boreal Grid — landing",
       "expand": "fill",
       "print": "flow"
     }
   ],
   "annotations": [
     {
-      "id": "media-slots",
+      "id": "conversion",
       "x": 1560,
       "y": 0,
       "w": 300,
-      "text": "Media slots\n\nSix placeholders: lead-photo, story-1-chart, story-2-photo, story-3-photo, and the two data panels (prices-chart, flows-map) which ship with a drawn sample.\n\nOn the canvas, seed an image with --image and reference it by bare filename. In the repo, add it to assets/manifest.json instead."
+      "text": "What this page is for\n\nThe newsletter is the product. The signup sits in the hero, above the fold, and again in the band lower down. Paid reports are the second ask, and the live data app is third.\n\nUntil newsletter.formAction is set in app.config.json, both forms render inert and say so, rather than collecting an address and dropping it."
     },
     {
-      "id": "live-data",
+      "id": "media-slots",
       "x": 1560,
       "y": 320,
       "w": 300,
-      "text": "Live data app\n\nSet the liveDataUrl tweak above the artboard. Until it has a value the market rail is labelled SAMPLE FEED and the call to action points at an anchor rather than pretending to be wired up."
+      "text": "Media slots\n\nFour placeholders: finland-photo, lithuania-chart, and the two data panels (prices-chart, flows-map) which ship with a drawn sample.\n\nOn the canvas, seed an image with --image and reference it by bare filename. In the repo, add it to assets/manifest.json instead."
     },
     {
-      "id": "sample-copy",
+      "id": "pricing",
       "x": 1560,
-      "y": 600,
+      "y": 640,
       "w": 300,
-      "text": "Copy\n\nHeadlines and standfirsts are drafted, illustrative editorial. Every hard fact is bracketed — [XX]%, [MONTH], [REPORTER NAME], [YEAR] — so nothing reads as a claim until it is filled in."
+      "text": "Pricing\n\nThe three tiers come from reports.tiers in app.config.json. A tier with no price shows \"Price on request\"; a tier with no checkoutUrl falls back to the newsletter as a waitlist and says so on the card.\n\nNothing here quotes a price you have not set."
+    },
+    {
+      "id": "sample-data",
+      "x": 1560,
+      "y": 960,
+      "w": 300,
+      "text": "Market data\n\nThe rail and the price chart are illustrative of the Nordic-Baltic spread, not quotations. They are labelled SAMPLE FEED until liveDataApp.url is set.\n\nArticle copy is sourced and linked; figures that are not yet confirmed stay bracketed — [PHOTO CREDIT], [CONTACT EMAIL]."
     }
   ],
   "launch": { "view": "focused", "file": "Energy News Landing.dc.html" }

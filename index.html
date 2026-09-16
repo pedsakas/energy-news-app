@@ -1,239 +1,1607 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
+  <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Energy News Landing — preview</title>
+<title>Boreal Grid — Nordic and Baltic power markets, decomposed.</title>
+<meta name="description" content="Independent analysis of the Nordic and Baltic electricity markets — prices, flows, renewables build-out and the grid that has to carry it.">
+<meta name="color-scheme" content="dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%226%22%20fill%3D%22%2314110e%22%2F%3E%3Cpath%20d%3D%22M5%2022%20L13%2010%20L19%2018%20L27%207%22%20fill%3D%22none%22%20stroke%3D%22%23e7963d%22%20stroke-width%3D%223%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Boreal Grid">
+<meta property="og:title" content="Boreal Grid — Nordic and Baltic power markets, decomposed.">
+<meta property="og:description" content="Independent analysis of the Nordic and Baltic electricity markets — prices, flows, renewables build-out and the grid that has to carry it.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
-/* ---------------------------------------------------------------------------
-   Energy Desk — design-system tokens
+    /* Mirrors _ds/organic-0b63b13d-34bf-4cfa-86d1-fa35ca34c91c/styles.css.
+       Inlined because a canvas artboard runs in a sandboxed iframe that cannot
+       fetch sibling stylesheets. Change both together. */
+    :root {
+      --ink: #14110e;
+      --ink-raised: #221e1a;
+      --ink-sunk: #0d0b09;
+      --paper: #f6f3ee;
+      --muted: #97918a;
+      --muted-deep: #6d6861;
+      --rule: rgba(246, 243, 238, 0.14);
+      --rule-strong: rgba(246, 243, 238, 0.28);
+      --accent: #e7963d;
+      --renewable: #00c7a6;
+      --series-3: #b995f6;
+      --up: #3fbf7f;
+      --down: #e5644a;
+      --display: "Newsreader", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+      --body: "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      --gutter: clamp(20px, 4vw, 56px);
+      --page-max: 1240px;
+      --band: 96px;
+    }
+
+    html, body { margin: 0; background: #14110e; }
+    * { box-sizing: border-box; }
+
+    a { color: #e7963d; text-decoration: none; }
+    a:hover { color: #fdb770; text-decoration: underline; text-underline-offset: 3px; }
+
+    .ed-root {
+      background: var(--ink);
+      color: var(--paper);
+      font-family: var(--body);
+      font-size: 16px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      text-wrap: pretty;
+    }
+    .ed-root--compact { --band: 56px; }
+
+    .ed-wrap { max-width: var(--page-max); margin: 0 auto; padding-inline: var(--gutter); }
+
+    .ed-kicker {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin: 0;
+    }
+    .ed-num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+    .ed-hairline { height: 1px; background: var(--rule); border: 0; margin: 0; }
+
+    h1, h2, h3 { font-family: var(--display); font-weight: 500; margin: 0; letter-spacing: -0.012em; }
+    h1 { font-size: clamp(38px, 4.9vw, 62px); line-height: 1.03; }
+    h2 { font-size: clamp(26px, 2.6vw, 34px); line-height: 1.12; }
+    h3 { font-size: 22px; line-height: 1.2; }
+    p { margin: 0; }
+
+    .ed-story-link { color: inherit; text-decoration: none; display: block; }
+    .ed-story-link:hover { color: inherit; text-decoration: none; }
+    .ed-story-link:hover h1,
+    .ed-story-link:hover h2,
+    .ed-story-link:hover h3 { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+
+    /* --- media slots ---------------------------------------------------- */
+    .ed-slot {
+      position: relative;
+      display: block;
+      margin: 0;
+      overflow: hidden;
+      background: var(--ink-sunk);
+      border: 1px solid var(--rule);
+      border-radius: 3px;
+    }
+    .ed-slot > img, .ed-slot > video, .ed-slot > iframe { display: block; width: 100%; height: 100%; object-fit: cover; border: 0; }
+    .ed-slot > svg { display: block; width: 100%; height: 100%; }
+    .ed-slot--empty {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      text-align: center;
+      color: var(--muted);
+      background:
+        repeating-linear-gradient(135deg, rgba(246,243,238,0.028) 0 2px, transparent 2px 9px),
+        var(--ink-sunk);
+    }
+    .ed-slot__id { font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; color: var(--accent); }
+    .ed-slot__spec { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: var(--muted-deep); }
+    .ed-slot__caption { font-size: 12px; line-height: 1.45; color: var(--muted); padding-top: 8px; }
+
+    /* --- primary action -------------------------------------------------- */
+    .ed-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 48px;
+      padding: 0 24px;
+      background: var(--accent);
+      color: #14110e;
+      font-family: var(--body);
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      border: 0;
+      border-radius: 3px;
+      text-decoration: none;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .ed-cta:hover { background: #fdb770; color: #14110e; text-decoration: none; }
+    .ed-cta--ghost { background: transparent; color: var(--paper); border: 1px solid var(--rule-strong); }
+    .ed-cta--ghost:hover { background: rgba(246,243,238,0.06); color: var(--paper); border-color: var(--paper); }
+    .ed-cta--block { width: 100%; }
+    /* The unconnected state. Deliberately inert: it looks like the control it
+       will become, but it is not a control, so nothing is silently swallowed. */
+    .ed-cta--dead { background: #3a322a; color: #97918a; cursor: not-allowed; }
+    .ed-cta--dead:hover { background: #3a322a; color: #97918a; }
+
+    .ed-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 2px;
+      border: 1px solid var(--rule-strong);
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .ed-chip--live { color: var(--renewable); border-color: rgba(0,199,166,0.45); }
+    .ed-chip--accent { color: var(--accent); border-color: rgba(231,150,61,0.45); }
+
+    .ed-chart-scroll { overflow-x: auto; }
+    .ed-navlink { color: var(--paper); font-size: 14px; letter-spacing: 0.01em; text-decoration: none; }
+    .ed-navlink:hover { color: var(--accent); text-decoration: none; }
+
+    /* The rail is a flex child, so it needs min-width: 0 before overflow can do
+       anything — without it the row of quotes widens the whole page instead. */
+    .ed-rail-list { min-width: 0; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; }
+    .ed-rail-list::-webkit-scrollbar { display: none; }
+
+    /* --- signup ---------------------------------------------------------- */
+    .ed-vh {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+    }
+    .ed-signup {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      padding: 28px;
+      background: var(--ink-raised);
+      border: 1px solid var(--rule-strong);
+      border-radius: 3px;
+    }
+    .ed-signup__row { display: flex; gap: 10px; flex-wrap: wrap; }
+    /* An <input> sizes itself from its `size` attribute, so without min-width: 0
+       it refuses to shrink below roughly 180px and pushes the row wider than the
+       page. Below 520px the row stacks instead of wrapping awkwardly. */
+    .ed-signup__row > .ed-input { flex: 1 1 220px; min-width: 0; width: 100%; }
+    @media (max-width: 520px) {
+      .ed-signup__row { flex-direction: column; align-items: stretch; }
+      .ed-signup__row > .ed-cta { width: 100%; }
+    }
+    .ed-input {
+      min-height: 48px;
+      padding: 0 14px;
+      background: var(--ink-sunk);
+      color: var(--paper);
+      font-family: var(--body);
+      font-size: 15px;
+      border: 1px solid var(--rule-strong);
+      border-radius: 3px;
+    }
+    .ed-input::placeholder { color: var(--muted-deep); }
+    .ed-input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+    .ed-input--dead { display: flex; align-items: center; color: var(--muted-deep); }
+    .ed-warn {
+      font-family: var(--mono);
+      font-size: 11px;
+      line-height: 1.5;
+      letter-spacing: 0.04em;
+      color: var(--accent);
+    }
+    .ed-ticks { display: flex; flex-direction: column; gap: 9px; margin: 0; padding: 0; list-style: none; }
+    .ed-ticks li { display: flex; gap: 10px; font-size: 14px; line-height: 1.45; color: #cfc8bf; }
+    .ed-ticks svg { flex: none; margin-top: 3px; color: var(--renewable); }
+
+    /* --- pricing --------------------------------------------------------- */
+    .ed-tier {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      padding: 28px 24px;
+      background: var(--ink-sunk);
+      border: 1px solid var(--rule);
+      border-radius: 3px;
+    }
+    .ed-tier--featured { background: var(--ink-raised); border-color: rgba(231,150,61,0.45); }
+    .ed-tier__price { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+    .ed-tier__amount { font-family: var(--display); font-size: 34px; font-weight: 500; letter-spacing: -0.02em; }
+    .ed-tier__amount--tbc { font-size: 22px; color: var(--muted); }
+    .ed-tier__unit { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted-deep); }
+    .ed-tier__spacer { flex-grow: 1; }
+
+    @media (max-width: 980px) {
+      .ed-hero-grid { grid-template-columns: minmax(0, 1fr) !important; gap: 32px !important; }
+      .ed-feature-grid { grid-template-columns: minmax(0, 1fr) !important; }
+      .ed-tier-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+      .ed-data-grid { grid-template-columns: minmax(0, 1fr) !important; }
+    }
+    @media (max-width: 760px) {
+      .ed-masthead { flex-wrap: wrap; row-gap: 16px; }
+      .ed-nav { width: 100%; justify-content: space-between; gap: 12px !important; }
+      .ed-nav .ed-navlink { font-size: 13px; }
+      .ed-tier-grid { grid-template-columns: minmax(0, 1fr) !important; }
+      .ed-foot-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+    }
+    @media (max-width: 680px) {
+      /* A 960-unit viewBox squeezed into a 350px column puts the axis type at
+         about 7px. Let the chart keep a readable scale and scroll instead —
+         the panel around it still fits the screen. */
+      .ed-chart-scroll > .ed-slot { min-width: 560px; }
+      .ed-panel { padding: 18px !important; }
+      .ed-signup { padding: 20px !important; }
+    }
+  </style>
+  <script>/* ---------------------------------------------------------------------------
+   Boreal Grid — design-system bundle
    Design system id: organic-0b63b13d-34bf-4cfa-86d1-fa35ca34c91c
 
-   This is the single source of truth for the palette, type ramp and spacing
-   used by `preview.html`. `Energy News Landing.dc.html` mirrors these values
-   inside its <helmet> block, because a design canvas artboard runs in a
-   sandboxed iframe that cannot fetch sibling stylesheets. If you change a
-   token here, change it in the artboard's <helmet> too.
+   Exposes the tokens that cannot live in CSS alone: the categorical series
+   palette used by charts, the media-slot contract, and the number/date
+   formatters the market rail and data panels share.
 
-   Palette is defined in oklch (accents share L=0.74 / C=0.14 and vary only in
-   hue, so they carry equal visual weight). sRGB hex fallbacks are given first
-   for renderers without oklch — notably PNG/PDF export.
+   Loaded as a plain <script> (no modules) so it works from file:// as well as
+   from a server. Everything hangs off window.EDS.
    --------------------------------------------------------------------------- */
 
-:root {
-  /* Surfaces — warm-toned ink and paper, saturation kept under 0.02 */
-  --ink:        #14110e;
-  --ink-raised: #221e1a;
-  --ink-sunk:   #0d0b09;
-  --paper:      #f6f3ee;
-  --paper-dim:  #eae5dd;
+(function (global) {
+  'use strict';
 
-  /* Text */
-  --text-on-ink:     #f6f3ee;
-  --text-on-paper:   #14110e;
-  --muted-on-ink:    #97918a;
-  --muted-on-paper:  #6d6861;
+  /* Accent hues share L=0.74 / C=0.14 in oklch so no series shouts louder than
+     another. Charts must use the literal hex, not the CSS variable: SVG
+     rasterisers and PDF export do not always resolve custom properties. */
+  var SERIES = [
+    { id: 's1', hex: '#e7963d', oklch: 'oklch(0.74 0.14 65)',  name: 'Thermal / amber' },
+    { id: 's2', hex: '#00c7a6', oklch: 'oklch(0.74 0.14 175)', name: 'Renewable / teal' },
+    { id: 's3', hex: '#b995f6', oklch: 'oklch(0.74 0.14 300)', name: 'Third series / violet' }
+  ];
 
-  /* Rules and edges */
-  --rule-on-ink:   rgba(246, 243, 238, 0.14);
-  --rule-on-paper: rgba(20, 17, 14, 0.14);
-  --rule-strong:   rgba(246, 243, 238, 0.28);
+  var COLOR = {
+    ink: '#14110e',
+    inkRaised: '#221e1a',
+    inkSunk: '#0d0b09',
+    paper: '#f6f3ee',
+    mutedOnInk: '#97918a',
+    ruleOnInk: 'rgba(246, 243, 238, 0.14)',
+    thermal: '#e7963d',
+    renewable: '#00c7a6',
+    up: '#3fbf7f',
+    down: '#e5644a'
+  };
 
-  /* Accents — thermal (amber) vs. renewable (teal); a third hue for a
-     categorical third series only. Never decorative. */
-  --thermal:        #e7963d;
-  --thermal:        oklch(0.74 0.14 65);
-  --thermal-dim:    #bb731b;
-  --thermal-dim:    oklch(0.62 0.13 65);
-  --thermal-bright: #fdb770;
-  --thermal-bright: oklch(0.83 0.12 65);
+  /* -------------------------------------------------------------------------
+     Media-slot contract.
 
-  --renewable:      #00c7a6;
-  --renewable:      oklch(0.74 0.14 175);
-  --renewable-dim:  #009f82;
-  --renewable-dim:  oklch(0.62 0.13 175);
+     Every picture, graph, map or video on the landing page is declared here
+     once, and referenced by id from both the artboard and preview.html. A slot
+     is filled by adding an entry with the same id to assets/manifest.json —
+     nothing in the markup has to change.
 
-  --series-3:       #b995f6;
-  --series-3:       oklch(0.74 0.14 300);
+       kind    photo | chart | map | video | logo
+       ratio   intrinsic aspect the layout reserves, as "w/h"
+       minW    smallest source width that still looks sharp at 2x
+     ------------------------------------------------------------------------- */
+  var SLOTS = [
+    { id: 'masthead-logo',      kind: 'logo',  ratio: '4/1',  minW: 480,
+      note: 'Optional. Replaces the wordmark set in type.' },
+    { id: 'finland-photo',      kind: 'photo', ratio: '16/9', minW: 2000,
+      note: 'Finland lead story. Full-bleed within the hero column, and the article lead.' },
+    { id: 'finland-chart',      kind: 'chart', ratio: '16/9', minW: 1800,
+      note: 'Finland article: day-ahead against balancing energy.' },
+    { id: 'lithuania-chart',    kind: 'chart', ratio: '4/3',  minW: 1400,
+      note: 'Lithuania feature. Static export or a live embed URL.' },
+    { id: 'lithuania-grid-chart', kind: 'chart', ratio: '16/9', minW: 1800,
+      note: 'Lithuania article: connection queue against firm transmission capacity.' },
+    { id: 'prices-chart',       kind: 'chart', ratio: '16/9', minW: 1800,
+      note: 'Day-ahead power panel. Ships with a drawn sample; replace with the live chart.' },
+    { id: 'flows-map',          kind: 'map',   ratio: '4/3',  minW: 1400,
+      note: 'Nordic-Baltic corridor map. Ships with a drawn sample; replace with the live map.' }
+  ];
 
-  /* Market direction — these two are semantic, not brand */
-  --up:   oklch(0.74 0.14 150);
-  --down: oklch(0.68 0.16 28);
+  var SLOT_BY_ID = {};
+  for (var i = 0; i < SLOTS.length; i++) SLOT_BY_ID[SLOTS[i].id] = SLOTS[i];
 
-  /* Type */
-  --display: "Newsreader", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
-  --body:    "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --mono:    "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  /* Formatters shared by the market rail and the data panels. */
+  function price(value, dp) {
+    if (value === null || value === undefined || value === '') return '—';
+    var n = Number(value);
+    if (!isFinite(n)) return String(value);
+    return n.toFixed(dp === undefined ? 2 : dp);
+  }
 
-  /* Type ramp */
-  --fs-display: clamp(40px, 6.2vw, 78px);
-  --fs-h2:      clamp(26px, 3.0vw, 36px);
-  --fs-h3:      21px;
-  --fs-lead:    clamp(17px, 1.5vw, 20px);
-  --fs-body:    16px;
-  --fs-small:   14px;
-  --fs-micro:   12px;
+  function change(value, dp) {
+    if (value === null || value === undefined || value === '') return '—';
+    var n = Number(value);
+    if (!isFinite(n)) return String(value);
+    return (n > 0 ? '+' : '') + n.toFixed(dp === undefined ? 2 : dp) + '%';
+  }
 
-  /* Spacing — 4px base, but values are chosen, not snapped */
-  --gap-xs: 6px;
-  --gap-s:  12px;
-  --gap-m:  20px;
-  --gap-l:  36px;
-  --gap-xl: 64px;
-  --gap-2xl: 96px;
+  function direction(value) {
+    var n = Number(value);
+    if (!isFinite(n) || n === 0) return 'flat';
+    return n > 0 ? 'up' : 'down';
+  }
 
-  --radius: 3px;          /* editorial, not pill-shaped */
-  --page-max: 1240px;
-  --gutter: clamp(20px, 4vw, 56px);
-}
+  function changeColor(value) {
+    var d = direction(value);
+    return d === 'up' ? COLOR.up : d === 'down' ? COLOR.down : COLOR.mutedOnInk;
+  }
 
-/* --- Base ---------------------------------------------------------------- */
+  /* "14 min ago" from an ISO timestamp; falls back to the raw string so an
+     unfilled [PLACEHOLDER] shows through instead of rendering "Invalid Date". */
+  function timeAgo(iso, now) {
+    var t = Date.parse(iso);
+    if (isNaN(t)) return String(iso);
+    var secs = Math.max(0, ((now === undefined ? Date.now() : now) - t) / 1000);
+    if (secs < 90) return 'just now';
+    var mins = Math.round(secs / 60);
+    if (mins < 60) return mins + ' min ago';
+    var hours = Math.round(mins / 60);
+    if (hours < 24) return hours + (hours === 1 ? ' hour ago' : ' hours ago');
+    var days = Math.round(hours / 24);
+    return days + (days === 1 ? ' day ago' : ' days ago');
+  }
 
-.ed-root {
-  margin: 0;
-  background: var(--ink);
-  color: var(--text-on-ink);
-  font-family: var(--body);
-  font-size: var(--fs-body);
-  line-height: 1.55;
-  -webkit-font-smoothing: antialiased;
-}
+  global.EDS = {
+    SERIES: SERIES,
+    COLOR: COLOR,
+    SLOTS: SLOTS,
+    slot: function (id) { return SLOT_BY_ID[id] || null; },
+    price: price,
+    change: change,
+    direction: direction,
+    changeColor: changeColor,
+    timeAgo: timeAgo
+  };
+})(typeof window !== 'undefined' ? window : globalThis);
+</script>
+<script>window.ED_PROPS = {"brandName":"Boreal Grid","brandTagline":"Nordic and Baltic power markets, decomposed.","brandContact":"[CONTACT EMAIL]","newsletterJson":"{\"name\":\"The Monday Curve\",\"headline\":\"The week in Nordic and Baltic power, before the week starts\",\"bandHeadline\":\"Start Monday knowing what moved, and why\",\"promise\":\"One email a week. The Nordic and Baltic price action decomposed, plus the capacity, tender and grid-connection news that actually moves it.\",\"cadence\":\"Every Monday, 07:00 EET\",\"submitLabel\":\"Get the briefing\",\"reassurance\":\"No spam. One click to leave.\",\"action\":\"\",\"method\":\"post\",\"field\":\"email\",\"bullets\":[\"FI, SE, NO, EE, LV and LT day-ahead and balancing spreads, decomposed\",\"Capture prices for wind and solar, tracked against the baseload curve\",\"Connection queues, tenders and interconnector milestones that reprice the curve\",\"Written for people who have to act on it, not for a press round-up\"]}","tiersJson":"[{\"id\":\"single\",\"name\":\"Single report\",\"kind\":\"One-time\",\"price\":\"\",\"unit\":\"per report\",\"summary\":\"One market, one question, answered with the working shown.\",\"features\":[\"40–60 pages, hourly-resolution price decomposition\",\"Every chart shipped as the underlying CSV\",\"Scenario ranges with the assumptions listed, not buried\",\"Twelve months of errata and data corrections\"],\"checkoutUrl\":\"\",\"cta\":\"Buy this report\",\"currency\":\"EUR\"},{\"id\":\"quarterly\",\"name\":\"Research subscription\",\"kind\":\"Quarterly\",\"price\":\"\",\"unit\":\"per quarter\",\"summary\":\"Everything we publish, plus the tracker that sits behind it.\",\"featured\":true,\"features\":[\"Every deep-dive report as it ships\",\"Nordic–Baltic capacity and connection-queue tracker, updated monthly\",\"Capture-price and spread series for FI, SE3, SE4, EE, LV, LT\",\"Analyst Q&A on anything we have published\"],\"checkoutUrl\":\"\",\"cta\":\"Start a subscription\",\"currency\":\"EUR\"},{\"id\":\"desk\",\"name\":\"Desk and enterprise\",\"kind\":\"Bespoke\",\"price\":\"\",\"unit\":\"on application\",\"summary\":\"Your question, our data, under your assumptions.\",\"features\":[\"Commissioned analysis on a defined question\",\"Seat licences for a team or an investment committee\",\"Model review — we mark your capture-price assumptions\",\"Data delivered by API into your own stack\"],\"checkoutUrl\":\"\",\"cta\":\"Talk to the desk\",\"currency\":\"EUR\"}]","storiesJson":"[{\"kicker\":\"Analysis · Finland\",\"title\":\"Finland is Europe's cheapest power market and its most volatile — for the same reason\",\"dek\":\"Day-ahead averages have spent much of 2026 in the low teens per megawatt-hour. Balancing energy in the same country has cleared above €600/MWh on a monthly average. Those two facts are not in tension; they are the same fact seen from two different markets.\",\"byline\":\"Boreal Grid Research\",\"published\":\"2026-09-15\",\"readingTime\":\"8 min read\",\"href\":\"news/finland-cheapest-and-most-volatile.html\"},{\"kicker\":\"Analysis · Lithuania\",\"title\":\"Lithuania is adding renewables faster than it is adding the grid to carry them\",\"dek\":\"Solar passed 3 GW in March. Wind and solar together already cover 68% of demand. Another 4 GW of solar holds technical permits. The binding constraint has quietly moved from megawatts to euros per megawatt-hour.\",\"byline\":\"Boreal Grid Research\",\"published\":\"2026-09-16\",\"readingTime\":\"9 min read\",\"href\":\"news/lithuania-renewables-speed-and-capture-prices.html\"}]","railJson":"[{\"code\":\"FI\",\"value\":\"14.40\",\"change\":-18.6},{\"code\":\"SE3\",\"value\":\"31.05\",\"change\":-7.2},{\"code\":\"NO2\",\"value\":\"38.90\",\"change\":2.1},{\"code\":\"EE\",\"value\":\"76.20\",\"change\":3.4},{\"code\":\"LV\",\"value\":\"79.55\",\"change\":3.9},{\"code\":\"LT\",\"value\":\"81.00\",\"change\":4.6},{\"code\":\"TTF M+1\",\"value\":\"31.15\",\"change\":-1.2}]","liveDataUrl":"","liveDataLabel":"Open the live data app","accent":"#e7963d","density":"editorial","showMarketRail":true};
+window.ED_MANIFEST = {"assets":{}};</script>
+<script>/* ---------------------------------------------------------------------------
+   support.js — a minimal standalone runtime for .dc.html Design Components.
 
-.ed-root a { color: var(--thermal); text-decoration: none; }
-.ed-root a:hover { color: var(--thermal-bright); text-decoration: underline; text-underline-offset: 3px; }
+   Inside the Claude Design canvas this file is IGNORED: the editor replaces the
+   `<script src="./support.js"><\/script>` head line with its own inline runtime
+   before rendering an artboard. Keep that head line exactly as it is.
 
-.ed-wrap { max-width: var(--page-max); margin: 0 auto; padding-inline: var(--gutter); }
+   Outside the canvas — opening `Energy News Landing.dc.html` straight from disk
+   — this runtime stands in for it, so the artboard renders in a plain browser
+   without a build step. It implements the parts of the format the artboard
+   actually uses:
 
-.ed-kicker {
-  font-family: var(--mono);
-  font-size: var(--fs-micro);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--thermal);
-}
+     {{ dotted.path }}   in text nodes and attributes (dotted lookup only)
+     <sc-for list as>    repeat, with {{ $index }} in scope
+     <sc-if value>       conditional subtree
+     <helmet>            contents hoisted into <head>
+     onClick="{{ fn }}"  event handlers bound from renderVals()
+     data-props          prop defaults and editor metadata
 
-.ed-num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+   It is a preview aid, not a reimplementation of Design Components. Anything
+   the canvas supports and this does not will simply not render here.
+   --------------------------------------------------------------------------- */
 
-/* --- Media slots (see image-slot.js) ------------------------------------- */
+(function (global, document) {
+  'use strict';
 
-.ed-slot {
-  position: relative;
-  display: block;
-  margin: 0;
-  overflow: hidden;
-  background: var(--ink-sunk);
-  border: 1px solid var(--rule-on-ink);
-  border-radius: var(--radius);
-}
-.ed-slot > img,
-.ed-slot > video,
-.ed-slot > iframe,
-.ed-slot > svg { display: block; width: 100%; height: 100%; object-fit: cover; border: 0; }
+  if (global.__ED_SUPPORT__) return;
+  global.__ED_SUPPORT__ = true;
 
-.ed-slot--empty {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gap-s);
-  align-items: center;
-  justify-content: center;
-  padding: var(--gap-m);
-  text-align: center;
-  color: var(--muted-on-ink);
-  background:
-    repeating-linear-gradient(135deg,
-      rgba(246,243,238,0.028) 0 2px,
-      transparent 2px 9px),
-    var(--ink-sunk);
-}
-.ed-slot--empty .ed-slot__id {
-  font-family: var(--mono);
-  font-size: var(--fs-micro);
-  letter-spacing: 0.06em;
-  color: var(--thermal);
-}
-.ed-slot--empty .ed-slot__spec {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.06em;
-  color: var(--muted-on-paper);
-}
-.ed-slot__caption {
-  font-size: var(--fs-micro);
-  line-height: 1.45;
-  color: var(--muted-on-ink);
-  padding-top: var(--gap-xs);
-}
+  /* --- DCLogic ------------------------------------------------------------ */
 
+  function DCLogic(props) {
+    this.props = props || {};
+    this.state = {};
+  }
+  DCLogic.prototype.setState = function (patch) {
+    var next = typeof patch === 'function' ? patch(this.state, this.props) : patch;
+    for (var k in next) if (Object.prototype.hasOwnProperty.call(next, k)) this.state[k] = next[k];
+    if (this.__rerender) this.__rerender();
+  };
+  DCLogic.prototype.forceUpdate = function () { if (this.__rerender) this.__rerender(); };
+  DCLogic.prototype.renderVals = function () { return {}; };
+  DCLogic.prototype.componentDidMount = function () {};
 
-/* --- preview chrome (not part of the design) --------------------------- */
-html, body { margin: 0; height: 100%; background: #0d0b09; }
-body { display: flex; flex-direction: column; font-family: var(--body); color: var(--paper); }
+  global.DCLogic = DCLogic;
 
-.pv-bar {
-  display: flex; flex-wrap: wrap; align-items: center; gap: 20px;
-  padding: 10px 18px; background: #14110e;
-  border-bottom: 1px solid rgba(246,243,238,0.14);
-}
-.pv-title { font-family: var(--display); font-size: 16px; font-weight: 600; letter-spacing: -0.01em; }
-.pv-meta { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: var(--muted-on-paper); }
-.pv-spacer { flex-grow: 1; }
-.pv-group { display: flex; gap: 6px; }
-.pv-btn {
-  min-height: 30px; padding: 0 12px;
-  background: transparent; color: var(--muted-on-ink);
-  border: 1px solid rgba(246,243,238,0.14); border-radius: 3px;
-  font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
-  cursor: pointer;
-}
-.pv-btn:hover { color: var(--paper); border-color: rgba(246,243,238,0.28); }
-.pv-btn[aria-pressed="true"] { color: #14110e; background: var(--thermal); border-color: var(--thermal); }
+  /* --- value lookup ------------------------------------------------------- */
 
-.pv-stage { flex-grow: 1; overflow: auto; display: flex; justify-content: center; padding: 18px; }
-.pv-frame {
-  width: 1440px; max-width: 100%; height: 100%; min-height: 600px;
-  background: var(--ink); border: 1px solid rgba(246,243,238,0.14); border-radius: 3px;
-  transition: width 140ms ease;
-}
-.pv-frame iframe { display: block; width: 100%; height: 100%; border: 0; border-radius: 2px; }
-</style>
-</head>
-<body>
+  var SVG_NS = 'http://www.w3.org/2000/svg';
 
-<div class="pv-bar">
-  <span class="pv-title">Energy News Landing</span>
-  <span class="pv-meta">0/6 media slots filled &middot; live data app: not set</span>
-  <span class="pv-spacer"></span>
-  <div class="pv-group" role="group" aria-label="Viewport width">
-    <button class="pv-btn" type="button" data-w="1440" aria-pressed="true">Desktop</button>
-    <button class="pv-btn" type="button" data-w="834" aria-pressed="false">Tablet</button>
-    <button class="pv-btn" type="button" data-w="390" aria-pressed="false">Phone</button>
-  </div>
-</div>
+  var HOLE = /\{\{\s*([^{}]+?)\s*\}\}/g;
+  var WHOLE_HOLE = /^\{\{\s*([^{}]+?)\s*\}\}$/;
 
-<div class="pv-stage">
-  <div class="pv-frame" id="pv-frame"><iframe id="pv-doc" title="Energy News Landing"></iframe></div>
-</div>
+  function lookup(path, scope) {
+    if (path === 'true') return true;
+    if (path === 'false') return false;
+    if (path === 'null') return null;
+    if (/^-?\d+(\.\d+)?$/.test(path)) return Number(path);
+    if (/^'.*'$/.test(path) || /^".*"$/.test(path)) return path.slice(1, -1);
 
-<script type="text/plain" id="pv-artboard">PCFkb2N0eXBlIGh0bWw+CjxodG1sPgo8aGVhZD4KICA8bWV0YSBjaGFyc2V0PSJ1dGYtOCI+CiAgPHNjcmlwdD4vKiAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KICAgRW5lcmd5IERlc2sg4oCUIGRlc2lnbi1zeXN0ZW0gYnVuZGxlCiAgIERlc2lnbiBzeXN0ZW0gaWQ6IG9yZ2FuaWMtMGI2M2IxM2QtMzRiZi00Y2ZhLTg2ZDEtZmEzNWNhMzRjOTFjCgogICBFeHBvc2VzIHRoZSB0b2tlbnMgdGhhdCBjYW5ub3QgbGl2ZSBpbiBDU1MgYWxvbmU6IHRoZSBjYXRlZ29yaWNhbCBzZXJpZXMKICAgcGFsZXR0ZSB1c2VkIGJ5IGNoYXJ0cywgdGhlIG1lZGlhLXNsb3QgY29udHJhY3QsIGFuZCB0aGUgbnVtYmVyL2RhdGUKICAgZm9ybWF0dGVycyB0aGUgbWFya2V0IHJhaWwgYW5kIGRhdGEgcGFuZWxzIHNoYXJlLgoKICAgTG9hZGVkIGFzIGEgcGxhaW4gPHNjcmlwdD4gKG5vIG1vZHVsZXMpIHNvIGl0IHdvcmtzIGZyb20gZmlsZTovLyBhcyB3ZWxsIGFzCiAgIGZyb20gYSBzZXJ2ZXIuIEV2ZXJ5dGhpbmcgaGFuZ3Mgb2ZmIHdpbmRvdy5FRFMuCiAgIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSAqLwoKKGZ1bmN0aW9uIChnbG9iYWwpIHsKICAndXNlIHN0cmljdCc7CgogIC8qIEFjY2VudCBodWVzIHNoYXJlIEw9MC43NCAvIEM9MC4xNCBpbiBva2xjaCBzbyBubyBzZXJpZXMgc2hvdXRzIGxvdWRlciB0aGFuCiAgICAgYW5vdGhlci4gQ2hhcnRzIG11c3QgdXNlIHRoZSBsaXRlcmFsIGhleCwgbm90IHRoZSBDU1MgdmFyaWFibGU6IFNWRwogICAgIHJhc3RlcmlzZXJzIGFuZCBQREYgZXhwb3J0IGRvIG5vdCBhbHdheXMgcmVzb2x2ZSBjdXN0b20gcHJvcGVydGllcy4gKi8KICB2YXIgU0VSSUVTID0gWwogICAgeyBpZDogJ3MxJywgaGV4OiAnI2U3OTYzZCcsIG9rbGNoOiAnb2tsY2goMC43NCAwLjE0IDY1KScsICBuYW1lOiAnVGhlcm1hbCAvIGFtYmVyJyB9LAogICAgeyBpZDogJ3MyJywgaGV4OiAnIzAwYzdhNicsIG9rbGNoOiAnb2tsY2goMC43NCAwLjE0IDE3NSknLCBuYW1lOiAnUmVuZXdhYmxlIC8gdGVhbCcgfSwKICAgIHsgaWQ6ICdzMycsIGhleDogJyNiOTk1ZjYnLCBva2xjaDogJ29rbGNoKDAuNzQgMC4xNCAzMDApJywgbmFtZTogJ1RoaXJkIHNlcmllcyAvIHZpb2xldCcgfQogIF07CgogIHZhciBDT0xPUiA9IHsKICAgIGluazogJyMxNDExMGUnLAogICAgaW5rUmFpc2VkOiAnIzIyMWUxYScsCiAgICBpbmtTdW5rOiAnIzBkMGIwOScsCiAgICBwYXBlcjogJyNmNmYzZWUnLAogICAgbXV0ZWRPbkluazogJyM5NzkxOGEnLAogICAgcnVsZU9uSW5rOiAncmdiYSgyNDYsIDI0MywgMjM4LCAwLjE0KScsCiAgICB0aGVybWFsOiAnI2U3OTYzZCcsCiAgICByZW5ld2FibGU6ICcjMDBjN2E2JywKICAgIHVwOiAnIzNmYmY3ZicsCiAgICBkb3duOiAnI2U1NjQ0YScKICB9OwoKICAvKiAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCiAgICAgTWVkaWEtc2xvdCBjb250cmFjdC4KCiAgICAgRXZlcnkgcGljdHVyZSwgZ3JhcGgsIG1hcCBvciB2aWRlbyBvbiB0aGUgbGFuZGluZyBwYWdlIGlzIGRlY2xhcmVkIGhlcmUKICAgICBvbmNlLCBhbmQgcmVmZXJlbmNlZCBieSBpZCBmcm9tIGJvdGggdGhlIGFydGJvYXJkIGFuZCBwcmV2aWV3Lmh0bWwuIEEgc2xvdAogICAgIGlzIGZpbGxlZCBieSBhZGRpbmcgYW4gZW50cnkgd2l0aCB0aGUgc2FtZSBpZCB0byBhc3NldHMvbWFuaWZlc3QuanNvbiDigJQKICAgICBub3RoaW5nIGluIHRoZSBtYXJrdXAgaGFzIHRvIGNoYW5nZS4KCiAgICAgICBraW5kICAgIHBob3RvIHwgY2hhcnQgfCBtYXAgfCB2aWRlbyB8IGxvZ28KICAgICAgIHJhdGlvICAgaW50cmluc2ljIGFzcGVjdCB0aGUgbGF5b3V0IHJlc2VydmVzLCBhcyAidy9oIgogICAgICAgbWluVyAgICBzbWFsbGVzdCBzb3VyY2Ugd2lkdGggdGhhdCBzdGlsbCBsb29rcyBzaGFycCBhdCAyeAogICAgIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gKi8KICB2YXIgU0xPVFMgPSBbCiAgICB7IGlkOiAnbWFzdGhlYWQtbG9nbycsICBraW5kOiAnbG9nbycsICByYXRpbzogJzQvMScsICBtaW5XOiA0ODAsCiAgICAgIG5vdGU6ICdPcHRpb25hbC4gUmVwbGFjZXMgdGhlIHdvcmRtYXJrIHNldCBpbiB0eXBlLicgfSwKICAgIHsgaWQ6ICdsZWFkLXBob3RvJywgICAgIGtpbmQ6ICdwaG90bycsIHJhdGlvOiAnMTYvOScsIG1pblc6IDIwMDAsCiAgICAgIG5vdGU6ICdMZWFkIHN0b3J5LiBGdWxsLWJsZWVkIHdpdGhpbiB0aGUgaGVybyBjb2x1bW4uJyB9LAogICAgeyBpZDogJ3N0b3J5LTEtY2hhcnQnLCAga2luZDogJ2NoYXJ0JywgcmF0aW86ICc0LzMnLCAgbWluVzogMTIwMCwKICAgICAgbm90ZTogJ1NlY29uZGFyeSBzdG9yeSAxLiBTdGF0aWMgZXhwb3J0IG9yIGEgbGl2ZSBlbWJlZCBVUkwuJyB9LAogICAgeyBpZDogJ3N0b3J5LTItcGhvdG8nLCAga2luZDogJ3Bob3RvJywgcmF0aW86ICc0LzMnLCAgbWluVzogMTIwMCwKICAgICAgbm90ZTogJ1NlY29uZGFyeSBzdG9yeSAyLicgfSwKICAgIHsgaWQ6ICdzdG9yeS0zLXBob3RvJywgIGtpbmQ6ICdwaG90bycsIHJhdGlvOiAnNC8zJywgIG1pblc6IDEyMDAsCiAgICAgIG5vdGU6ICdTZWNvbmRhcnkgc3RvcnkgMy4nIH0sCiAgICB7IGlkOiAncHJpY2VzLWNoYXJ0JywgICBraW5kOiAnY2hhcnQnLCByYXRpbzogJzE2LzknLCBtaW5XOiAxODAwLAogICAgICBub3RlOiAnRGF5LWFoZWFkIHBvd2VyIHBhbmVsLiBTaGlwcyB3aXRoIGEgZHJhd24gc2FtcGxlOyByZXBsYWNlIHdpdGggdGhlIGxpdmUgY2hhcnQuJyB9LAogICAgeyBpZDogJ2Zsb3dzLW1hcCcsICAgICAga2luZDogJ21hcCcsICAgcmF0aW86ICc0LzMnLCAgbWluVzogMTQwMCwKICAgICAgbm90ZTogJ0Nyb3NzLWJvcmRlciBmbG93IG1hcC4gU2hpcHMgd2l0aCBhIGRyYXduIHNhbXBsZTsgcmVwbGFjZSB3aXRoIHRoZSBsaXZlIG1hcC4nIH0KICBdOwoKICB2YXIgU0xPVF9CWV9JRCA9IHt9OwogIGZvciAodmFyIGkgPSAwOyBpIDwgU0xPVFMubGVuZ3RoOyBpKyspIFNMT1RfQllfSURbU0xPVFNbaV0uaWRdID0gU0xPVFNbaV07CgogIC8qIEZvcm1hdHRlcnMgc2hhcmVkIGJ5IHRoZSBtYXJrZXQgcmFpbCBhbmQgdGhlIGRhdGEgcGFuZWxzLiAqLwogIGZ1bmN0aW9uIHByaWNlKHZhbHVlLCBkcCkgewogICAgaWYgKHZhbHVlID09PSBudWxsIHx8IHZhbHVlID09PSB1bmRlZmluZWQgfHwgdmFsdWUgPT09ICcnKSByZXR1cm4gJ+KAlCc7CiAgICB2YXIgbiA9IE51bWJlcih2YWx1ZSk7CiAgICBpZiAoIWlzRmluaXRlKG4pKSByZXR1cm4gU3RyaW5nKHZhbHVlKTsKICAgIHJldHVybiBuLnRvRml4ZWQoZHAgPT09IHVuZGVmaW5lZCA/IDIgOiBkcCk7CiAgfQoKICBmdW5jdGlvbiBjaGFuZ2UodmFsdWUsIGRwKSB7CiAgICBpZiAodmFsdWUgPT09IG51bGwgfHwgdmFsdWUgPT09IHVuZGVmaW5lZCB8fCB2YWx1ZSA9PT0gJycpIHJldHVybiAn4oCUJzsKICAgIHZhciBuID0gTnVtYmVyKHZhbHVlKTsKICAgIGlmICghaXNGaW5pdGUobikpIHJldHVybiBTdHJpbmcodmFsdWUpOwogICAgcmV0dXJuIChuID4gMCA/ICcrJyA6ICcnKSArIG4udG9GaXhlZChkcCA9PT0gdW5kZWZpbmVkID8gMiA6IGRwKSArICclJzsKICB9CgogIGZ1bmN0aW9uIGRpcmVjdGlvbih2YWx1ZSkgewogICAgdmFyIG4gPSBOdW1iZXIodmFsdWUpOwogICAgaWYgKCFpc0Zpbml0ZShuKSB8fCBuID09PSAwKSByZXR1cm4gJ2ZsYXQnOwogICAgcmV0dXJuIG4gPiAwID8gJ3VwJyA6ICdkb3duJzsKICB9CgogIGZ1bmN0aW9uIGNoYW5nZUNvbG9yKHZhbHVlKSB7CiAgICB2YXIgZCA9IGRpcmVjdGlvbih2YWx1ZSk7CiAgICByZXR1cm4gZCA9PT0gJ3VwJyA/IENPTE9SLnVwIDogZCA9PT0gJ2Rvd24nID8gQ09MT1IuZG93biA6IENPTE9SLm11dGVkT25Jbms7CiAgfQoKICAvKiAiMTQgbWluIGFnbyIgZnJvbSBhbiBJU08gdGltZXN0YW1wOyBmYWxscyBiYWNrIHRvIHRoZSByYXcgc3RyaW5nIHNvIGFuCiAgICAgdW5maWxsZWQgW1BMQUNFSE9MREVSXSBzaG93cyB0aHJvdWdoIGluc3RlYWQgb2YgcmVuZGVyaW5nICJJbnZhbGlkIERhdGUiLiAqLwogIGZ1bmN0aW9uIHRpbWVBZ28oaXNvLCBub3cpIHsKICAgIHZhciB0ID0gRGF0ZS5wYXJzZShpc28pOwogICAgaWYgKGlzTmFOKHQpKSByZXR1cm4gU3RyaW5nKGlzbyk7CiAgICB2YXIgc2VjcyA9IE1hdGgubWF4KDAsICgobm93ID09PSB1bmRlZmluZWQgPyBEYXRlLm5vdygpIDogbm93KSAtIHQpIC8gMTAwMCk7CiAgICBpZiAoc2VjcyA8IDkwKSByZXR1cm4gJ2p1c3Qgbm93JzsKICAgIHZhciBtaW5zID0gTWF0aC5yb3VuZChzZWNzIC8gNjApOwogICAgaWYgKG1pbnMgPCA2MCkgcmV0dXJuIG1pbnMgKyAnIG1pbiBhZ28nOwogICAgdmFyIGhvdXJzID0gTWF0aC5yb3VuZChtaW5zIC8gNjApOwogICAgaWYgKGhvdXJzIDwgMjQpIHJldHVybiBob3VycyArIChob3VycyA9PT0gMSA/ICcgaG91ciBhZ28nIDogJyBob3VycyBhZ28nKTsKICAgIHZhciBkYXlzID0gTWF0aC5yb3VuZChob3VycyAvIDI0KTsKICAgIHJldHVybiBkYXlzICsgKGRheXMgPT09IDEgPyAnIGRheSBhZ28nIDogJyBkYXlzIGFnbycpOwogIH0KCiAgZ2xvYmFsLkVEUyA9IHsKICAgIFNFUklFUzogU0VSSUVTLAogICAgQ09MT1I6IENPTE9SLAogICAgU0xPVFM6IFNMT1RTLAogICAgc2xvdDogZnVuY3Rpb24gKGlkKSB7IHJldHVybiBTTE9UX0JZX0lEW2lkXSB8fCBudWxsOyB9LAogICAgcHJpY2U6IHByaWNlLAogICAgY2hhbmdlOiBjaGFuZ2UsCiAgICBkaXJlY3Rpb246IGRpcmVjdGlvbiwKICAgIGNoYW5nZUNvbG9yOiBjaGFuZ2VDb2xvciwKICAgIHRpbWVBZ286IHRpbWVBZ28KICB9Owp9KSh0eXBlb2Ygd2luZG93ICE9PSAndW5kZWZpbmVkJyA/IHdpbmRvdyA6IGdsb2JhbFRoaXMpOwo8L3NjcmlwdD4KPHNjcmlwdD53aW5kb3cuRURfUFJPUFMgPSB7ImxpdmVEYXRhVXJsIjoiIiwibGl2ZURhdGFMYWJlbCI6Ik9wZW4gdGhlIGxpdmUgZGF0YSBhcHAiLCJhY2NlbnQiOiIjZTc5NjNkIiwiZGVuc2l0eSI6ImVkaXRvcmlhbCIsInNob3dNYXJrZXRSYWlsIjp0cnVlfTsKd2luZG93LkVEX01BTklGRVNUID0geyJhc3NldHMiOnt9fTs8L3NjcmlwdD4KPHNjcmlwdD4vKiAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KICAgc3VwcG9ydC5qcyDigJQgYSBtaW5pbWFsIHN0YW5kYWxvbmUgcnVudGltZSBmb3IgLmRjLmh0bWwgRGVzaWduIENvbXBvbmVudHMuCgogICBJbnNpZGUgdGhlIENsYXVkZSBEZXNpZ24gY2FudmFzIHRoaXMgZmlsZSBpcyBJR05PUkVEOiB0aGUgZWRpdG9yIHJlcGxhY2VzIHRoZQogICBgPHNjcmlwdCBzcmM9Ii4vc3VwcG9ydC5qcyI+PFwvc2NyaXB0PmAgaGVhZCBsaW5lIHdpdGggaXRzIG93biBpbmxpbmUgcnVudGltZQogICBiZWZvcmUgcmVuZGVyaW5nIGFuIGFydGJvYXJkLiBLZWVwIHRoYXQgaGVhZCBsaW5lIGV4YWN0bHkgYXMgaXQgaXMuCgogICBPdXRzaWRlIHRoZSBjYW52YXMg4oCUIG9wZW5pbmcgYEVuZXJneSBOZXdzIExhbmRpbmcuZGMuaHRtbGAgc3RyYWlnaHQgZnJvbSBkaXNrCiAgIOKAlCB0aGlzIHJ1bnRpbWUgc3RhbmRzIGluIGZvciBpdCwgc28gdGhlIGFydGJvYXJkIHJlbmRlcnMgaW4gYSBwbGFpbiBicm93c2VyCiAgIHdpdGhvdXQgYSBidWlsZCBzdGVwLiBJdCBpbXBsZW1lbnRzIHRoZSBwYXJ0cyBvZiB0aGUgZm9ybWF0IHRoZSBhcnRib2FyZAogICBhY3R1YWxseSB1c2VzOgoKICAgICB7eyBkb3R0ZWQucGF0aCB9fSAgIGluIHRleHQgbm9kZXMgYW5kIGF0dHJpYnV0ZXMgKGRvdHRlZCBsb29rdXAgb25seSkKICAgICA8c2MtZm9yIGxpc3QgYXM+ICAgIHJlcGVhdCwgd2l0aCB7eyAkaW5kZXggfX0gaW4gc2NvcGUKICAgICA8c2MtaWYgdmFsdWU+ICAgICAgIGNvbmRpdGlvbmFsIHN1YnRyZWUKICAgICA8aGVsbWV0PiAgICAgICAgICAgIGNvbnRlbnRzIGhvaXN0ZWQgaW50byA8aGVhZD4KICAgICBvbkNsaWNrPSJ7eyBmbiB9fSIgIGV2ZW50IGhhbmRsZXJzIGJvdW5kIGZyb20gcmVuZGVyVmFscygpCiAgICAgZGF0YS1wcm9wcyAgICAgICAgICBwcm9wIGRlZmF1bHRzIGFuZCBlZGl0b3IgbWV0YWRhdGEKCiAgIEl0IGlzIGEgcHJldmlldyBhaWQsIG5vdCBhIHJlaW1wbGVtZW50YXRpb24gb2YgRGVzaWduIENvbXBvbmVudHMuIEFueXRoaW5nCiAgIHRoZSBjYW52YXMgc3VwcG9ydHMgYW5kIHRoaXMgZG9lcyBub3Qgd2lsbCBzaW1wbHkgbm90IHJlbmRlciBoZXJlLgogICAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gKi8KCihmdW5jdGlvbiAoZ2xvYmFsLCBkb2N1bWVudCkgewogICd1c2Ugc3RyaWN0JzsKCiAgaWYgKGdsb2JhbC5fX0VEX1NVUFBPUlRfXykgcmV0dXJuOwogIGdsb2JhbC5fX0VEX1NVUFBPUlRfXyA9IHRydWU7CgogIC8qIC0tLSBEQ0xvZ2ljIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSAqLwoKICBmdW5jdGlvbiBEQ0xvZ2ljKHByb3BzKSB7CiAgICB0aGlzLnByb3BzID0gcHJvcHMgfHwge307CiAgICB0aGlzLnN0YXRlID0ge307CiAgfQogIERDTG9naWMucHJvdG90eXBlLnNldFN0YXRlID0gZnVuY3Rpb24gKHBhdGNoKSB7CiAgICB2YXIgbmV4dCA9IHR5cGVvZiBwYXRjaCA9PT0gJ2Z1bmN0aW9uJyA/IHBhdGNoKHRoaXMuc3RhdGUsIHRoaXMucHJvcHMpIDogcGF0Y2g7CiAgICBmb3IgKHZhciBrIGluIG5leHQpIGlmIChPYmplY3QucHJvdG90eXBlLmhhc093blByb3BlcnR5LmNhbGwobmV4dCwgaykpIHRoaXMuc3RhdGVba10gPSBuZXh0W2tdOwogICAgaWYgKHRoaXMuX19yZXJlbmRlcikgdGhpcy5fX3JlcmVuZGVyKCk7CiAgfTsKICBEQ0xvZ2ljLnByb3RvdHlwZS5mb3JjZVVwZGF0ZSA9IGZ1bmN0aW9uICgpIHsgaWYgKHRoaXMuX19yZXJlbmRlcikgdGhpcy5fX3JlcmVuZGVyKCk7IH07CiAgRENMb2dpYy5wcm90b3R5cGUucmVuZGVyVmFscyA9IGZ1bmN0aW9uICgpIHsgcmV0dXJuIHt9OyB9OwogIERDTG9naWMucHJvdG90eXBlLmNvbXBvbmVudERpZE1vdW50ID0gZnVuY3Rpb24gKCkge307CgogIGdsb2JhbC5EQ0xvZ2ljID0gRENMb2dpYzsKCiAgLyogLS0tIHZhbHVlIGxvb2t1cCAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tICovCgogIHZhciBTVkdfTlMgPSAnaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnOwoKICB2YXIgSE9MRSA9IC9ce1x7XHMqKFtee31dKz8pXHMqXH1cfS9nOwogIHZhciBXSE9MRV9IT0xFID0gL15ce1x7XHMqKFtee31dKz8pXHMqXH1cfSQvOwoKICBmdW5jdGlvbiBsb29rdXAocGF0aCwgc2NvcGUpIHsKICAgIGlmIChwYXRoID09PSAndHJ1ZScpIHJldHVybiB0cnVlOwogICAgaWYgKHBhdGggPT09ICdmYWxzZScpIHJldHVybiBmYWxzZTsKICAgIGlmIChwYXRoID09PSAnbnVsbCcpIHJldHVybiBudWxsOwogICAgaWYgKC9eLT9cZCsoXC5cZCspPyQvLnRlc3QocGF0aCkpIHJldHVybiBOdW1iZXIocGF0aCk7CiAgICBpZiAoL14nLionJC8udGVzdChwYXRoKSB8fCAvXiIuKiIkLy50ZXN0KHBhdGgpKSByZXR1cm4gcGF0aC5zbGljZSgxLCAtMSk7CgogICAgdmFyIHBhcnRzID0gcGF0aC5zcGxpdCgnLicpOwogICAgdmFyIGN1ciA9IHNjb3BlOwogICAgZm9yICh2YXIgaSA9IDA7IGkgPCBwYXJ0cy5sZW5ndGg7IGkrKykgewogICAgICBpZiAoY3VyID09PSBudWxsIHx8IGN1ciA9PT0gdW5kZWZpbmVkKSByZXR1cm4gdW5kZWZpbmVkOwogICAgICBjdXIgPSBjdXJbcGFydHNbaV1dOwogICAgfQogICAgcmV0dXJuIGN1cjsKICB9CgogIGZ1bmN0aW9uIGludGVycG9sYXRlKHN0ciwgc2NvcGUpIHsKICAgIHJldHVybiBzdHIucmVwbGFjZShIT0xFLCBmdW5jdGlvbiAoXywgcGF0aCkgewogICAgICB2YXIgdiA9IGxvb2t1cChwYXRoLCBzY29wZSk7CiAgICAgIHJldHVybiB2ID09PSB1bmRlZmluZWQgfHwgdiA9PT0gbnVsbCA/ICcnIDogU3RyaW5nKHYpOwogICAgfSk7CiAgfQoKICBmdW5jdGlvbiB0cnV0aHkodikgewogICAgcmV0dXJuIEFycmF5LmlzQXJyYXkodikgPyB2Lmxlbmd0aCA+IDAgOiAhIXY7CiAgfQoKICAvKiAtLS0gcmVuZGVyaW5nIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gKi8KCiAgZnVuY3Rpb24gcmVuZGVyTm9kZXMoc291cmNlTm9kZXMsIHNjb3BlLCBvdXQpIHsKICAgIGZvciAodmFyIGkgPSAwOyBpIDwgc291cmNlTm9kZXMubGVuZ3RoOyBpKyspIHJlbmRlck5vZGUoc291cmNlTm9kZXNbaV0sIHNjb3BlLCBvdXQpOwogIH0KCiAgZnVuY3Rpb24gcmVuZGVyTm9kZShub2RlLCBzY29wZSwgb3V0KSB7CiAgICBpZiAobm9kZS5ub2RlVHlwZSA9PT0gMykgeyAgICAgICAgICAgICAgICAgICAgICAgLy8gdGV4dAogICAgICB2YXIgdGV4dCA9IG5vZGUubm9kZVZhbHVlOwogICAgICBvdXQuYXBwZW5kQ2hpbGQoZG9jdW1lbnQuY3JlYXRlVGV4dE5vZGUoCiAgICAgICAgSE9MRS50ZXN0KHRleHQpID8gKEhPTEUubGFzdEluZGV4ID0gMCwgaW50ZXJwb2xhdGUodGV4dCwgc2NvcGUpKSA6IHRleHQKICAgICAgKSk7CiAgICAgIEhPTEUubGFzdEluZGV4ID0gMDsKICAgICAgcmV0dXJuOwogICAgfQogICAgaWYgKG5vZGUubm9kZVR5cGUgPT09IDgpIHJldHVybjsgICAgICAgICAgICAgICAgIC8vIGNvbW1lbnQg4oCUIGRyb3AKICAgIGlmIChub2RlLm5vZGVUeXBlICE9PSAxKSByZXR1cm47CgogICAgdmFyIHRhZyA9IG5vZGUudGFnTmFtZS50b0xvd2VyQ2FzZSgpOwoKICAgIGlmICh0YWcgPT09ICdzYy1mb3InKSB7CiAgICAgIHZhciBsaXN0QXR0ciA9IG5vZGUuZ2V0QXR0cmlidXRlKCdsaXN0JykgfHwgJyc7CiAgICAgIHZhciBtID0gbGlzdEF0dHIubWF0Y2goV0hPTEVfSE9MRSk7CiAgICAgIHZhciBsaXN0ID0gbSA/IGxvb2t1cChtWzFdLCBzY29wZSkgOiBbXTsKICAgICAgdmFyIGFzID0gbm9kZS5nZXRBdHRyaWJ1dGUoJ2FzJykgfHwgJ2l0ZW0nOwogICAgICBpZiAoIUFycmF5LmlzQXJyYXkobGlzdCkpIGxpc3QgPSBbXTsKICAgICAgZm9yICh2YXIgaiA9IDA7IGogPCBsaXN0Lmxlbmd0aDsgaisrKSB7CiAgICAgICAgdmFyIGNoaWxkID0gT2JqZWN0LmNyZWF0ZShzY29wZSk7CiAgICAgICAgY2hpbGRbYXNdID0gbGlzdFtqXTsKICAgICAgICBjaGlsZC4kaW5kZXggPSBqOwogICAgICAgIHJlbmRlck5vZGVzKG5vZGUuY2hpbGROb2RlcywgY2hpbGQsIG91dCk7CiAgICAgIH0KICAgICAgcmV0dXJuOwogICAgfQoKICAgIGlmICh0YWcgPT09ICdzYy1pZicpIHsKICAgICAgdmFyIHZhbEF0dHIgPSBub2RlLmdldEF0dHJpYnV0ZSgndmFsdWUnKSB8fCAnJzsKICAgICAgdmFyIHZtID0gdmFsQXR0ci5tYXRjaChXSE9MRV9IT0xFKTsKICAgICAgdmFyIHZhbCA9IHZtID8gbG9va3VwKHZtWzFdLCBzY29wZSkgOiB2YWxBdHRyOwogICAgICBpZiAodHJ1dGh5KHZhbCkpIHJlbmRlck5vZGVzKG5vZGUuY2hpbGROb2Rlcywgc2NvcGUsIG91dCk7CiAgICAgIHJldHVybjsKICAgIH0KCiAgICBpZiAodGFnID09PSAnZGMtaW1wb3J0JykgewogICAgICB2YXIgbmFtZSA9IG5vZGUuZ2V0QXR0cmlidXRlKCduYW1lJykgfHwgJ2NvbXBvbmVudCc7CiAgICAgIHZhciBub3RlID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgnZGl2Jyk7CiAgICAgIG5vdGUuc2V0QXR0cmlidXRlKCdzdHlsZScsCiAgICAgICAgJ3BhZGRpbmc6MTJweDtib3JkZXI6MXB4IGRhc2hlZCByZ2JhKDI0NiwyNDMsMjM4LC4yOCk7Ym9yZGVyLXJhZGl1czozcHg7JyArCiAgICAgICAgJ2ZvbnQ6MTJweCB1aS1tb25vc3BhY2UsbW9ub3NwYWNlO2NvbG9yOiM5NzkxOGEnKTsKICAgICAgbm90ZS50ZXh0Q29udGVudCA9ICc8ZGMtaW1wb3J0IG5hbWU9IicgKyBuYW1lICsgJyI+IHJlbmRlcnMgb24gdGhlIGNhbnZhcywgbm90IGluIHRoaXMgc3RhbmRhbG9uZSBwcmV2aWV3JzsKICAgICAgb3V0LmFwcGVuZENoaWxkKG5vdGUpOwogICAgICByZXR1cm47CiAgICB9CgogICAgdmFyIGVsID0gbm9kZS5uYW1lc3BhY2VVUkkgPT09IFNWR19OUwogICAgICA/IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnROUyhTVkdfTlMsIG5vZGUudGFnTmFtZSkKICAgICAgOiBkb2N1bWVudC5jcmVhdGVFbGVtZW50KHRhZyk7CgogICAgZm9yICh2YXIgYSA9IDA7IGEgPCBub2RlLmF0dHJpYnV0ZXMubGVuZ3RoOyBhKyspIHsKICAgICAgdmFyIGF0dHIgPSBub2RlLmF0dHJpYnV0ZXNbYV07CiAgICAgIHZhciBhbiA9IGF0dHIubmFtZSwgYXYgPSBhdHRyLnZhbHVlOwogICAgICBpZiAoYW4uaW5kZXhPZignaGludC0nKSA9PT0gMCkgY29udGludWU7CgogICAgICB2YXIgd2hvbGUgPSBhdi5tYXRjaChXSE9MRV9IT0xFKTsKCiAgICAgIGlmICgvXm9uW2Etel0vLnRlc3QoYW4pKSB7CiAgICAgICAgdmFyIGZuID0gd2hvbGUgPyBsb29rdXAod2hvbGVbMV0sIHNjb3BlKSA6IG51bGw7CiAgICAgICAgaWYgKHR5cGVvZiBmbiA9PT0gJ2Z1bmN0aW9uJykgZWwuYWRkRXZlbnRMaXN0ZW5lcihhbi5zbGljZSgyKS50b0xvd2VyQ2FzZSgpLCBmbik7CiAgICAgICAgY29udGludWU7CiAgICAgIH0KCiAgICAgIGlmICh3aG9sZSkgewogICAgICAgIHZhciByYXcgPSBsb29rdXAod2hvbGVbMV0sIHNjb3BlKTsKICAgICAgICBpZiAocmF3ID09PSB1bmRlZmluZWQgfHwgcmF3ID09PSBudWxsIHx8IHJhdyA9PT0gZmFsc2UpIGNvbnRpbnVlOwogICAgICAgIGVsLnNldEF0dHJpYnV0ZShhbiwgcmF3ID09PSB0cnVlID8gJycgOiBTdHJpbmcocmF3KSk7CiAgICAgIH0gZWxzZSB7CiAgICAgICAgZWwuc2V0QXR0cmlidXRlKGFuLCBpbnRlcnBvbGF0ZShhdiwgc2NvcGUpKTsKICAgICAgfQogICAgfQoKICAgIHJlbmRlck5vZGVzKG5vZGUuY2hpbGROb2Rlcywgc2NvcGUsIGVsKTsKICAgIG91dC5hcHBlbmRDaGlsZChlbCk7CiAgfQoKICAvKiBSZW5kZXIgYSBub2RlJ3MgY2hpbGRyZW4gaW50byBhIGRldGFjaGVkIGZyYWdtZW50ICh1c2VkIGZvciB0aGUgcm9vdCkuICovCiAgZnVuY3Rpb24gcmVuZGVyRWxlbWVudChub2RlLCBzY29wZSkgewogICAgdmFyIGZyYWcgPSBkb2N1bWVudC5jcmVhdGVEb2N1bWVudEZyYWdtZW50KCk7CiAgICByZW5kZXJOb2Rlcyhub2RlLmNoaWxkTm9kZXMsIHNjb3BlLCBmcmFnKTsKICAgIHJldHVybiBmcmFnOwogIH0KCiAgLyogLS0tIGJvb3QgLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tICovCgogIGZ1bmN0aW9uIHJlYWRQcm9wcyhzY3JpcHRFbCkgewogICAgdmFyIGRlZmF1bHRzID0ge307CiAgICB2YXIgcmF3ID0gc2NyaXB0RWwgJiYgc2NyaXB0RWwuZ2V0QXR0cmlidXRlKCdkYXRhLXByb3BzJyk7CiAgICBpZiAoIXJhdykgcmV0dXJuIGRlZmF1bHRzOwogICAgdmFyIHNwZWM7CiAgICB0cnkgeyBzcGVjID0gSlNPTi5wYXJzZShyYXcpOyB9IGNhdGNoIChlKSB7CiAgICAgIGNvbnNvbGUud2FybignW3N1cHBvcnQuanNdIGRhdGEtcHJvcHMgaXMgbm90IHZhbGlkIEpTT046JywgZS5tZXNzYWdlKTsKICAgICAgcmV0dXJuIGRlZmF1bHRzOwogICAgfQogICAgZm9yICh2YXIgayBpbiBzcGVjKSB7CiAgICAgIGlmIChrID09PSAnJHByZXZpZXcnKSBjb250aW51ZTsKICAgICAgaWYgKHNwZWNba10gJiYgdHlwZW9mIHNwZWNba10gPT09ICdvYmplY3QnICYmICdkZWZhdWx0JyBpbiBzcGVjW2tdKSBkZWZhdWx0c1trXSA9IHNwZWNba11bJ2RlZmF1bHQnXTsKICAgIH0KICAgIC8vIFRoZSBjYW52YXMgc3VwcGxpZXMgcHJvcCB2YWx1ZXMgdGhyb3VnaCBpdHMgdHdlYWsgY2hpcHMuIFN0YW5kYWxvbmUsIHRoZXkKICAgIC8vIGNvbWUgZnJvbSBhcHAuY29uZmlnLmpzb24sIGluamVjdGVkIGJ5IHRvb2xzL2J1aWxkLXByZXZpZXcubWpzLgogICAgdmFyIG92ZXJyaWRlID0gZ2xvYmFsLkVEX1BST1BTOwogICAgaWYgKG92ZXJyaWRlICYmIHR5cGVvZiBvdmVycmlkZSA9PT0gJ29iamVjdCcpIHsKICAgICAgZm9yICh2YXIgbyBpbiBvdmVycmlkZSkgaWYgKE9iamVjdC5wcm90b3R5cGUuaGFzT3duUHJvcGVydHkuY2FsbChvdmVycmlkZSwgbykpIGRlZmF1bHRzW29dID0gb3ZlcnJpZGVbb107CiAgICB9CiAgICByZXR1cm4gZGVmYXVsdHM7CiAgfQoKICBmdW5jdGlvbiBib290KCkgewogICAgdmFyIHJvb3QgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKCd4LWRjJyk7CiAgICBpZiAoIXJvb3QpIHJldHVybjsKCiAgICB2YXIgaGVsbWV0ID0gcm9vdC5xdWVyeVNlbGVjdG9yKCdoZWxtZXQnKTsKICAgIGlmIChoZWxtZXQpIHsKICAgICAgd2hpbGUgKGhlbG1ldC5maXJzdENoaWxkKSBkb2N1bWVudC5oZWFkLmFwcGVuZENoaWxkKGhlbG1ldC5maXJzdENoaWxkKTsKICAgICAgaGVsbWV0LnBhcmVudE5vZGUucmVtb3ZlQ2hpbGQoaGVsbWV0KTsKICAgIH0KCiAgICB2YXIgdGVtcGxhdGUgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KCd0ZW1wbGF0ZScpOwogICAgdGVtcGxhdGUuY29udGVudC5hcHBlbmRDaGlsZChkb2N1bWVudC5jcmVhdGVSYW5nZSgpLmNyZWF0ZUNvbnRleHR1YWxGcmFnbWVudChyb290LmlubmVySFRNTCkpOwoKICAgIHZhciBzY3JpcHRFbCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoJ3NjcmlwdFtkYXRhLWRjLXNjcmlwdF0nKTsKICAgIHZhciBDb21wID0gbnVsbDsKICAgIGlmIChzY3JpcHRFbCAmJiBzY3JpcHRFbC50ZXh0Q29udGVudC50cmltKCkpIHsKICAgICAgdHJ5IHsKICAgICAgICBDb21wID0gbmV3IEZ1bmN0aW9uKCdEQ0xvZ2ljJywgc2NyaXB0RWwudGV4dENvbnRlbnQgKyAnXG47cmV0dXJuIENvbXBvbmVudDsnKShEQ0xvZ2ljKTsKICAgICAgfSBjYXRjaCAoZSkgewogICAgICAgIGNvbnNvbGUuZXJyb3IoJ1tzdXBwb3J0LmpzXSBjb21wb25lbnQgc2NyaXB0IGZhaWxlZDonLCBlKTsKICAgICAgfQogICAgfQoKICAgIHZhciBpbnN0YW5jZSA9IENvbXAgPyBuZXcgQ29tcChyZWFkUHJvcHMoc2NyaXB0RWwpKSA6IG5ldyBEQ0xvZ2ljKHJlYWRQcm9wcyhzY3JpcHRFbCkpOwoKICAgIGZ1bmN0aW9uIGRyYXcoKSB7CiAgICAgIHZhciB2YWxzID0gaW5zdGFuY2UucmVuZGVyVmFscygpIHx8IHt9OwogICAgICB2YXIgc2NvcGUgPSBPYmplY3QuY3JlYXRlKHZhbHMpOwogICAgICBzY29wZS5wcm9wcyA9IGluc3RhbmNlLnByb3BzOwogICAgICBzY29wZS5zdGF0ZSA9IGluc3RhbmNlLnN0YXRlOwogICAgICByb290LmlubmVySFRNTCA9ICcnOwogICAgICByb290LmFwcGVuZENoaWxkKHJlbmRlckVsZW1lbnQodGVtcGxhdGUuY29udGVudCwgc2NvcGUpKTsKICAgIH0KCiAgICBpbnN0YW5jZS5fX3JlcmVuZGVyID0gZHJhdzsKICAgIGRyYXcoKTsKICAgIGlmICh0eXBlb2YgaW5zdGFuY2UuY29tcG9uZW50RGlkTW91bnQgPT09ICdmdW5jdGlvbicpIGluc3RhbmNlLmNvbXBvbmVudERpZE1vdW50KCk7CgogICAgZ2xvYmFsLl9fRURfQ09NUE9ORU5UX18gPSBpbnN0YW5jZTsKICB9CgogIGlmIChkb2N1bWVudC5yZWFkeVN0YXRlID09PSAnbG9hZGluZycpIGRvY3VtZW50LmFkZEV2ZW50TGlzdGVuZXIoJ0RPTUNvbnRlbnRMb2FkZWQnLCBib290KTsKICBlbHNlIGJvb3QoKTsKfSkodHlwZW9mIHdpbmRvdyAhPT0gJ3VuZGVmaW5lZCcgPyB3aW5kb3cgOiBnbG9iYWxUaGlzLCBkb2N1bWVudCk7Cjwvc2NyaXB0Pgo8L2hlYWQ+Cjxib2R5Pgo8eC1kYz4KPGhlbG1ldD4KICA8bGluayByZWw9InByZWNvbm5lY3QiIGhyZWY9Imh0dHBzOi8vZm9udHMuZ29vZ2xlYXBpcy5jb20iPgogIDxsaW5rIHJlbD0icHJlY29ubmVjdCIgaHJlZj0iaHR0cHM6Ly9mb250cy5nc3RhdGljLmNvbSIgY3Jvc3NvcmlnaW4+CiAgPGxpbmsgcmVsPSJzdHlsZXNoZWV0IiBocmVmPSJodHRwczovL2ZvbnRzLmdvb2dsZWFwaXMuY29tL2NzczI/ZmFtaWx5PU5ld3NyZWFkZXI6aXRhbCxvcHN6LHdnaHRAMCw2Li43Miw0MDA7MCw2Li43Miw1MDA7MCw2Li43Miw2MDA7MSw2Li43Miw0MDAmZmFtaWx5PUlCTStQbGV4K1NhbnM6d2dodEA0MDA7NTAwOzYwMCZmYW1pbHk9SUJNK1BsZXgrTW9ubzp3Z2h0QDQwMDs1MDAmZGlzcGxheT1zd2FwIj4KICA8c3R5bGU+CiAgICAvKiBNaXJyb3JzIF9kcy9vcmdhbmljLTBiNjNiMTNkLTM0YmYtNGNmYS04NmQxLWZhMzVjYTM0YzkxYy9zdHlsZXMuY3NzLgogICAgICAgSW5saW5lZCBiZWNhdXNlIGEgY2FudmFzIGFydGJvYXJkIHJ1bnMgaW4gYSBzYW5kYm94ZWQgaWZyYW1lIHRoYXQgY2Fubm90CiAgICAgICBmZXRjaCBzaWJsaW5nIHN0eWxlc2hlZXRzLiBDaGFuZ2UgYm90aCB0b2dldGhlci4gKi8KICAgIDpyb290IHsKICAgICAgLS1pbms6ICMxNDExMGU7CiAgICAgIC0taW5rLXJhaXNlZDogIzIyMWUxYTsKICAgICAgLS1pbmstc3VuazogIzBkMGIwOTsKICAgICAgLS1wYXBlcjogI2Y2ZjNlZTsKICAgICAgLS1tdXRlZDogIzk3OTE4YTsKICAgICAgLS1tdXRlZC1kZWVwOiAjNmQ2ODYxOwogICAgICAtLXJ1bGU6IHJnYmEoMjQ2LCAyNDMsIDIzOCwgMC4xNCk7CiAgICAgIC0tcnVsZS1zdHJvbmc6IHJnYmEoMjQ2LCAyNDMsIDIzOCwgMC4yOCk7CiAgICAgIC0tYWNjZW50OiAjZTc5NjNkOwogICAgICAtLXJlbmV3YWJsZTogIzAwYzdhNjsKICAgICAgLS1zZXJpZXMtMzogI2I5OTVmNjsKICAgICAgLS11cDogIzNmYmY3ZjsKICAgICAgLS1kb3duOiAjZTU2NDRhOwogICAgICAtLWRpc3BsYXk6ICJOZXdzcmVhZGVyIiwgIklvd2FuIE9sZCBTdHlsZSIsICJQYWxhdGlubyBMaW5vdHlwZSIsIEdlb3JnaWEsIHNlcmlmOwogICAgICAtLWJvZHk6ICJJQk0gUGxleCBTYW5zIiwgIkhlbHZldGljYSBOZXVlIiwgSGVsdmV0aWNhLCBBcmlhbCwgc2Fucy1zZXJpZjsKICAgICAgLS1tb25vOiAiSUJNIFBsZXggTW9ubyIsIHVpLW1vbm9zcGFjZSwgIlNGIE1vbm8iLCBNZW5sbywgQ29uc29sYXMsIG1vbm9zcGFjZTsKICAgICAgLS1ndXR0ZXI6IGNsYW1wKDIwcHgsIDR2dywgNTZweCk7CiAgICAgIC0tcGFnZS1tYXg6IDEyNDBweDsKICAgICAgLS1iYW5kOiA5NnB4OwogICAgfQoKICAgIGh0bWwsIGJvZHkgeyBtYXJnaW46IDA7IGJhY2tncm91bmQ6ICMxNDExMGU7IH0KICAgICogeyBib3gtc2l6aW5nOiBib3JkZXItYm94OyB9CgogICAgYSB7IGNvbG9yOiAjZTc5NjNkOyB0ZXh0LWRlY29yYXRpb246IG5vbmU7IH0KICAgIGE6aG92ZXIgeyBjb2xvcjogI2ZkYjc3MDsgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7IHRleHQtdW5kZXJsaW5lLW9mZnNldDogM3B4OyB9CgogICAgLmVkLXJvb3QgewogICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1pbmspOwogICAgICBjb2xvcjogdmFyKC0tcGFwZXIpOwogICAgICBmb250LWZhbWlseTogdmFyKC0tYm9keSk7CiAgICAgIGZvbnQtc2l6ZTogMTZweDsKICAgICAgbGluZS1oZWlnaHQ6IDEuNTU7CiAgICAgIC13ZWJraXQtZm9udC1zbW9vdGhpbmc6IGFudGlhbGlhc2VkOwogICAgICB0ZXh0LXdyYXA6IHByZXR0eTsKICAgIH0KICAgIC5lZC1yb290LS1jb21wYWN0IHsgLS1iYW5kOiA1NnB4OyB9CgogICAgLmVkLXdyYXAgeyBtYXgtd2lkdGg6IHZhcigtLXBhZ2UtbWF4KTsgbWFyZ2luOiAwIGF1dG87IHBhZGRpbmctaW5saW5lOiB2YXIoLS1ndXR0ZXIpOyB9CgogICAgLmVkLWtpY2tlciB7CiAgICAgIGZvbnQtZmFtaWx5OiB2YXIoLS1tb25vKTsKICAgICAgZm9udC1zaXplOiAxMXB4OwogICAgICBsZXR0ZXItc3BhY2luZzogMC4xNmVtOwogICAgICB0ZXh0LXRyYW5zZm9ybTogdXBwZXJjYXNlOwogICAgICBjb2xvcjogdmFyKC0tYWNjZW50KTsKICAgICAgbWFyZ2luOiAwOwogICAgfQogICAgLmVkLW51bSB7IGZvbnQtZmFtaWx5OiB2YXIoLS1tb25vKTsgZm9udC12YXJpYW50LW51bWVyaWM6IHRhYnVsYXItbnVtczsgfQogICAgLmVkLWhhaXJsaW5lIHsgaGVpZ2h0OiAxcHg7IGJhY2tncm91bmQ6IHZhcigtLXJ1bGUpOyBib3JkZXI6IDA7IG1hcmdpbjogMDsgfQoKICAgIGgxLCBoMiwgaDMgeyBmb250LWZhbWlseTogdmFyKC0tZGlzcGxheSk7IGZvbnQtd2VpZ2h0OiA1MDA7IG1hcmdpbjogMDsgbGV0dGVyLXNwYWNpbmc6IC0wLjAxMmVtOyB9CiAgICBoMSB7IGZvbnQtc2l6ZTogY2xhbXAoNDBweCwgNS40dncsIDY4cHgpOyBsaW5lLWhlaWdodDogMS4wMjsgfQogICAgaDIgeyBmb250LXNpemU6IGNsYW1wKDI2cHgsIDIuNnZ3LCAzNHB4KTsgbGluZS1oZWlnaHQ6IDEuMTI7IH0KICAgIGgzIHsgZm9udC1zaXplOiAyMnB4OyBsaW5lLWhlaWdodDogMS4yOyB9CiAgICBwIHsgbWFyZ2luOiAwOyB9CgogICAgLmVkLXN0b3J5LWxpbmsgeyBjb2xvcjogaW5oZXJpdDsgdGV4dC1kZWNvcmF0aW9uOiBub25lOyBkaXNwbGF5OiBibG9jazsgfQogICAgLmVkLXN0b3J5LWxpbms6aG92ZXIgeyBjb2xvcjogaW5oZXJpdDsgdGV4dC1kZWNvcmF0aW9uOiBub25lOyB9CiAgICAuZWQtc3RvcnktbGluazpob3ZlciBoMSwKICAgIC5lZC1zdG9yeS1saW5rOmhvdmVyIGgzIHsgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7IHRleHQtdW5kZXJsaW5lLW9mZnNldDogNHB4OyB0ZXh0LWRlY29yYXRpb24tdGhpY2tuZXNzOiAxcHg7IH0KCiAgICAvKiAtLS0gbWVkaWEgc2xvdHMgLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSAqLwogICAgLmVkLXNsb3QgewogICAgICBwb3NpdGlvbjogcmVsYXRpdmU7CiAgICAgIGRpc3BsYXk6IGJsb2NrOwogICAgICBtYXJnaW46IDA7CiAgICAgIG92ZXJmbG93OiBoaWRkZW47CiAgICAgIGJhY2tncm91bmQ6IHZhcigtLWluay1zdW5rKTsKICAgICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tcnVsZSk7CiAgICAgIGJvcmRlci1yYWRpdXM6IDNweDsKICAgIH0KICAgIC5lZC1zbG90ID4gaW1nLCAuZWQtc2xvdCA+IHZpZGVvLCAuZWQtc2xvdCA+IGlmcmFtZSB7IGRpc3BsYXk6IGJsb2NrOyB3aWR0aDogMTAwJTsgaGVpZ2h0OiAxMDAlOyBvYmplY3QtZml0OiBjb3ZlcjsgYm9yZGVyOiAwOyB9CiAgICAuZWQtc2xvdCA+IHN2ZyB7IGRpc3BsYXk6IGJsb2NrOyB3aWR0aDogMTAwJTsgaGVpZ2h0OiAxMDAlOyB9CiAgICAuZWQtc2xvdC0tZW1wdHkgewogICAgICBkaXNwbGF5OiBmbGV4OwogICAgICBmbGV4LWRpcmVjdGlvbjogY29sdW1uOwogICAgICBnYXA6IDEwcHg7CiAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7CiAgICAgIGp1c3RpZnktY29udGVudDogY2VudGVyOwogICAgICBwYWRkaW5nOiAyMHB4OwogICAgICB0ZXh0LWFsaWduOiBjZW50ZXI7CiAgICAgIGNvbG9yOiB2YXIoLS1tdXRlZCk7CiAgICAgIGJhY2tncm91bmQ6CiAgICAgICAgcmVwZWF0aW5nLWxpbmVhci1ncmFkaWVudCgxMzVkZWcsIHJnYmEoMjQ2LDI0MywyMzgsMC4wMjgpIDAgMnB4LCB0cmFuc3BhcmVudCAycHggOXB4KSwKICAgICAgICB2YXIoLS1pbmstc3Vuayk7CiAgICB9CiAgICAuZWQtc2xvdF9faWQgeyBmb250LWZhbWlseTogdmFyKC0tbW9ubyk7IGZvbnQtc2l6ZTogMTJweDsgbGV0dGVyLXNwYWNpbmc6IDAuMDZlbTsgY29sb3I6IHZhcigtLWFjY2VudCk7IH0KICAgIC5lZC1zbG90X19zcGVjIHsgZm9udC1mYW1pbHk6IHZhcigtLW1vbm8pOyBmb250LXNpemU6IDExcHg7IGxldHRlci1zcGFjaW5nOiAwLjA2ZW07IGNvbG9yOiB2YXIoLS1tdXRlZC1kZWVwKTsgfQogICAgLmVkLXNsb3RfX2NhcHRpb24geyBmb250LXNpemU6IDEycHg7IGxpbmUtaGVpZ2h0OiAxLjQ1OyBjb2xvcjogdmFyKC0tbXV0ZWQpOyBwYWRkaW5nLXRvcDogOHB4OyB9CgogICAgLyogLS0tIHByaW1hcnkgYWN0aW9uIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tICovCiAgICAuZWQtY3RhIHsKICAgICAgZGlzcGxheTogaW5saW5lLWZsZXg7CiAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7CiAgICAgIGdhcDogMTBweDsKICAgICAgbWluLWhlaWdodDogNDhweDsKICAgICAgcGFkZGluZzogMCAyNHB4OwogICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1hY2NlbnQpOwogICAgICBjb2xvcjogIzE0MTEwZTsKICAgICAgZm9udC1mYW1pbHk6IHZhcigtLWJvZHkpOwogICAgICBmb250LXNpemU6IDE1cHg7CiAgICAgIGZvbnQtd2VpZ2h0OiA2MDA7CiAgICAgIGxldHRlci1zcGFjaW5nOiAwLjAxZW07CiAgICAgIGJvcmRlcjogMDsKICAgICAgYm9yZGVyLXJhZGl1czogM3B4OwogICAgICB0ZXh0LWRlY29yYXRpb246IG5vbmU7CiAgICAgIGN1cnNvcjogcG9pbnRlcjsKICAgIH0KICAgIC5lZC1jdGE6aG92ZXIgeyBiYWNrZ3JvdW5kOiAjZmRiNzcwOyBjb2xvcjogIzE0MTEwZTsgdGV4dC1kZWNvcmF0aW9uOiBub25lOyB9CiAgICAuZWQtY3RhLS1naG9zdCB7IGJhY2tncm91bmQ6IHRyYW5zcGFyZW50OyBjb2xvcjogdmFyKC0tcGFwZXIpOyBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1ydWxlLXN0cm9uZyk7IH0KICAgIC5lZC1jdGEtLWdob3N0OmhvdmVyIHsgYmFja2dyb3VuZDogcmdiYSgyNDYsMjQzLDIzOCwwLjA2KTsgY29sb3I6IHZhcigtLXBhcGVyKTsgYm9yZGVyLWNvbG9yOiB2YXIoLS1wYXBlcik7IH0KCiAgICAuZWQtY2hpcCB7CiAgICAgIGRpc3BsYXk6IGlubGluZS1mbGV4OwogICAgICBhbGlnbi1pdGVtczogY2VudGVyOwogICAgICBnYXA6IDZweDsKICAgICAgZm9udC1mYW1pbHk6IHZhcigtLW1vbm8pOwogICAgICBmb250LXNpemU6IDEwcHg7CiAgICAgIGxldHRlci1zcGFjaW5nOiAwLjE0ZW07CiAgICAgIHRleHQtdHJhbnNmb3JtOiB1cHBlcmNhc2U7CiAgICAgIHBhZGRpbmc6IDNweCA4cHg7CiAgICAgIGJvcmRlci1yYWRpdXM6IDJweDsKICAgICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tcnVsZS1zdHJvbmcpOwogICAgICBjb2xvcjogdmFyKC0tbXV0ZWQpOwogICAgICB3aGl0ZS1zcGFjZTogbm93cmFwOwogICAgfQogICAgLmVkLWNoaXAtLWxpdmUgeyBjb2xvcjogdmFyKC0tcmVuZXdhYmxlKTsgYm9yZGVyLWNvbG9yOiByZ2JhKDAsMTk5LDE2NiwwLjQ1KTsgfQoKICAgIC5lZC1jaGFydC1zY3JvbGwgeyBvdmVyZmxvdy14OiBhdXRvOyB9CiAgICAuZWQtbmF2bGluayB7IGNvbG9yOiB2YXIoLS1wYXBlcik7IGZvbnQtc2l6ZTogMTRweDsgbGV0dGVyLXNwYWNpbmc6IDAuMDFlbTsgdGV4dC1kZWNvcmF0aW9uOiBub25lOyB9CiAgICAuZWQtbmF2bGluazpob3ZlciB7IGNvbG9yOiB2YXIoLS1hY2NlbnQpOyB0ZXh0LWRlY29yYXRpb246IG5vbmU7IH0KCiAgICAvKiBUaGUgcmFpbCBpcyBhIGZsZXggY2hpbGQsIHNvIGl0IG5lZWRzIG1pbi13aWR0aDogMCBiZWZvcmUgb3ZlcmZsb3cgY2FuIGRvCiAgICAgICBhbnl0aGluZyDigJQgd2l0aG91dCBpdCB0aGUgcm93IG9mIHF1b3RlcyB3aWRlbnMgdGhlIHdob2xlIHBhZ2UgaW5zdGVhZC4gKi8KICAgIC5lZC1yYWlsLWxpc3QgeyBtaW4td2lkdGg6IDA7IG92ZXJmbG93LXg6IGF1dG87IHNjcm9sbGJhci13aWR0aDogbm9uZTsgLW1zLW92ZXJmbG93LXN0eWxlOiBub25lOyB9CiAgICAuZWQtcmFpbC1saXN0Ojotd2Via2l0LXNjcm9sbGJhciB7IGRpc3BsYXk6IG5vbmU7IH0KCiAgICBAbWVkaWEgKG1heC13aWR0aDogOTgwcHgpIHsKICAgICAgLmVkLWhlcm8tZ3JpZCB7IGdyaWQtdGVtcGxhdGUtY29sdW1uczogbWlubWF4KDAsIDFmcikgIWltcG9ydGFudDsgZ2FwOiAzMnB4ICFpbXBvcnRhbnQ7IH0KICAgICAgLmVkLXN0b3J5LWdyaWQgeyBncmlkLXRlbXBsYXRlLWNvbHVtbnM6IHJlcGVhdCgyLCBtaW5tYXgoMCwgMWZyKSkgIWltcG9ydGFudDsgfQogICAgICAuZWQtZGF0YS1ncmlkIHsgZ3JpZC10ZW1wbGF0ZS1jb2x1bW5zOiBtaW5tYXgoMCwgMWZyKSAhaW1wb3J0YW50OyB9CiAgICB9CiAgICBAbWVkaWEgKG1heC13aWR0aDogNzYwcHgpIHsKICAgICAgLmVkLW1hc3RoZWFkIHsgZmxleC13cmFwOiB3cmFwOyByb3ctZ2FwOiAxNnB4OyB9CiAgICAgIC5lZC1uYXYgeyB3aWR0aDogMTAwJTsganVzdGlmeS1jb250ZW50OiBzcGFjZS1iZXR3ZWVuOyBnYXA6IDEycHggIWltcG9ydGFudDsgfQogICAgICAuZWQtbmF2IC5lZC1uYXZsaW5rIHsgZm9udC1zaXplOiAxM3B4OyB9CiAgICAgIC5lZC1mb290LWdyaWQgeyBncmlkLXRlbXBsYXRlLWNvbHVtbnM6IHJlcGVhdCgyLCBtaW5tYXgoMCwgMWZyKSkgIWltcG9ydGFudDsgfQogICAgfQogICAgQG1lZGlhIChtYXgtd2lkdGg6IDY4MHB4KSB7CiAgICAgIC5lZC1zdG9yeS1ncmlkIHsgZ3JpZC10ZW1wbGF0ZS1jb2x1bW5zOiBtaW5tYXgoMCwgMWZyKSAhaW1wb3J0YW50OyB9CiAgICAgIC8qIEEgOTYwLXVuaXQgdmlld0JveCBzcXVlZXplZCBpbnRvIGEgMzUwcHggY29sdW1uIHB1dHMgdGhlIGF4aXMgdHlwZSBhdAogICAgICAgICBhYm91dCA3cHguIExldCB0aGUgY2hhcnQga2VlcCBhIHJlYWRhYmxlIHNjYWxlIGFuZCBzY3JvbGwgaW5zdGVhZCDigJQKICAgICAgICAgdGhlIHBhbmVsIGFyb3VuZCBpdCBzdGlsbCBmaXRzIHRoZSBzY3JlZW4uICovCiAgICAgIC5lZC1jaGFydC1zY3JvbGwgPiAuZWQtc2xvdCB7IG1pbi13aWR0aDogNTYwcHg7IH0KICAgICAgLmVkLXBhbmVsIHsgcGFkZGluZzogMThweCAhaW1wb3J0YW50OyB9CiAgICB9CiAgPC9zdHlsZT4KPC9oZWxtZXQ+Cgo8ZGl2IGNsYXNzPSJlZC1yb290IGVkLXJvb3QtLXt7ZGVuc2l0eX19IiBzdHlsZT0iLS1hY2NlbnQ6IHt7YWNjZW50fX0iPgoKICA8IS0tID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgICAgIE1hcmtldCByYWlsLiBWYWx1ZXMgY29tZSBmcm9tIFNBTVBMRV9SQUlMIGluIHRoZSBsb2dpYyBibG9jayBiZWxvdy4KICAgICAgIFBvaW50IGxpdmVEYXRhVXJsIGF0IHRoZSBsaXZlIGRhdGEgYXBwIGFuZCB0aGUgY2hpcCBmbGlwcyB0byBMSVZFOwogICAgICAgc3dhcCBTQU1QTEVfUkFJTCBmb3IgYSBmZXRjaCBpbiBjb21wb25lbnREaWRNb3VudCB0byB3aXJlIGl0IGZvciByZWFsLgogICAgICAgPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PSAtLT4KICA8c2MtaWYgdmFsdWU9Int7c2hvd01hcmtldFJhaWx9fSIgaGludC1wbGFjZWhvbGRlci12YWw9Int7dHJ1ZX19Ij4KICA8ZGl2IHN0eWxlPSJiYWNrZ3JvdW5kOiAjMGQwYjA5OyBib3JkZXItYm90dG9tOiAxcHggc29saWQgcmdiYSgyNDYsMjQzLDIzOCwwLjE0KSI+CiAgICA8ZGl2IGNsYXNzPSJlZC13cmFwIiBzdHlsZT0iZGlzcGxheTogZmxleDsgYWxpZ24taXRlbXM6IGNlbnRlcjsgZ2FwOiAyMHB4OyBtaW4taGVpZ2h0OiA0NnB4Ij4KICAgICAgPHNwYW4gY2xhc3M9ImVkLWNoaXAge3tmZWVkLmNoaXBDbGFzc319Ij57e2ZlZWQubGFiZWx9fTwvc3Bhbj4KICAgICAgPGRpdiBjbGFzcz0iZWQtcmFpbC1saXN0IiBzdHlsZT0iZGlzcGxheTogZmxleDsgYWxpZ24taXRlbXM6IGNlbnRlcjsgZ2FwOiAyOHB4OyBmbGV4LWdyb3c6IDEiPgogICAgICAgIDxzYy1mb3IgbGlzdD0ie3tyYWlsfX0iIGFzPSJyb3ciIGhpbnQtcGxhY2Vob2xkZXItY291bnQ9IjYiPgogICAgICAgICAgPGRpdiBzdHlsZT0iZGlzcGxheTogZmxleDsgYWxpZ24taXRlbXM6IGJhc2VsaW5lOyBnYXA6IDhweDsgd2hpdGUtc3BhY2U6IG5vd3JhcCI+CiAgICAgICAgICAgIDxzcGFuIHN0eWxlPSJmb250LWZhbWlseTogdmFyKC0tbW9ubyk7IGZvbnQtc2l6ZTogMTFweDsgbGV0dGVyLXNwYWNpbmc6IDAuMDhlbTsgY29sb3I6ICM5NzkxOGEiPnt7cm93LmNvZGV9fTwvc3Bhbj4KICAgICAgICAgICAgPHNwYW4gY2xhc3M9ImVkLW51bSIgc3R5bGU9ImZvbnQtc2l6ZTogMTNweDsgY29sb3I6ICNmNmYzZWUiPnt7cm93LnZhbHVlfX08L3NwYW4+CiAgICAgICAgICAgIDxzcGFuIGNsYXNzPSJlZC1udW0iIHN0eWxlPSJmb250LXNpemU6IDExcHg7IGNvbG9yOiB7e3Jvdy5jb2xvcn19Ij57e3Jvdy5jaGFuZ2V9fTwvc3Bhbj4KICAgICAgICAgIDwvZGl2PgogICAgICAgIDwvc2MtZm9yPgogICAgICA8L2Rpdj4KICAgIDwvZGl2PgogIDwvZGl2PgogIDwvc2MtaWY+CgogIDwhLS0gPT09PT0gTWFzdGhlYWQgPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PSAtLT4KICA8aGVhZGVyIGNsYXNzPSJlZC13cmFwIGVkLW1hc3RoZWFkIiBzdHlsZT0iZGlzcGxheTogZmxleDsgYWxpZ24taXRlbXM6IGNlbnRlcjsganVzdGlmeS1jb250ZW50OiBzcGFjZS1iZXR3ZWVuOyBnYXA6IDMycHg7IHBhZGRpbmctYmxvY2s6IDI2cHgiPgogICAgPGRpdiBzdHlsZT0iZGlzcGxheTogZmxleDsgYWxpZ24taXRlbXM6IGJhc2VsaW5lOyBnYXA6IDE0cHgiPgogICAgICA8IS0tIFNsb3Q6IG1hc3RoZWFkLWxvZ28uIE9wdGlvbmFsIOKAlCByZW1vdmUgdGhpcyB3b3JkbWFyayBpZiB5b3UgZmlsbCBpdC4gLS0+CiAgICAgIDxzcGFuIHN0eWxlPSJmb250LWZhbWlseTogdmFyKC0tZGlzcGxheSk7IGZvbnQtc2l6ZTogMjdweDsgZm9udC13ZWlnaHQ6IDYwMDsgbGV0dGVyLXNwYWNpbmc6IC0wLjAyZW07IGNvbG9yOiAjZjZmM2VlIj5FbmVyZ3kmbmJzcDtEZXNrPC9zcGFuPgogICAgICA8c3BhbiBzdHlsZT0iZm9udC1mYW1pbHk6IHZhcigtLW1vbm8pOyBmb250LXNpemU6IDEwcHg7IGxldHRlci1zcGFjaW5nOiAwLjE4ZW07IHRleHQtdHJhbnNmb3JtOiB1cHBlcmNhc2U7IGNvbG9yOiAjNmQ2ODYxIj5Fc3QuJm5ic3A7W1lFQVJdPC9zcGFuPgogICAgPC9kaXY+CiAgICA8bmF2IGNsYXNzPSJlZC1uYXYiIHN0eWxlPSJkaXNwbGF5OiBmbGV4OyBhbGlnbi1pdGVtczogY2VudGVyOyBnYXA6IDI2cHgiPgogICAgICA8YSBjbGFzcz0iZWQtbmF2bGluayIgaHJlZj0iI21hcmtldHMiPk1hcmtldHM8L2E+CiAgICAgIDxhIGNsYXNzPSJlZC1uYXZsaW5rIiBocmVmPSIjcG9saWN5Ij5Qb2xpY3k8L2E+CiAgICAgIDxhIGNsYXNzPSJlZC1uYXZsaW5rIiBocmVmPSIjZ3JpZCI+R3JpZDwvYT4KICAgICAgPGEgY2xhc3M9ImVkLW5hdmxpbmsiIGhyZWY9IiNyZW5ld2FibGVzIj5SZW5ld2FibGVzPC9hPgogICAgICA8YSBjbGFzcz0iZWQtY3RhIGVkLWN0YS0tZ2hvc3QiIHN0eWxlPSJtaW4taGVpZ2h0OiA0MHB4OyBwYWRkaW5nOiAwIDE2cHg7IGZvbnQtc2l6ZTogMTRweCIgaHJlZj0iI3N1YnNjcmliZSI+U3Vic2NyaWJlPC9hPgogICAgPC9uYXY+CiAgPC9oZWFkZXI+CiAgPGhyIGNsYXNzPSJlZC1oYWlybGluZSI+CgogIDwhLS0gPT09PT0gSGVybyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PSAtLT4KICA8c2VjdGlvbiBjbGFzcz0iZWQtd3JhcCIgc3R5bGU9InBhZGRpbmctYmxvY2s6IDU2cHggMCI+CiAgICA8ZGl2IGNsYXNzPSJlZC1oZXJvLWdyaWQiIHN0eWxlPSJkaXNwbGF5OiBncmlkOyBncmlkLXRlbXBsYXRlLWNvbHVtbnM6IHJlcGVhdCgyLCBtaW5tYXgoMCwgMWZyKSk7IGdhcDogNDhweDsgYWxpZ24taXRlbXM6IHN0YXJ0Ij4KCiAgICAgIDxkaXYgc3R5bGU9ImRpc3BsYXk6IGZsZXg7IGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47IGdhcDogMjJweCI+CiAgICAgICAgPHAgY2xhc3M9ImVkLWtpY2tlciI+TGVhZCAmbWlkZG90OyBHYXM8L3A+CiAgICAgICAgPGEgY2xhc3M9ImVkLXN0b3J5LWxpbmsiIGhyZWY9IiNsZWFkIj4KICAgICAgICAgIDxoMT5FdXJvcGUgZ29lcyBpbnRvIHdpbnRlciB3aXRoIHN0b3JhZ2UgZnVsbCBhbmQgbmVydmVzIGZyYXllZDwvaDE+CiAgICAgICAgPC9hPgogICAgICAgIDxwIHN0eWxlPSJmb250LWZhbWlseTogdmFyKC0tZGlzcGxheSk7IGZvbnQtc2l6ZTogMjBweDsgbGluZS1oZWlnaHQ6IDEuNDU7IGNvbG9yOiAjY2ZjOGJmOyBtYXgtd2lkdGg6IDQ2Y2giPgogICAgICAgICAgSW52ZW50b3JpZXMgY2xvc2VkIHRoZSBpbmplY3Rpb24gc2Vhc29uIGF0IFtYWF0lICZtZGFzaDsgdGhlIFtOdGhdLWhpZ2hlc3Qgb24gcmVjb3JkICZtZGFzaDsgeWV0IHRoZSBKYW51YXJ5CiAgICAgICAgICBjdXJ2ZSBzdGlsbCBjYXJyaWVzIGEgY29sZC1zbmFwIHByZW1pdW0uIFRyYWRlcnMgYXJlIGhlZGdpbmcgd2VhdGhlciwgbm90IHN1cHBseS4KICAgICAgICA8L3A+CiAgICAgICAgPHAgc3R5bGU9ImZvbnQtZmFtaWx5OiB2YXIoLS1tb25vKTsgZm9udC1zaXplOiAxMXB4OyBsZXR0ZXItc3BhY2luZzogMC4wOGVtOyB0ZXh0LXRyYW5zZm9ybTogdXBwZXJjYXNlOyBjb2xvcjogIzZkNjg2MSI+CiAgICAgICAgICBCeSBbUkVQT1JURVIgTkFNRV0gJm1pZGRvdDsgW1BVQkxJU0hFRCBUSU1FXQogICAgICAgIDwvcD4KICAgICAgICA8ZGl2IHN0eWxlPSJkaXNwbGF5OiBmbGV4OyBmbGV4LXdyYXA6IHdyYXA7IGFsaWduLWl0ZW1zOiBjZW50ZXI7IGdhcDogMTRweDsgcGFkZGluZy10b3A6IDZweCI+CiAgICAgICAgICA8YSBjbGFzcz0iZWQtY3RhIiBocmVmPSJ7e2xpdmVEYXRhSHJlZn19IiB0YXJnZXQ9Il9ibGFuayIgcmVsPSJub29wZW5lciI+CiAgICAgICAgICAgIHt7bGl2ZURhdGFMYWJlbH19CiAgICAgICAgICAgIDxzdmcgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjEuNzUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgYXJpYS1oaWRkZW49InRydWUiPjxwYXRoIGQ9Ik01IDEyaDEzTTEyLjUgNmw2IDYtNiA2Ij48L3BhdGg+PC9zdmc+CiAgICAgICAgICA8L2E+CiAgICAgICAgICA8YSBjbGFzcz0iZWQtY3RhIGVkLWN0YS0tZ2hvc3QiIGhyZWY9IiNicmllZmluZyI+VG9kYXkmIzM5O3MgYnJpZWZpbmc8L2E+CiAgICAgICAgPC9kaXY+CiAgICAgIDwvZGl2PgoKICAgICAgPGRpdiBzdHlsZT0iZGlzcGxheTogZmxleDsgZmxleC1kaXJlY3Rpb246IGNvbHVtbiI+CiAgICAgICAgPGZpZ3VyZSBjbGFzcz0iZWQtc2xvdCBlZC1zbG90LS1lbXB0eSIgZGF0YS1zbG90PSJsZWFkLXBob3RvIiBkYXRhLWtpbmQ9InBob3RvIiBkYXRhLXJhdGlvPSIxNi85IiBkYXRhLW1pbi13aWR0aD0iMjAwMCIgc3R5bGU9ImFzcGVjdC1yYXRpbzogMTYgLyA5Ij4KICAgICAgICAgIDxzcGFuIHN0eWxlPSJjb2xvcjogIzk3OTE4YSI+CiAgICAgICAgICAgIDxzdmcgd2lkdGg9IjI2IiBoZWlnaHQ9IjI2IiB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjEuMjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgYXJpYS1oaWRkZW49InRydWUiPjxwYXRoIGQ9Ik0zIDUuNWg0bDEuNC0yaDcuMkwxNyA1LjVoNHYxM0gzeiI+PC9wYXRoPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMuNiI+PC9jaXJjbGU+PC9zdmc+CiAgICAgICAgICA8L3NwYW4+CiAgICAgICAgICA8c3BhbiBjbGFzcz0iZWQtc2xvdF9faWQiPmxlYWQtcGhvdG88L3NwYW4+CiAgICAgICAgICA8c3BhbiBjbGFzcz0iZWQtc2xvdF9fc3BlYyI+cGhvdG8gJm1pZGRvdDsgMTY6OSAmbWlkZG90OyAyMDAwcHggbWluPC9zcGFuPgogICAgICAgIDwvZmlndXJlPgogICAgICAgIDxmaWdjYXB0aW9uIGNsYXNzPSJlZC1zbG90X19jYXB0aW9uIj5bUEhPVE8gQ0FQVElPTl0gJm1pZGRvdDsgW0NSRURJVF08L2ZpZ2NhcHRpb24+CiAgICAgIDwvZGl2PgoKICAgIDwvZGl2PgogIDwvc2VjdGlvbj4KCiAgPCEtLSA9PT09PSBTZWNvbmRhcnkgc3RvcmllcyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09IC0tPgogIDxzZWN0aW9uIGNsYXNzPSJlZC13cmFwIiBzdHlsZT0icGFkZGluZy1ibG9jazogNzJweCAwIiBpZD0iZ3JpZCI+CiAgICA8ZGl2IHN0eWxlPSJkaXNwbGF5OiBmbGV4OyBhbGlnbi1pdGVtczogYmFzZWxpbmU7IGp1c3RpZnktY29udGVudDogc3BhY2UtYmV0d2VlbjsgZ2FwOiAyMHB4OyBwYWRkaW5nLWJvdHRvbTogMjBweCI+CiAgICAgIDxoMiBzdHlsZT0iZm9udC1zaXplOiAyNHB4Ij5Nb3JlIGZyb20gdGhlIGRlc2s8L2gyPgogICAgICA8YSBocmVmPSIjYWxsIiBzdHlsZT0iZm9udC1mYW1pbHk6IHZhcigtLW1vbm8pOyBmb250LXNpemU6IDExcHg7IGxldHRlci1zcGFjaW5nOiAwLjEyZW07IHRleHQtdHJhbnNmb3JtOiB1cHBlcmNhc2UiPkFsbCBzdG9yaWVzPC9hPgogICAgPC9kaXY+CiAgICA8aHIgY2xhc3M9ImVkLWhhaXJsaW5lIj4KCiAgICA8ZGl2IGNsYXNzPSJlZC1zdG9yeS1ncmlkIiBzdHlsZT0iZGlzcGxheTogZ3JpZDsgZ3JpZC10ZW1wbGF0ZS1jb2x1bW5zOiByZXBlYXQoMywgbWlubWF4KDAsIDFmcikpOyBnYXA6IDM2cHg7IHBhZGRpbmctdG9wOiAzMnB4Ij4KCiAgICAgIDxhcnRpY2xlIHN0eWxlPSJkaXNwbGF5OiBmbGV4OyBmbGV4LWRpcmVjdGlvbjogY29sdW1uOyBnYXA6IDE0cHgiPgogICAgICAgIDxmaWd1cmUgY2xhc3M9ImVkLXNsb3QgZWQtc2xvdC0tZW1wdHkiIGRhdGEtc2xvdD0ic3RvcnktMS1jaGFydCIgZGF0YS1raW5kPSJjaGFydCIgZGF0YS1yYXRpbz0iNC8zIiBkYXRhLW1pbi13aWR0aD0iMTIwMCIgc3R5bGU9ImFzcGVjdC1yYXRpbzogNCAvIDMiPgogICAgICAgICAgPHNwYW4gc3R5bGU9ImNvbG9yOiAjMDBjN2E2Ij4KICAgICAgICAgICAgPHN2ZyB3aWR0aD0iMjYiIGhlaWdodD0iMjYiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMS4yNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBhcmlhLWhpZGRlbj0idHJ1ZSI+PHBhdGggZD0iTTQgMjBWOS41TTEwIDIwVjQuNU0xNiAyMHYtN00yMiAyMEgyIj48L3BhdGg+PC9zdmc+CiAgICAgICAgICA8L3NwYW4+CiAgICAgICAgICA8c3BhbiBjbGFzcz0iZWQtc2xvdF9faWQiPnN0b3J5LTEtY2hhcnQ8L3NwYW4+CiAgICAgICAgICA8c3BhbiBjbGFzcz0iZWQtc2xvdF9fc3BlYyI+Y2hhcnQgJm1pZGRvdDsgNDozICZtaWRkb3Q7IDEyMDBweCBtaW48L3NwYW4+CiAgICAgICAgPC9maWd1cmU+CiAgICAgICAgPHAgY2xhc3M9ImVkLWtpY2tlciI+R3JpZDwvcD4KICAgICAgICA8YSBjbGFzcz0iZWQtc3RvcnktbGluayIgaHJlZj0iI3N0b3J5LTEiPjxoMz5CYXR0ZXJ5IHF1ZXVlcyBjbGVhciBmYXN0ZXIgdGhhbiB0aGUgbGluZXMgdGhleSBwbHVnIGludG88L2gzPjwvYT4KICAgICAgICA8cCBzdHlsZT0iZm9udC1zaXplOiAxNXB4OyBsaW5lLWhlaWdodDogMS41OyBjb2xvcjogI2E5YTI5YSI+W1JFR0lPTl0gYXBwcm92ZWQgW1hYXSZuYnNwO0dXIG9mIHN0b3JhZ2UgaW50ZXJjb25uZWN0aW9uIGluIHRoZSB0aGlyZCBxdWFydGVyICZtZGFzaDsgbW9yZSB0aGFuIHRoZSBwcmV2aW91cyBmb3VyIGNvbWJpbmVkLjwvcD4KICAgICAgPC9hcnRpY2xlPgoKICAgICAgPGFydGljbGUgc3R5bGU9ImRpc3BsYXk6IGZsZXg7IGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47IGdhcDogMTRweCI+CiAgICAgICAgPGZpZ3VyZSBjbGFzcz0iZWQtc2xvdCBlZC1zbG90LS1lbXB0eSIgZGF0YS1zbG90PSJzdG9yeS0yLXBob3RvIiBkYXRhLWtpbmQ9InBob3RvIiBkYXRhLXJhdGlvPSI0LzMiIGRhdGEtbWluLXdpZHRoPSIxMjAwIiBzdHlsZT0iYXNwZWN0LXJhdGlvOiA0IC8gMyI+CiAgICAgICAgICA8c3BhbiBzdHlsZT0iY29sb3I6ICM5NzkxOGEiPgogICAgICAgICAgICA8c3ZnIHdpZHRoPSIyNiIgaGVpZ2h0PSIyNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjI1IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGFyaWEtaGlkZGVuPSJ0cnVlIj48cGF0aCBkPSJNMyA1LjVoNGwxLjQtMmg3LjJMMTcgNS41aDR2MTNIM3oiPjwvcGF0aD48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIzLjYiPjwvY2lyY2xlPjwvc3ZnPgogICAgICAgICAgPC9zcGFuPgogICAgICAgICAgPHNwYW4gY2xhc3M9ImVkLXNsb3RfX2lkIj5zdG9yeS0yLXBob3RvPC9zcGFuPgogICAgICAgICAgPHNwYW4gY2xhc3M9ImVkLXNsb3RfX3NwZWMiPnBob3RvICZtaWRkb3Q7IDQ6MyAmbWlkZG90OyAxMjAwcHggbWluPC9zcGFuPgogICAgICAgIDwvZmlndXJlPgogICAgICAgIDxwIGNsYXNzPSJlZC1raWNrZXIiPlBvbGljeTwvcD4KICAgICAgICA8YSBjbGFzcz0iZWQtc3RvcnktbGluayIgaHJlZj0iI3N0b3J5LTIiPjxoMz5UaGUgMjA0MCB0YXJnZXQgdm90ZSBzbGlwcyB0byBbTU9OVEhdPC9oMz48L2E+CiAgICAgICAgPHAgc3R5bGU9ImZvbnQtc2l6ZTogMTVweDsgbGluZS1oZWlnaHQ6IDEuNTsgY29sb3I6ICNhOWEyOWEiPltOXSBtZW1iZXIgc3RhdGVzIHdhbnQgdGhlIGluZHVzdHJpYWwgY2FydmUtb3V0IHNldHRsZWQgYmVmb3JlIHRoZXkgY29tbWl0IHRvIGEgaGVhZGxpbmUgbnVtYmVyLjwvcD4KICAgICAgPC9hcnRpY2xlPgoKICAgICAgPGFydGljbGUgc3R5bGU9ImRpc3BsYXk6IGZsZXg7IGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47IGdhcDogMTRweCI+CiAgICAgICAgPGZpZ3VyZSBjbGFzcz0iZWQtc2xvdCBlZC1zbG90LS1lbXB0eSIgZGF0YS1zbG90PSJzdG9yeS0zLXBob3RvIiBkYXRhLWtpbmQ9InBob3RvIiBkYXRhLXJhdGlvPSI0LzMiIGRhdGEtbWluLXdpZHRoPSIxMjAwIiBzdHlsZT0iYXNwZWN0LXJhdGlvOiA0IC8gMyI+CiAgICAgICAgICA8c3BhbiBzdHlsZT0iY29sb3I6ICM5NzkxOGEiPgogICAgICAgICAgICA8c3ZnIHdpZHRoPSIyNiIgaGVpZ2h0PSIyNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjI1IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGFyaWEtaGlkZGVuPSJ0cnVlIj48cGF0aCBkPSJNMyA1LjVoNGwxLjQtMmg3LjJMMTcgNS41aDR2MTNIM3oiPjwvcGF0aD48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIzLjYiPjwvY2lyY2xlPjwvc3ZnPgogICAgICAgICAgPC9zcGFuPgogICAgICAgICAgPHNwYW4gY2xhc3M9ImVkLXNsb3RfX2lkIj5zdG9yeS0zLXBob3RvPC9zcGFuPgogICAgICAgICAgPHNwYW4gY2xhc3M9ImVkLXNsb3RfX3NwZWMiPnBob3RvICZtaWRkb3Q7IDQ6MyAmbWlkZG90OyAxMjAwcHggbWluPC9zcGFuPgogICAgICAgIDwvZmlndXJlPgogICAgICAgIDxwIGNsYXNzPSJlZC1raWNrZXIiPlJlbmV3YWJsZXM8L3A+CiAgICAgICAgPGEgY2xhc3M9ImVkLXN0b3J5LWxpbmsiIGhyZWY9IiNzdG9yeS0zIj48aDM+TW9kdWxlIGV4cG9ydHMgZmFsbCBmb3IgYSBmb3VydGggc3RyYWlnaHQgbW9udGg8L2gzPjwvYT4KICAgICAgICA8cCBzdHlsZT0iZm9udC1zaXplOiAxNXB4OyBsaW5lLWhlaWdodDogMS41OyBjb2xvcjogI2E5YTI5YSI+UHJpY2VzIGhlbGQgYXQgWyRYLlhYXS9XIHRocm91Z2ggdGhlIHF1YXJ0ZXIuIFRoZSBmYWxsIGlzIHZvbHVtZSwgbm90IHZhbHVlICZtZGFzaDsgYW5kIGl0IGlzIGNvbmNlbnRyYXRlZCBpbiBbTUFSS0VUXS48L3A+CiAgICAgIDwvYXJ0aWNsZT4KCiAgICA8L2Rpdj4KICA8L3NlY3Rpb24+CgogIDwhLS0gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgICAgRGF0YSBwYW5lbHMuIEJvdGggc2xvdHMgc2hpcCB3aXRoIGEgZHJhd24gc2FtcGxlIHNvIHRoZSBsYXlvdXQgcmVhZHMKICAgICAgIGJlZm9yZSBhbnkgYXNzZXQgZXhpc3RzLiBGaWxsaW5nIHRoZSBzbG90IGluIGFzc2V0cy9tYW5pZmVzdC5qc29uCiAgICAgICByZXBsYWNlcyB0aGUgZHJhd2luZyDigJQgd2l0aCBhIGZpbGUsIGEgcGFzdGVkIFNWRywgb3IgYSBsaXZlIGVtYmVkIFVSTAogICAgICAgZnJvbSB0aGUgZGF0YSBhcHAuCiAgICAgICA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09IC0tPgogIDxzZWN0aW9uIGNsYXNzPSJlZC13cmFwIiBzdHlsZT0icGFkZGluZy1ibG9jazogODBweCAwIiBpZD0ibWFya2V0cyI+CiAgICA8ZGl2IHN0eWxlPSJkaXNwbGF5OiBmbGV4OyBhbGlnbi1pdGVtczogYmFzZWxpbmU7IGp1c3RpZnktY29udGVudDogc3BhY2UtYmV0d2VlbjsgZ2FwOiAyMHB4OyBwYWRkaW5nLWJvdHRvbTogMjBweCI+CiAgICAgIDxoMiBzdHlsZT0iZm9udC1zaXplOiAyNHB4Ij5UaGUgbnVtYmVycyBiZWhpbmQgdGhlIHN0b3J5PC9oMj4KICAgICAgPHNwYW4gY2xhc3M9ImVkLWNoaXAge3tmZWVkLmNoaXBDbGFzc319Ij57e2ZlZWQubGFiZWx9fTwvc3Bhbj4KICAgIDwvZGl2PgogICAgPGhyIGNsYXNzPSJlZC1oYWlybGluZSI+CgogICAgPGRpdiBjbGFzcz0iZWQtZGF0YS1ncmlkIiBzdHlsZT0iZGlzcGxheTogZ3JpZDsgZ3JpZC10ZW1wbGF0ZS1jb2x1bW5zOiBtaW5tYXgoMCwgMS41NWZyKSBtaW5tYXgoMCwgMWZyKTsgZ2FwOiAzMnB4OyBwYWRkaW5nLXRvcDogMzJweCI+CgogICAgICA8IS0tIFBhbmVsOiBkYXktYWhlYWQgcG93ZXIgLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSAtLT4KICAgICAgPGRpdiBjbGFzcz0iZWQtcGFuZWwiIHN0eWxlPSJkaXNwbGF5OiBmbGV4OyBmbGV4LWRpcmVjdGlvbjogY29sdW1uOyBnYXA6IDE2cHg7IHBhZGRpbmc6IDI0cHg7IGJhY2tncm91bmQ6ICMwZDBiMDk7IGJvcmRlcjogMXB4IHNvbGlkIHJnYmEoMjQ2LDI0MywyMzgsMC4xNCk7IGJvcmRlci1yYWRpdXM6IDNweCI+CiAgICAgICAgPGRpdiBzdHlsZT0iZGlzcGxheTogZmxleDsgYWxpZ24taXRlbXM6IGJhc2VsaW5lOyBqdXN0aWZ5LWNvbnRlbnQ6IHNwYWNlLWJldHdlZW47IGdhcDogMTZweCI+CiAgICAgICAgICA8ZGl2IHN0eWxlPSJkaXNwbGF5OiBmbGV4OyBmbGV4LWRpcmVjdGlvbjogY29sdW1uOyBnYXA6IDRweCI+CiAgICAgICAgICAgIDxoMyBzdHlsZT0iZm9udC1zaXplOiAxOHB4Ij5EYXktYWhlYWQgcG93ZXIsIDMwIGRheXM8L2gzPgogICAgICAgICAgICA8cCBzdHlsZT0iZm9udC1mYW1pbHk6IHZhcigtLW1vbm8pOyBmb250LXNpemU6IDExcHg7IGxldHRlci1zcGFjaW5nOiAwLjA2ZW07IGNvbG9yOiAjNmQ2ODYxIj4mZXVybzsvTVdoICZtaWRkb3Q7IGJhc2Vsb2FkPC9wPgogICAgICAgICAgPC9kaXY+CiAgICAgICAgPC9kaXY+CgogICAgICAgIDxkaXYgY2xhc3M9ImVkLWNoYXJ0LXNjcm9sbCI+CiAgICAgICAgPGZpZ3VyZSBjbGFzcz0iZWQtc2xvdCIgZGF0YS1zbG90PSJwcmljZXMtY2hhcnQiIGRhdGEta2luZD0iY2hhcnQiIGRhdGEtcmF0aW89IjE2LzkiIGRhdGEtbWluLXdpZHRoPSIxODAwIiBzdHlsZT0iYXNwZWN0LXJhdGlvOiAxNiAvIDk7IGJhY2tncm91bmQ6IHRyYW5zcGFyZW50OyBib3JkZXI6IDAiPgogICAgICAgICAgPHN2ZyB2aWV3Qm94PSIwIDAgOTYwIDQyMCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ieE1pZFlNaWQgbWVldCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsPSJEYXktYWhlYWQgYmFzZWxvYWQgcG93ZXIgcHJpY2VzIG92ZXIgdGhpcnR5IGRheXMgZm9yIHRocmVlIG1hcmtldHMiPgogICAgICAgICAgICA8cGF0aCBkPSJ7e2NoYXJ0LmdyaWRQYXRofX0iIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNDYsMjQzLDIzOCwwLjEwKSIgc3Ryb2tlLXdpZHRoPSIxIj48L3BhdGg+CiAgICAgICAgICAgIDx0ZXh0IHg9IjYwIiB5PSJ7e2NoYXJ0LmcwLnR5fX0iIHRleHQtYW5jaG9yPSJlbmQiIGZpbGw9IiM2ZDY4NjEiIGZvbnQtZmFtaWx5PSJJQk0gUGxleCBNb25vLCBtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTkiPnt7Y2hhcnQuZzAubGFiZWx9fTwvdGV4dD4KICAgICAgICAgICAgPHRleHQgeD0iNjAiIHk9Int7Y2hhcnQuZzEudHl9fSIgdGV4dC1hbmNob3I9ImVuZCIgZmlsbD0iIzZkNjg2MSIgZm9udC1mYW1pbHk9IklCTSBQbGV4IE1vbm8sIG1vbm9zcGFjZSIgZm9udC1zaXplPSIxOSI+e3tjaGFydC5nMS5sYWJlbH19PC90ZXh0PgogICAgICAgICAgICA8dGV4dCB4PSI2MCIgeT0ie3tjaGFydC5nMi50eX19IiB0ZXh0LWFuY2hvcj0iZW5kIiBmaWxsPSIjNmQ2ODYxIiBmb250LWZhbWlseT0iSUJNIFBsZXggTW9ubywgbW9ub3NwYWNlIiBmb250LXNpemU9IjE5Ij57e2NoYXJ0LmcyLmxhYmVsfX08L3RleHQ+CiAgICAgICAgICAgIDx0ZXh0IHg9IjYwIiB5PSJ7e2NoYXJ0LmczLnR5fX0iIHRleHQtYW5jaG9yPSJlbmQiIGZpbGw9IiM2ZDY4NjEiIGZvbnQtZmFtaWx5PSJJQk0gUGxleCBNb25vLCBtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTkiPnt7Y2hhcnQuZzMubGFiZWx9fTwvdGV4dD4KICAgICAgICAgICAgPHRleHQgeD0iNjAiIHk9Int7Y2hhcnQuZzQudHl9fSIgdGV4dC1hbmNob3I9ImVuZCIgZmlsbD0iIzZkNjg2MSIgZm9udC1mYW1pbHk9IklCTSBQbGV4IE1vbm8sIG1vbm9zcGFjZSIgZm9udC1zaXplPSIxOSI+e3tjaGFydC5nNC5sYWJlbH19PC90ZXh0PgogICAgICAgICAgICA8bGluZSB4MT0iNjgiIHgyPSI4ODAiIHkxPSIzNzIiIHkyPSIzNzIiIHN0cm9rZT0icmdiYSgyNDYsMjQzLDIzOCwwLjIyKSIgc3Ryb2tlLXdpZHRoPSIxIj48L2xpbmU+CiAgICAgICAgICAgIDx0ZXh0IHg9Int7Y2hhcnQudDAueH19IiB5PSI0MDgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiM2ZDY4NjEiIGZvbnQtZmFtaWx5PSJJQk0gUGxleCBNb25vLCBtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTkiPnt7Y2hhcnQudDAubGFiZWx9fTwvdGV4dD4KICAgICAgICAgICAgPHRleHQgeD0ie3tjaGFydC50MS54fX0iIHk9IjQwOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzZkNjg2MSIgZm9udC1mYW1pbHk9IklCTSBQbGV4IE1vbm8sIG1vbm9zcGFjZSIgZm9udC1zaXplPSIxOSI+e3tjaGFydC50MS5sYWJlbH19PC90ZXh0PgogICAgICAgICAgICA8dGV4dCB4PSJ7e2NoYXJ0LnQyLnh9fSIgeT0iNDA4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjNmQ2ODYxIiBmb250LWZhbWlseT0iSUJNIFBsZXggTW9ubywgbW9ub3NwYWNlIiBmb250LXNpemU9IjE5Ij57e2NoYXJ0LnQyLmxhYmVsfX08L3RleHQ+CiAgICAgICAgICAgIDx0ZXh0IHg9Int7Y2hhcnQudDMueH19IiB5PSI0MDgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiM2ZDY4NjEiIGZvbnQtZmFtaWx5PSJJQk0gUGxleCBNb25vLCBtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTkiPnt7Y2hhcnQudDMubGFiZWx9fTwvdGV4dD4KICAgICAgICAgICAgPHRleHQgeD0ie3tjaGFydC50NC54fX0iIHk9IjQwOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzZkNjg2MSIgZm9udC1mYW1pbHk9IklCTSBQbGV4IE1vbm8sIG1vbm9zcGFjZSIgZm9udC1zaXplPSIxOSI+e3tjaGFydC50NC5sYWJlbH19PC90ZXh0PgogICAgICAgICAgICA8cGF0aCBkPSJ7e2NoYXJ0LnMwLmR9fSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ7e2NoYXJ0LnMwLmNvbG9yfX0iIHN0cm9rZS13aWR0aD0iMi42IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD4KICAgICAgICAgICAgPHBhdGggZD0ie3tjaGFydC5zMS5kfX0iIGZpbGw9Im5vbmUiIHN0cm9rZT0ie3tjaGFydC5zMS5jb2xvcn19IiBzdHJva2Utd2lkdGg9IjIuNiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+CiAgICAgICAgICAgIDxwYXRoIGQ9Int7Y2hhcnQuczIuZH19IiBmaWxsPSJub25lIiBzdHJva2U9Int7Y2hhcnQuczIuY29sb3J9fSIgc3Ryb2tlLXdpZHRoPSIyLjYiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPgogICAgICAgICAgICA8dGV4dCB4PSI4OTAiIHk9Int7Y2hhcnQuczAubHl9fSIgZmlsbD0ie3tjaGFydC5zMC5jb2xvcn19IiBmb250LWZhbWlseT0iSUJNIFBsZXggTW9ubywgbW9ub3NwYWNlIiBmb250LXNpemU9IjIwIiBmb250LXdlaWdodD0iNTAwIj57e2NoYXJ0LnMwLmxhYmVsfX08L3RleHQ+CiAgICAgICAgICAgIDx0ZXh0IHg9Ijg5MCIgeT0ie3tjaGFydC5zMS5seX19IiBmaWxsPSJ7e2NoYXJ0LnMxLmNvbG9yfX0iIGZvbnQtZmFtaWx5PSJJQk0gUGxleCBNb25vLCBtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMjAiIGZvbnQtd2VpZ2h0PSI1MDAiPnt7Y2hhcnQuczEubGFiZWx9fTwvdGV4dD4KICAgICAgICAgICAgPHRleHQgeD0iODkwIiB5PSJ7e2NoYXJ0LnMyLmx5fX0iIGZpbGw9Int7Y2hhcnQuczIuY29sb3J9fSIgZm9udC1mYW1pbHk9IklCTSBQbGV4IE1vbm8sIG1vbm9zcGFjZSIgZm9udC1zaXplPSIyMCIgZm9udC13ZWlnaHQ9IjUwMCI+e3tjaGFydC5zMi5sYWJlbH19PC90ZXh0PgogICAgICAgICAgPC9zdmc+CiAgICAgICAgPC9maWd1cmU+CiAgICAgICAgPC9kaXY+CgogICAgICAgIDxwIHN0eWxlPSJmb250LXNpemU6IDEycHg7IGxpbmUtaGVpZ2h0OiAxLjU7IGNvbG9yOiAjNmQ2ODYxIj4KICAgICAgICAgIFNhbXBsZSBzZXJpZXMsIGRyYXduIGZyb20gPHNwYW4gY2xhc3M9ImVkLW51bSI+U0FNUExFX1BSSUNFUzwvc3Bhbj4gaW4gdGhpcyBhcnRib2FyZCYjMzk7cyBsb2dpYyBibG9jay4KICAgICAgICAgIFJlcGxhY2UgaXQgd2l0aCB0aGUgbGl2ZSBzZXJpZXMsIG9yIGZpbGwgdGhlIDxzcGFuIGNsYXNzPSJlZC1udW0iPnByaWNlcy1jaGFydDwvc3Bhbj4gc2xvdCB3aXRoIHRoZSBkYXRhIGFwcCYjMzk7cyBlbWJlZC4KICAgICAgICA8L3A+CiAgICAgIDwvZGl2PgoKICAgICAgPCEtLSBQYW5lbDogY3Jvc3MtYm9yZGVyIGZsb3dzIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIC0tPgogICAgICA8ZGl2IGNsYXNzPSJlZC1wYW5lbCIgc3R5bGU9ImRpc3BsYXk6IGZsZXg7IGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47IGdhcDogMTZweDsgcGFkZGluZzogMjRweDsgYmFja2dyb3VuZDogIzBkMGIwOTsgYm9yZGVyOiAxcHggc29saWQgcmdiYSgyNDYsMjQzLDIzOCwwLjE0KTsgYm9yZGVyLXJhZGl1czogM3B4Ij4KICAgICAgICA8ZGl2IHN0eWxlPSJkaXNwbGF5OiBmbGV4OyBmbGV4LWRpcmVjdGlvbjogY29sdW1uOyBnYXA6IDRweCI+CiAgICAgICAgICA8aDMgc3R5bGU9ImZvbnQtc2l6ZTogMThweCI+Q3Jvc3MtYm9yZGVyIGZsb3dzPC9oMz4KICAgICAgICAgIDxwIHN0eWxlPSJmb250LWZhbWlseTogdmFyKC0tbW9ubyk7IGZvbnQtc2l6ZTogMTFweDsgbGV0dGVyLXNwYWNpbmc6IDAuMDZlbTsgY29sb3I6ICM2ZDY4NjEiPk5vcnRoLXdlc3QgRXVyb3BlICZtaWRkb3Q7IG5ldCBNVzwvcD4KICAgICAgICA8L2Rpdj4KCiAgICAgICAgPGZpZ3VyZSBjbGFzcz0iZWQtc2xvdCIgZGF0YS1zbG90PSJmbG93cy1tYXAiIGRhdGEta2luZD0ibWFwIiBkYXRhLXJhdGlvPSI0LzMiIGRhdGEtbWluLXdpZHRoPSIxNDAwIiBzdHlsZT0iYXNwZWN0LXJhdGlvOiA0IC8gMzsgYmFja2dyb3VuZDogdHJhbnNwYXJlbnQ7IGJvcmRlcjogMCI+CiAgICAgICAgICA8c3ZnIHZpZXdCb3g9IjAgMCA2NDAgNDgwIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWlkWU1pZCBtZWV0IiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IlNjaGVtYXRpYyBtYXAgb2YgbmV0IGNyb3NzLWJvcmRlciBlbGVjdHJpY2l0eSBmbG93cyBpbiBub3J0aC13ZXN0IEV1cm9wZSI+CiAgICAgICAgICAgIDxkZWZzPgogICAgICAgICAgICAgIDxtYXJrZXIgaWQ9ImVkLWZsb3ctYXJyb3ciIHZpZXdCb3g9IjAgMCAxMCAxMCIgcmVmWD0iOSIgcmVmWT0iNSIgbWFya2VyV2lkdGg9IjE0IiBtYXJrZXJIZWlnaHQ9IjE0IgogICAgICAgICAgICAgICAgICAgICAgbWFya2VyVW5pdHM9InVzZXJTcGFjZU9uVXNlIiBvcmllbnQ9ImF1dG8tc3RhcnQtcmV2ZXJzZSI+CiAgICAgICAgICAgICAgICA8cGF0aCBkPSJNMCAxIEw5IDUgTDAgOSB6IiBmaWxsPSIjZTc5NjNkIj48L3BhdGg+CiAgICAgICAgICAgICAgPC9tYXJrZXI+CiAgICAgICAgICAgIDwvZGVmcz4KICAgICAgICAgICAgPGxpbmUgeDE9Int7bWFwLmwwLngxfX0iIHkxPSJ7e21hcC5sMC55MX19IiB4Mj0ie3ttYXAubDAueDJ9fSIgeTI9Int7bWFwLmwwLnkyfX0iIHN0cm9rZT0ie3ttYXAubDAuY29sb3J9fSIgc3Ryb2tlLXdpZHRoPSJ7e21hcC5sMC53aWR0aH19IiBzdHJva2UtbGluZWNhcD0icm91bmQiIG1hcmtlci1lbmQ9InVybCgjZWQtZmxvdy1hcnJvdykiPjwvbGluZT4KICAgICAgICAgICAgPGxpbmUgeDE9Int7bWFwLmwxLngxfX0iIHkxPSJ7e21hcC5sMS55MX19IiB4Mj0ie3ttYXAubDEueDJ9fSIgeTI9Int7bWFwLmwxLnkyfX0iIHN0cm9rZT0ie3ttYXAubDEuY29sb3J9fSIgc3Ryb2tlLXdpZHRoPSJ7e21hcC5sMS53aWR0aH19IiBzdHJva2UtbGluZWNhcD0icm91bmQiIG1hcmtlci1lbmQ9InVybCgjZWQtZmxvdy1hcnJvdykiPjwvbGluZT4KICAgICAgICAgICAgPGxpbmUgeDE9Int7bWFwLmwyLngxfX0iIHkxPSJ7e21hcC5sMi55MX19IiB4Mj0ie3ttYXAubDIueDJ9fSIgeTI9Int7bWFwLmwyLnkyfX0iIHN0cm9rZT0ie3ttYXAubDIuY29sb3J9fSIgc3Ryb2tlLXdpZHRoPSJ7e21hcC5sMi53aWR0aH19IiBzdHJva2UtbGluZWNhcD0icm91bmQiIG1hcmtlci1lbmQ9InVybCgjZWQtZmxvdy1hcnJvdykiPjwvbGluZT4KICAgICAgICAgICAgPGxpbmUgeDE9Int7bWFwLmwzLngxfX0iIHkxPSJ7e21hcC5sMy55MX19IiB4Mj0ie3ttYXAubDMueDJ9fSIgeTI9Int7bWFwLmwzLnkyfX0iIHN0cm9rZT0ie3ttYXAubDMuY29sb3J9fSIgc3Ryb2tlLXdpZHRoPSJ7e21hcC5sMy53aWR0aH19IiBzdHJva2UtbGluZWNhcD0icm91bmQiIG1hcmtlci1lbmQ9InVybCgjZWQtZmxvdy1hcnJvdykiPjwvbGluZT4KICAgICAgICAgICAgPGxpbmUgeDE9Int7bWFwLmw0LngxfX0iIHkxPSJ7e21hcC5sNC55MX19IiB4Mj0ie3ttYXAubDQueDJ9fSIgeTI9Int7bWFwLmw0LnkyfX0iIHN0cm9rZT0ie3ttYXAubDQuY29sb3J9fSIgc3Ryb2tlLXdpZHRoPSJ7e21hcC5sNC53aWR0aH19IiBzdHJva2UtbGluZWNhcD0icm91bmQiIG1hcmtlci1lbmQ9InVybCgjZWQtZmxvdy1hcnJvdykiPjwvbGluZT4KICAgICAgICAgICAgPGxpbmUgeDE9Int7bWFwLmw1LngxfX0iIHkxPSJ7e21hcC5sNS55MX19IiB4Mj0ie3ttYXAubDUueDJ9fSIgeTI9Int7bWFwLmw1LnkyfX0iIHN0cm9rZT0ie3ttYXAubDUuY29sb3J9fSIgc3Ryb2tlLXdpZHRoPSJ7e21hcC5sNS53aWR0aH19IiBzdHJva2UtbGluZWNhcD0icm91bmQiIG1hcmtlci1lbmQ9InVybCgjZWQtZmxvdy1hcnJvdykiPjwvbGluZT4KICAgICAgICAgICAgPGxpbmUgeDE9Int7bWFwLmw2LngxfX0iIHkxPSJ7e21hcC5sNi55MX19IiB4Mj0ie3ttYXAubDYueDJ9fSIgeTI9Int7bWFwLmw2LnkyfX0iIHN0cm9rZT0ie3ttYXAubDYuY29sb3J9fSIgc3Ryb2tlLXdpZHRoPSJ7e21hcC5sNi53aWR0aH19IiBzdHJva2UtbGluZWNhcD0icm91bmQiIG1hcmtlci1lbmQ9InVybCgjZWQtZmxvdy1hcnJvdykiPjwvbGluZT4KICAgICAgICAgICAgPGxpbmUgeDE9Int7bWFwLmw3LngxfX0iIHkxPSJ7e21hcC5sNy55MX19IiB4Mj0ie3ttYXAubDcueDJ9fSIgeTI9Int7bWFwLmw3LnkyfX0iIHN0cm9rZT0ie3ttYXAubDcuY29sb3J9fSIgc3Ryb2tlLXdpZHRoPSJ7e21hcC5sNy53aWR0aH19IiBzdHJva2UtbGluZWNhcD0icm91bmQiIG1hcmtlci1lbmQ9InVybCgjZWQtZmxvdy1hcnJvdykiPjwvbGluZT4KICAgICAgICAgICAgPGxpbmUgeDE9Int7bWFwLmw4LngxfX0iIHkxPSJ7e21hcC5sOC55MX19IiB4Mj0ie3ttYXAubDgueDJ9fSIgeTI9Int7bWFwLmw4LnkyfX0iIHN0cm9rZT0ie3ttYXAubDguY29sb3J9fSIgc3Ryb2tlLXdpZHRoPSJ7e21hcC5sOC53aWR0aH19IiBzdHJva2UtbGluZWNhcD0icm91bmQiIG1hcmtlci1lbmQ9InVybCgjZWQtZmxvdy1hcnJvdykiPjwvbGluZT4KICAgICAgICAgICAgPGNpcmNsZSBjeD0ie3ttYXAubjAueH19IiBjeT0ie3ttYXAubjAueX19IiByPSIzMCIgZmlsbD0iIzE0MTEwZSIgc3Ryb2tlPSJyZ2JhKDI0NiwyNDMsMjM4LDAuMjgpIiBzdHJva2Utd2lkdGg9IjEiPjwvY2lyY2xlPgogICAgICAgICAgICA8Y2lyY2xlIGN4PSJ7e21hcC5uMS54fX0iIGN5PSJ7e21hcC5uMS55fX0iIHI9IjMwIiBmaWxsPSIjMTQxMTBlIiBzdHJva2U9InJnYmEoMjQ2LDI0MywyMzgsMC4yOCkiIHN0cm9rZS13aWR0aD0iMSI+PC9jaXJjbGU+CiAgICAgICAgICAgIDxjaXJjbGUgY3g9Int7bWFwLm4yLnh9fSIgY3k9Int7bWFwLm4yLnl9fSIgcj0iMzAiIGZpbGw9IiMxNDExMGUiIHN0cm9rZT0icmdiYSgyNDYsMjQzLDIzOCwwLjI4KSIgc3Ryb2tlLXdpZHRoPSIxIj48L2NpcmNsZT4KICAgICAgICAgICAgPGNpcmNsZSBjeD0ie3ttYXAubjMueH19IiBjeT0ie3ttYXAubjMueX19IiByPSIzMCIgZmlsbD0iIzE0MTEwZSIgc3Ryb2tlPSJyZ2JhKDI0NiwyNDMsMjM4LDAuMjgpIiBzdHJva2Utd2lkdGg9IjEiPjwvY2lyY2xlPgogICAgICAgICAgICA8Y2lyY2xlIGN4PSJ7e21hcC5uNC54fX0iIGN5PSJ7e21hcC5uNC55fX0iIHI9IjMwIiBmaWxsPSIjMTQxMTBlIiBzdHJva2U9InJnYmEoMjQ2LDI0MywyMzgsMC4yOCkiIHN0cm9rZS13aWR0aD0iMSI+PC9jaXJjbGU+CiAgICAgICAgICAgIDxjaXJjbGUgY3g9Int7bWFwLm41Lnh9fSIgY3k9Int7bWFwLm41Lnl9fSIgcj0iMzAiIGZpbGw9IiMxNDExMGUiIHN0cm9rZT0icmdiYSgyNDYsMjQzLDIzOCwwLjI4KSIgc3Ryb2tlLXdpZHRoPSIxIj48L2NpcmNsZT4KICAgICAgICAgICAgPGNpcmNsZSBjeD0ie3ttYXAubjYueH19IiBjeT0ie3ttYXAubjYueX19IiByPSIzMCIgZmlsbD0iIzE0MTEwZSIgc3Ryb2tlPSJyZ2JhKDI0NiwyNDMsMjM4LDAuMjgpIiBzdHJva2Utd2lkdGg9IjEiPjwvY2lyY2xlPgogICAgICAgICAgICA8dGV4dCB4PSJ7e21hcC5uMC54fX0iIHk9Int7bWFwLm4wLnR5fX0iIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiNmNmYzZWUiIGZvbnQtZmFtaWx5PSJJQk0gUGxleCBNb25vLCBtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMjIiIGZvbnQtd2VpZ2h0PSI1MDAiPnt7bWFwLm4wLmNvZGV9fTwvdGV4dD4KICAgICAgICAgICAgPHRleHQgeD0ie3ttYXAubjEueH19IiB5PSJ7e21hcC5uMS50eX19IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjZjZmM2VlIiBmb250LWZhbWlseT0iSUJNIFBsZXggTW9ubywgbW9ub3NwYWNlIiBmb250LXNpemU9IjIyIiBmb250LXdlaWdodD0iNTAwIj57e21hcC5uMS5jb2RlfX08L3RleHQ+CiAgICAgICAgICAgIDx0ZXh0IHg9Int7bWFwLm4yLnh9fSIgeT0ie3ttYXAubjIudHl9fSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iI2Y2ZjNlZSIgZm9udC1mYW1pbHk9IklCTSBQbGV4IE1vbm8sIG1vbm9zcGFjZSIgZm9udC1zaXplPSIyMiIgZm9udC13ZWlnaHQ9IjUwMCI+e3ttYXAubjIuY29kZX19PC90ZXh0PgogICAgICAgICAgICA8dGV4dCB4PSJ7e21hcC5uMy54fX0iIHk9Int7bWFwLm4zLnR5fX0iIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiNmNmYzZWUiIGZvbnQtZmFtaWx5PSJJQk0gUGxleCBNb25vLCBtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMjIiIGZvbnQtd2VpZ2h0PSI1MDAiPnt7bWFwLm4zLmNvZGV9fTwvdGV4dD4KICAgICAgICAgICAgPHRleHQgeD0ie3ttYXAubjQueH19IiB5PSJ7e21hcC5uNC50eX19IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjZjZmM2VlIiBmb250LWZhbWlseT0iSUJNIFBsZXggTW9ubywgbW9ub3NwYWNlIiBmb250LXNpemU9IjIyIiBmb250LXdlaWdodD0iNTAwIj57e21hcC5uNC5jb2RlfX08L3RleHQ+CiAgICAgICAgICAgIDx0ZXh0IHg9Int7bWFwLm41Lnh9fSIgeT0ie3ttYXAubjUudHl9fSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iI2Y2ZjNlZSIgZm9udC1mYW1pbHk9IklCTSBQbGV4IE1vbm8sIG1vbm9zcGFjZSIgZm9udC1zaXplPSIyMiIgZm9udC13ZWlnaHQ9IjUwMCI+e3ttYXAubjUuY29kZX19PC90ZXh0PgogICAgICAgICAgICA8dGV4dCB4PSJ7e21hcC5uNi54fX0iIHk9Int7bWFwLm42LnR5fX0iIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiNmNmYzZWUiIGZvbnQtZmFtaWx5PSJJQk0gUGxleCBNb25vLCBtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMjIiIGZvbnQtd2VpZ2h0PSI1MDAiPnt7bWFwLm42LmNvZGV9fTwvdGV4dD4KICAgICAgICAgIDwvc3ZnPgogICAgICAgIDwvZmlndXJlPgoKICAgICAgICA8ZGl2IHN0eWxlPSJkaXNwbGF5OiBmbGV4OyBhbGlnbi1pdGVtczogY2VudGVyOyBnYXA6IDE0cHg7IGZvbnQtZmFtaWx5OiB2YXIoLS1tb25vKTsgZm9udC1zaXplOiAxMXB4OyBsZXR0ZXItc3BhY2luZzogMC4wNmVtOyBjb2xvcjogIzZkNjg2MSI+CiAgICAgICAgICA8c3BhbiBzdHlsZT0iZGlzcGxheTogaW5saW5lLWZsZXg7IGFsaWduLWl0ZW1zOiBjZW50ZXI7IGdhcDogNnB4Ij4KICAgICAgICAgICAgPHN2ZyB3aWR0aD0iMjIiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDIyIDgiIGFyaWEtaGlkZGVuPSJ0cnVlIj48bGluZSB4MT0iMSIgeTE9IjQiIHgyPSIxNiIgeTI9IjQiIHN0cm9rZT0iI2U3OTYzZCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvbGluZT48cGF0aCBkPSJNMTUgMSBMMjEgNCBMMTUgNyB6IiBmaWxsPSIjZTc5NjNkIj48L3BhdGg+PC9zdmc+CiAgICAgICAgICAgIG5ldCBmbG93CiAgICAgICAgICA8L3NwYW4+CiAgICAgICAgICA8c3Bhbj53aWR0aCA9IHNoYXJlIG9mIGNhcGFjaXR5PC9zcGFuPgogICAgICAgIDwvZGl2PgogICAgICA8L2Rpdj4KCiAgICA8L2Rpdj4KICA8L3NlY3Rpb24+CgogIDwhLS0gPT09PT0gTGl2ZSBkYXRhIGFwcCBiYW5kID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PSAtLT4KICA8c2VjdGlvbiBzdHlsZT0ibWFyZ2luLXRvcDogdmFyKC0tYmFuZCk7IGJhY2tncm91bmQ6ICMyMjFlMWE7IGJvcmRlci1ibG9jazogMXB4IHNvbGlkIHJnYmEoMjQ2LDI0MywyMzgsMC4xNCkiPgogICAgPGRpdiBjbGFzcz0iZWQtd3JhcCIgc3R5bGU9ImRpc3BsYXk6IGZsZXg7IGZsZXgtd3JhcDogd3JhcDsgYWxpZ24taXRlbXM6IGNlbnRlcjsganVzdGlmeS1jb250ZW50OiBzcGFjZS1iZXR3ZWVuOyBnYXA6IDMycHg7IHBhZGRpbmctYmxvY2s6IDUycHgiPgogICAgICA8ZGl2IHN0eWxlPSJkaXNwbGF5OiBmbGV4OyBmbGV4LWRpcmVjdGlvbjogY29sdW1uOyBnYXA6IDEycHg7IG1heC13aWR0aDogNThjaCI+CiAgICAgICAgPHAgY2xhc3M9ImVkLWtpY2tlciI+VGhlIGxpdmUgZGF0YSBhcHA8L3A+CiAgICAgICAgPGgyIHN0eWxlPSJmb250LXNpemU6IDMycHgiPlByaWNlcywgZmxvd3MsIG91dGFnZXMgYW5kIGN1cnZlcyAmbWRhc2g7IHRoZSB3aG9sZSBkZXNrLCBjb250aW51b3VzbHk8L2gyPgogICAgICAgIDxwIHN0eWxlPSJmb250LXNpemU6IDE2cHg7IGxpbmUtaGVpZ2h0OiAxLjU1OyBjb2xvcjogI2E5YTI5YSI+CiAgICAgICAgICBFdmVyeSBmaWd1cmUgb24gdGhpcyBwYWdlIGlzIGEgdmlldyBvbnRvIHRoZSBzYW1lIGZlZWQuIE9wZW4gaXQgdG8gZHJpbGwgaW50byBhIG1hcmtldCwgcGluIGEgY3VydmUsCiAgICAgICAgICBvciBleHBvcnQgdGhlIHNlcmllcyBiZWhpbmQgYW55IGNoYXJ0LgogICAgICAgIDwvcD4KICAgICAgPC9kaXY+CiAgICAgIDxkaXYgc3R5bGU9ImRpc3BsYXk6IGZsZXg7IGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47IGdhcDogMTJweDsgYWxpZ24taXRlbXM6IGZsZXgtc3RhcnQiPgogICAgICAgIDxhIGNsYXNzPSJlZC1jdGEiIGhyZWY9Int7bGl2ZURhdGFIcmVmfX0iIHRhcmdldD0iX2JsYW5rIiByZWw9Im5vb3BlbmVyIj4KICAgICAgICAgIHt7bGl2ZURhdGFMYWJlbH19CiAgICAgICAgICA8c3ZnIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjc1IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGFyaWEtaGlkZGVuPSJ0cnVlIj48cGF0aCBkPSJNNyAxNyAxNyA3TTkgN2g4djgiPjwvcGF0aD48L3N2Zz4KICAgICAgICA8L2E+CiAgICAgICAgPHNwYW4gY2xhc3M9ImVkLW51bSIgc3R5bGU9ImZvbnQtc2l6ZTogMTFweDsgbGV0dGVyLXNwYWNpbmc6IDAuMDRlbTsgY29sb3I6IHt7ZmVlZC5oaW50Q29sb3J9fSI+e3tmZWVkLmhpbnR9fTwvc3Bhbj4KICAgICAgPC9kaXY+CiAgICA8L2Rpdj4KICA8L3NlY3Rpb24+CgogIDwhLS0gPT09PT0gRm9vdGVyID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PSAtLT4KICA8Zm9vdGVyIGNsYXNzPSJlZC13cmFwIiBzdHlsZT0icGFkZGluZy1ibG9jazogNTZweCA2NHB4Ij4KICAgIDxkaXYgY2xhc3M9ImVkLWZvb3QtZ3JpZCIgc3R5bGU9ImRpc3BsYXk6IGdyaWQ7IGdyaWQtdGVtcGxhdGUtY29sdW1uczogbWlubWF4KDAsIDEuNmZyKSByZXBlYXQoMywgbWlubWF4KDAsIDFmcikpOyBnYXA6IDQwcHgiPgogICAgICA8ZGl2IHN0eWxlPSJkaXNwbGF5OiBmbGV4OyBmbGV4LWRpcmVjdGlvbjogY29sdW1uOyBnYXA6IDEycHgiPgogICAgICAgIDxzcGFuIHN0eWxlPSJmb250LWZhbWlseTogdmFyKC0tZGlzcGxheSk7IGZvbnQtc2l6ZTogMjJweDsgZm9udC13ZWlnaHQ6IDYwMDsgbGV0dGVyLXNwYWNpbmc6IC0wLjAyZW0iPkVuZXJneSZuYnNwO0Rlc2s8L3NwYW4+CiAgICAgICAgPHAgc3R5bGU9ImZvbnQtc2l6ZTogMTRweDsgbGluZS1oZWlnaHQ6IDEuNTsgY29sb3I6ICM5NzkxOGE7IG1heC13aWR0aDogMzRjaCI+CiAgICAgICAgICBNYXJrZXRzLCBwb2xpY3kgYW5kIHRoZSBncmlkLCByZXBvcnRlZCBkYWlseSBmcm9tIFtDSVRZXS4KICAgICAgICA8L3A+CiAgICAgICAgPHAgc3R5bGU9ImZvbnQtZmFtaWx5OiB2YXIoLS1tb25vKTsgZm9udC1zaXplOiAxMXB4OyBsZXR0ZXItc3BhY2luZzogMC4wNmVtOyBjb2xvcjogIzZkNjg2MSI+W0NPTlRBQ1QgRU1BSUxdPC9wPgogICAgICA8L2Rpdj4KICAgICAgPHNjLWZvciBsaXN0PSJ7e2Zvb3Rlcn19IiBhcz0iY29sIiBoaW50LXBsYWNlaG9sZGVyLWNvdW50PSIzIj4KICAgICAgICA8ZGl2IHN0eWxlPSJkaXNwbGF5OiBmbGV4OyBmbGV4LWRpcmVjdGlvbjogY29sdW1uOyBnYXA6IDEwcHgiPgogICAgICAgICAgPHAgY2xhc3M9ImVkLWtpY2tlciIgc3R5bGU9ImNvbG9yOiAjNmQ2ODYxIj57e2NvbC50aXRsZX19PC9wPgogICAgICAgICAgPHNjLWZvciBsaXN0PSJ7e2NvbC5saW5rc319IiBhcz0ibGluayIgaGludC1wbGFjZWhvbGRlci1jb3VudD0iNCI+CiAgICAgICAgICAgIDxhIGNsYXNzPSJlZC1uYXZsaW5rIiBzdHlsZT0iZm9udC1zaXplOiAxNHB4IiBocmVmPSJ7e2xpbmsuaHJlZn19Ij57e2xpbmsubGFiZWx9fTwvYT4KICAgICAgICAgIDwvc2MtZm9yPgogICAgICAgIDwvZGl2PgogICAgICA8L3NjLWZvcj4KICAgIDwvZGl2PgogICAgPGhyIGNsYXNzPSJlZC1oYWlybGluZSIgc3R5bGU9Im1hcmdpbi10b3A6IDQ0cHgiPgogICAgPHAgc3R5bGU9InBhZGRpbmctdG9wOiAyMHB4OyBmb250LWZhbWlseTogdmFyKC0tbW9ubyk7IGZvbnQtc2l6ZTogMTFweDsgbGV0dGVyLXNwYWNpbmc6IDAuMDZlbTsgY29sb3I6ICM2ZDY4NjEiPgogICAgICAmY29weTsgW1lFQVJdIFtQVUJMSVNIRVJdICZtaWRkb3Q7IE1hcmtldCBkYXRhIHNob3duIG9uIHRoaXMgcGFnZSBpcyBzYW1wbGUgZGF0YSB1bnRpbCB0aGUgbGl2ZSBkYXRhIGFwcCBpcyBjb25uZWN0ZWQuCiAgICA8L3A+CiAgPC9mb290ZXI+Cgo8L2Rpdj4KPC94LWRjPgoKPHNjcmlwdCBkYXRhLWRjLXNjcmlwdCBkYXRhLXByb3BzPSd7CiAgImxpdmVEYXRhVXJsIjogeyJlZGl0b3IiOiAidGV4dCIsICJkZWZhdWx0IjogIiIsICJ0c1R5cGUiOiAic3RyaW5nIiwgInNlY3Rpb24iOiAiTGl2ZSBkYXRhIn0sCiAgImxpdmVEYXRhTGFiZWwiOiB7ImVkaXRvciI6ICJ0ZXh0IiwgImRlZmF1bHQiOiAiT3BlbiB0aGUgbGl2ZSBkYXRhIGFwcCIsICJ0c1R5cGUiOiAic3RyaW5nIiwgInNlY3Rpb24iOiAiTGl2ZSBkYXRhIn0sCiAgImFjY2VudCI6IHsiZWRpdG9yIjogImNvbG9yIiwgImRlZmF1bHQiOiAiI2U3OTYzZCIsICJvcHRpb25zIjogWyIjZTc5NjNkIiwgIiMwMGM3YTYiLCAiI2I5OTVmNiIsICIjZjZmM2VlIl0sICJzZWN0aW9uIjogIlRoZW1lIn0sCiAgImRlbnNpdHkiOiB7ImVkaXRvciI6ICJlbnVtIiwgIm9wdGlvbnMiOiBbImVkaXRvcmlhbCIsICJjb21wYWN0Il0sICJkZWZhdWx0IjogImVkaXRvcmlhbCIsICJzZWN0aW9uIjogIlRoZW1lIn0sCiAgInNob3dNYXJrZXRSYWlsIjogeyJlZGl0b3IiOiAiYm9vbGVhbiIsICJkZWZhdWx0IjogdHJ1ZSwgInNlY3Rpb24iOiAiTGF5b3V0In0sCiAgIiRwcmV2aWV3IjogeyJ3aWR0aCI6IDE0NDAsICJoZWlnaHQiOiAyODgwfQp9Jz4KY2xhc3MgQ29tcG9uZW50IGV4dGVuZHMgRENMb2dpYyB7CgogIC8qIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCiAgICAgU2FtcGxlIGRhdGEuIEV2ZXJ5dGhpbmcgYmVsb3cgaXMgaWxsdXN0cmF0aXZlIGFuZCBtYXJrZWQgYXMgc3VjaCBpbiB0aGUKICAgICBVSSB1bnRpbCBgbGl2ZURhdGFVcmxgIGlzIHNldC4gVG8gZ28gbGl2ZSwgcmVwbGFjZSB0aGVzZSB0aHJlZSBjb25zdGFudHMKICAgICB3aXRoIGEgZmV0Y2ggaW4gY29tcG9uZW50RGlkTW91bnQoKSBhbmQgY2FsbCB0aGlzLnNldFN0YXRlKC4uLikuCiAgICAgLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gKi8KCiAgc3RhdGljIGdldCBTQU1QTEVfUkFJTCgpIHsKICAgIHJldHVybiBbCiAgICAgIHsgY29kZTogJ0JSRU5UIEYnLCAgIHZhbHVlOiAnNzEuNDAnLCAgY2hhbmdlOiAtMC42MiB9LAogICAgICB7IGNvZGU6ICdUVEYgTSsxJywgICB2YWx1ZTogJzM0Ljg1JywgIGNoYW5nZTogMS45NCB9LAogICAgICB7IGNvZGU6ICdISCBNKzEnLCAgICB2YWx1ZTogJzMuMjgnLCAgIGNoYW5nZTogMC4zMSB9LAogICAgICB7IGNvZGU6ICdFVUEgREVDJywgICB2YWx1ZTogJzY4LjEwJywgIGNoYW5nZTogLTEuMDUgfSwKICAgICAgeyBjb2RlOiAnREUgQkFTRScsICAgdmFsdWU6ICc5Mi42MCcsICBjaGFuZ2U6IDQuMzggfSwKICAgICAgeyBjb2RlOiAnRVJDT1QgTicsICAgdmFsdWU6ICc0MS43NScsICBjaGFuZ2U6IC0yLjIwIH0KICAgIF07CiAgfQoKICBzdGF0aWMgZ2V0IFNBTVBMRV9QUklDRVMoKSB7CiAgICByZXR1cm4gWwogICAgICB7IGxhYmVsOiAnREUnLCBjb2xvcjogJyNlNzk2M2QnLCB2YWx1ZXM6IFs3OCw4NCw5MSw2Miw0OSw4OCw5NSwxMDIsODgsNzEsNTQsNDcsODMsOTAsODYsNzksNzMsNTgsNDQsODEsOTQsMTE4LDEzNSwxMjIsOTcsODAsNjYsNTIsODksOTZdIH0sCiAgICAgIHsgbGFiZWw6ICdGUicsIGNvbG9yOiAnIzAwYzdhNicsIHZhbHVlczogWzU4LDYxLDY0LDUyLDQ3LDYyLDY2LDY4LDYzLDU3LDUwLDQ2LDYwLDYzLDYyLDU5LDU3LDUxLDQ1LDU5LDYzLDcwLDc0LDcxLDY2LDYwLDU0LDQ4LDYyLDY1XSB9LAogICAgICB7IGxhYmVsOiAnTkwnLCBjb2xvcjogJyNiOTk1ZjYnLCB2YWx1ZXM6IFs3MSw3Niw4Miw2MCw1MCw4MCw4Niw5MSw4MCw2OCw1NSw0OSw3Niw4MSw3OSw3Myw2OSw1OCw0Nyw3NSw4NCw5OSwxMDgsMTAxLDg2LDczLDYzLDUzLDgwLDg2XSB9CiAgICBdOwogIH0KCiAgLyogU2NoZW1hdGljLCBub3QgZ2VvZ3JhcGhpYzogbm9kZXMgYXJlIGJpZGRpbmcgem9uZXMsIGVkZ2VzIGFyZQogICAgIGludGVyY29ubmVjdG9ycy4gYHNoYXJlYCBpcyB0aGUgZnJhY3Rpb24gb2YgY2FwYWNpdHkgaW4gdXNlLiAqLwogIHN0YXRpYyBnZXQgU0FNUExFX0ZMT1dTKCkgewogICAgcmV0dXJuIHsKICAgICAgbm9kZXM6IFsKICAgICAgICB7IGNvZGU6ICdOTycsIHg6IDE1MCwgeTogNjIgfSwKICAgICAgICB7IGNvZGU6ICdESycsIHg6IDM1NiwgeTogNzggfSwKICAgICAgICB7IGNvZGU6ICdVSycsIHg6IDkyLCAgeTogMjQ0IH0sCiAgICAgICAgeyBjb2RlOiAnTkwnLCB4OiAzMDYsIHk6IDIwMiB9LAogICAgICAgIHsgY29kZTogJ0RFJywgeDogNDg2LCB5OiAyMjYgfSwKICAgICAgICB7IGNvZGU6ICdCRScsIHg6IDI0NiwgeTogMzE2IH0sCiAgICAgICAgeyBjb2RlOiAnRlInLCB4OiAyMTQsIHk6IDQxNCB9CiAgICAgIF0sCiAgICAgIGxpbmtzOiBbCiAgICAgICAgeyBmcm9tOiAnTk8nLCB0bzogJ1VLJywgc2hhcmU6IDAuODIgfSwKICAgICAgICB7IGZyb206ICdOTycsIHRvOiAnTkwnLCBzaGFyZTogMC42MSB9LAogICAgICAgIHsgZnJvbTogJ05PJywgdG86ICdESycsIHNoYXJlOiAwLjQ0IH0sCiAgICAgICAgeyBmcm9tOiAnREsnLCB0bzogJ0RFJywgc2hhcmU6IDAuNzMgfSwKICAgICAgICB7IGZyb206ICdVSycsIHRvOiAnTkwnLCBzaGFyZTogMC4zNSB9LAogICAgICAgIHsgZnJvbTogJ0ZSJywgdG86ICdVSycsIHNoYXJlOiAwLjg4IH0sCiAgICAgICAgeyBmcm9tOiAnTkwnLCB0bzogJ0RFJywgc2hhcmU6IDAuNTIgfSwKICAgICAgICB7IGZyb206ICdOTCcsIHRvOiAnQkUnLCBzaGFyZTogMC40MSB9LAogICAgICAgIHsgZnJvbTogJ0ZSJywgdG86ICdCRScsIHNoYXJlOiAwLjY3IH0KICAgICAgXQogICAgfTsKICB9CgogIC8qIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCiAgICAgQ2hhcnQgYW5kIG1hcCBnZW9tZXRyeS4KCiAgICAgQm90aCBlbWl0IG51bWJlcmVkIGtleXMgKGNoYXJ0LnMwLCBtYXAubjMsIC4uLikgcmF0aGVyIHRoYW4gYXJyYXlzLCBiZWNhdXNlCiAgICAgdGhlIG1hcmt1cCBpbnNpZGUgPHN2Zz4gaXMgd3JpdHRlbiBvdXQgZWxlbWVudCBieSBlbGVtZW50OiBhIHRlbXBsYXRlIHRhZwogICAgIHN1Y2ggYXMgPHNjLWZvcj4gaW5zaWRlIGFuIDxzdmc+IGlzIHBhcnNlZCBpbnRvIHRoZSBTVkcgbmFtZXNwYWNlLCB3aGVyZSBpdAogICAgIGlzIG5vdCBhIGNvbnRyb2wtZmxvdyBlbGVtZW50LiBLZWVwaW5nIHRoZSBTVkcgZnJlZSBvZiBjdXN0b20gZWxlbWVudHMgaXMKICAgICB3aGF0IG1ha2VzIHRoZXNlIHBhbmVscyByZW5kZXIgdGhlIHNhbWUgd2F5IGluIHRoZSBjYW52YXMsIGluIHRoZSBzdGFuZGFsb25lCiAgICAgcHJldmlldyBhbmQgaW4gYSBQTkcvUERGIGV4cG9ydC4KCiAgICAgVGhlIGNvdW50cyBhcmUgdGhlcmVmb3JlIGZpeGVkIGJ5IHRoZSBtYXJrdXA6IDMgc2VyaWVzLCA1IGdyaWRsaW5lcywKICAgICA1IHgtYXhpcyB0aWNrcywgNyBub2RlcywgOSBsaW5rcy4gQWRkIGEgc2VyaWVzIGFuZCB5b3UgYWRkIGl0cyB0d28gU1ZHCiAgICAgZWxlbWVudHMgdG9vLgogICAgIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tICovCgogIGJ1aWxkQ2hhcnQoKSB7CiAgICBjb25zdCBzZXJpZXMgPSBDb21wb25lbnQuU0FNUExFX1BSSUNFUzsKICAgIGNvbnN0IEwgPSA2OCwgUiA9IDg4MCwgVCA9IDI2LCBCID0gMzcyOyAgICAvLyBwbG90IGJveCBpbnNpZGUgdGhlIDk2MHg0MjAgdmlld0JveAogICAgY29uc3QgbG8gPSA0MCwgaGkgPSAxNDAsIHN0ZXAgPSAyNTsgICAgICAgIC8vIHJvdW5kZWQgYXhpcyBib3VuZHMgYXJvdW5kIHRoZSBkYXRhCiAgICBjb25zdCBuID0gc2VyaWVzWzBdLnZhbHVlcy5sZW5ndGg7CgogICAgY29uc3QgcHggPSAoaSkgPT4gTCArIChSIC0gTCkgKiAoaSAvIChuIC0gMSkpOwogICAgY29uc3QgcHkgPSAodikgPT4gQiAtIChCIC0gVCkgKiAoKHYgLSBsbykgLyAoaGkgLSBsbykpOwoKICAgIGNvbnN0IG91dCA9IHt9OwoKICAgIC8vIE9uZSBwYXRoIGZvciBldmVyeSBncmlkbGluZSBrZWVwcyB0aGUgYmFja2dyb3VuZCB0byBhIHNpbmdsZSBlbGVtZW50LgogICAgY29uc3QgZ3JpZCA9IFtdOwogICAgbGV0IGcgPSAwOwogICAgZm9yIChsZXQgdiA9IGxvOyB2IDw9IGhpOyB2ICs9IHN0ZXApIHsKICAgICAgY29uc3QgeSA9IHB5KHYpOwogICAgICBncmlkLnB1c2goJ00nICsgTCArICcgJyArIHkudG9GaXhlZCgxKSArICdIJyArIFIpOwogICAgICBvdXRbJ2cnICsgZ10gPSB7IHR5OiAoeSArIDQpLnRvRml4ZWQoMSksIGxhYmVsOiBTdHJpbmcodikgfTsKICAgICAgZyArPSAxOwogICAgfQogICAgb3V0LmdyaWRQYXRoID0gZ3JpZC5qb2luKCcgJyk7CgogICAgY29uc3QgdGlja0F0ID0gWzAsIDcsIDE0LCAyMSwgbiAtIDFdOwogICAgZm9yIChsZXQgdCA9IDA7IHQgPCB0aWNrQXQubGVuZ3RoOyB0ICs9IDEpIHsKICAgICAgY29uc3QgaSA9IHRpY2tBdFt0XTsKICAgICAgb3V0Wyd0JyArIHRdID0gewogICAgICAgIHg6IHB4KGkpLnRvRml4ZWQoMSksCiAgICAgICAgbGFiZWw6IGkgPT09IG4gLSAxID8gJ3RvZGF5JyA6ICdELScgKyAobiAtIDEgLSBpKQogICAgICB9OwogICAgfQoKICAgIC8vIE51ZGdlIHRoZSByaWdodC1oYW5kIGxhYmVscyBhcGFydCBzbyB0d28gY2xvc2Ugc2VyaWVzIG5ldmVyIGNvbGxpZGUuCiAgICBjb25zdCBlbmRzID0gc2VyaWVzCiAgICAgIC5tYXAoKHNyLCBpKSA9PiAoeyBpLCB5OiBweShzci52YWx1ZXNbbiAtIDFdKSB9KSkKICAgICAgLnNvcnQoKGEsIGIpID0+IGEueSAtIGIueSk7CiAgICBjb25zdCBsYWJlbFkgPSBbXTsKICAgIGxldCBsYXN0ID0gLUluZmluaXR5OwogICAgZm9yIChjb25zdCBlIG9mIGVuZHMpIHsKICAgICAgY29uc3QgeSA9IE1hdGgubWF4KGUueSwgbGFzdCArIDIzKTsKICAgICAgbGFiZWxZW2UuaV0gPSB5OwogICAgICBsYXN0ID0geTsKICAgIH0KCiAgICBmb3IgKGxldCBpID0gMDsgaSA8IHNlcmllcy5sZW5ndGg7IGkgKz0gMSkgewogICAgICBvdXRbJ3MnICsgaV0gPSB7CiAgICAgICAgbGFiZWw6IHNlcmllc1tpXS5sYWJlbCwKICAgICAgICBjb2xvcjogc2VyaWVzW2ldLmNvbG9yLAogICAgICAgIGQ6IHNlcmllc1tpXS52YWx1ZXMKICAgICAgICAgIC5tYXAoKHYsIGopID0+IChqID8gJ0wnIDogJ00nKSArIHB4KGopLnRvRml4ZWQoMSkgKyAnICcgKyBweSh2KS50b0ZpeGVkKDEpKQogICAgICAgICAgLmpvaW4oJyAnKSwKICAgICAgICBseTogKGxhYmVsWVtpXSArIDcpLnRvRml4ZWQoMSkKICAgICAgfTsKICAgIH0KCiAgICByZXR1cm4gb3V0OwogIH0KCiAgYnVpbGRNYXAoKSB7CiAgICBjb25zdCB7IG5vZGVzLCBsaW5rcyB9ID0gQ29tcG9uZW50LlNBTVBMRV9GTE9XUzsKICAgIGNvbnN0IGF0ID0ge307CiAgICBmb3IgKGNvbnN0IG5kIG9mIG5vZGVzKSBhdFtuZC5jb2RlXSA9IG5kOwoKICAgIGNvbnN0IG91dCA9IHt9OwoKICAgIGZvciAobGV0IGkgPSAwOyBpIDwgbm9kZXMubGVuZ3RoOyBpICs9IDEpIHsKICAgICAgb3V0WyduJyArIGldID0geyBjb2RlOiBub2Rlc1tpXS5jb2RlLCB4OiBub2Rlc1tpXS54LCB5OiBub2Rlc1tpXS55LCB0eTogbm9kZXNbaV0ueSArIDggfTsKICAgIH0KCiAgICBmb3IgKGxldCBpID0gMDsgaSA8IGxpbmtzLmxlbmd0aDsgaSArPSAxKSB7CiAgICAgIGNvbnN0IGwgPSBsaW5rc1tpXTsKICAgICAgY29uc3QgYSA9IGF0W2wuZnJvbV0sIGIgPSBhdFtsLnRvXTsKICAgICAgLy8gUHVsbCBib3RoIGVuZHMgYmFjayB0byB0aGUgbm9kZSByaW0gc28gdGhlIGFycm93aGVhZCBzaXRzIGNsZWFyIG9mIGl0LgogICAgICBjb25zdCBkeCA9IGIueCAtIGEueCwgZHkgPSBiLnkgLSBhLnk7CiAgICAgIGNvbnN0IGxlbiA9IE1hdGguaHlwb3QoZHgsIGR5KSB8fCAxOwogICAgICBjb25zdCByID0gMzQ7CiAgICAgIG91dFsnbCcgKyBpXSA9IHsKICAgICAgICB4MTogKGEueCArIChkeCAvIGxlbikgKiByKS50b0ZpeGVkKDEpLAogICAgICAgIHkxOiAoYS55ICsgKGR5IC8gbGVuKSAqIHIpLnRvRml4ZWQoMSksCiAgICAgICAgeDI6IChiLnggLSAoZHggLyBsZW4pICogcikudG9GaXhlZCgxKSwKICAgICAgICB5MjogKGIueSAtIChkeSAvIGxlbikgKiByKS50b0ZpeGVkKDEpLAogICAgICAgIHdpZHRoOiAoMiArIGwuc2hhcmUgKiA3KS50b0ZpeGVkKDIpLAogICAgICAgIGNvbG9yOiBsLnNoYXJlID49IDAuNiA/ICcjZTc5NjNkJyA6ICcjN2Q2YTUyJwogICAgICB9OwogICAgfQoKICAgIHJldHVybiBvdXQ7CiAgfQoKICAvKiAtLS0gcmVuZGVyIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSAqLwoKICByZW5kZXJWYWxzKCkgewogICAgY29uc3QgdXJsID0gKHRoaXMucHJvcHMubGl2ZURhdGFVcmwgPz8gJycpLnRyaW0oKTsKICAgIGNvbnN0IHdpcmVkID0gdXJsLmxlbmd0aCA+IDA7CgogICAgcmV0dXJuIHsKICAgICAgYWNjZW50OiB0aGlzLnByb3BzLmFjY2VudCA/PyAnI2U3OTYzZCcsCiAgICAgIGRlbnNpdHk6IHRoaXMucHJvcHMuZGVuc2l0eSA/PyAnZWRpdG9yaWFsJywKICAgICAgc2hvd01hcmtldFJhaWw6IHRoaXMucHJvcHMuc2hvd01hcmtldFJhaWwgPz8gdHJ1ZSwKCiAgICAgIGxpdmVEYXRhSHJlZjogd2lyZWQgPyB1cmwgOiAnI2xpdmUtZGF0YS1hcHAnLAogICAgICBsaXZlRGF0YUxhYmVsOiB0aGlzLnByb3BzLmxpdmVEYXRhTGFiZWwgPz8gJ09wZW4gdGhlIGxpdmUgZGF0YSBhcHAnLAoKICAgICAgZmVlZDogd2lyZWQKICAgICAgICA/IHsgbGFiZWw6ICdMaXZlJywgY2hpcENsYXNzOiAnZWQtY2hpcC0tbGl2ZScsIGhpbnQ6IHVybCwgaGludENvbG9yOiAnIzZkNjg2MScgfQogICAgICAgIDogeyBsYWJlbDogJ1NhbXBsZSBmZWVkJywgY2hpcENsYXNzOiAnJywgaGludDogJ1tTRVQgbGl2ZURhdGFVcmwgVE8gWU9VUiBMSVZFIERBVEEgQVBQXScsIGhpbnRDb2xvcjogJyNlNzk2M2QnIH0sCgogICAgICByYWlsOiBDb21wb25lbnQuU0FNUExFX1JBSUwubWFwKChyKSA9PiAoewogICAgICAgIGNvZGU6IHIuY29kZSwKICAgICAgICB2YWx1ZTogci52YWx1ZSwKICAgICAgICBjaGFuZ2U6IChyLmNoYW5nZSA+IDAgPyAnKycgOiAnJykgKyByLmNoYW5nZS50b0ZpeGVkKDIpICsgJyUnLAogICAgICAgIGNvbG9yOiByLmNoYW5nZSA+IDAgPyAnIzNmYmY3ZicgOiByLmNoYW5nZSA8IDAgPyAnI2U1NjQ0YScgOiAnIzk3OTE4YScKICAgICAgfSkpLAoKICAgICAgY2hhcnQ6IHRoaXMuYnVpbGRDaGFydCgpLAogICAgICBtYXA6IHRoaXMuYnVpbGRNYXAoKSwKCiAgICAgIGZvb3RlcjogWwogICAgICAgIHsgdGl0bGU6ICdTZWN0aW9ucycsIGxpbmtzOiBbCiAgICAgICAgICB7IGxhYmVsOiAnTWFya2V0cycsIGhyZWY6ICcjbWFya2V0cycgfSwKICAgICAgICAgIHsgbGFiZWw6ICdQb2xpY3knLCBocmVmOiAnI3BvbGljeScgfSwKICAgICAgICAgIHsgbGFiZWw6ICdHcmlkJywgaHJlZjogJyNncmlkJyB9LAogICAgICAgICAgeyBsYWJlbDogJ1JlbmV3YWJsZXMnLCBocmVmOiAnI3JlbmV3YWJsZXMnIH0KICAgICAgICBdIH0sCiAgICAgICAgeyB0aXRsZTogJ0RhdGEnLCBsaW5rczogWwogICAgICAgICAgeyBsYWJlbDogJ0xpdmUgZGF0YSBhcHAnLCBocmVmOiB3aXJlZCA/IHVybCA6ICcjbGl2ZS1kYXRhLWFwcCcgfSwKICAgICAgICAgIHsgbGFiZWw6ICdNZXRob2RvbG9neScsIGhyZWY6ICcjbWV0aG9kb2xvZ3knIH0sCiAgICAgICAgICB7IGxhYmVsOiAnU2VyaWVzIGV4cG9ydCcsIGhyZWY6ICcjZXhwb3J0JyB9CiAgICAgICAgXSB9LAogICAgICAgIHsgdGl0bGU6ICdEZXNrJywgbGlua3M6IFsKICAgICAgICAgIHsgbGFiZWw6ICdBYm91dCcsIGhyZWY6ICcjYWJvdXQnIH0sCiAgICAgICAgICB7IGxhYmVsOiAnTmV3c2xldHRlcicsIGhyZWY6ICcjc3Vic2NyaWJlJyB9LAogICAgICAgICAgeyBsYWJlbDogJ0NvbnRhY3QnLCBocmVmOiAnI2NvbnRhY3QnIH0KICAgICAgICBdIH0KICAgICAgXQogICAgfTsKICB9Cn0KPC9zY3JpcHQ+CjxzY3JpcHQ+LyogLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCiAgIGltYWdlLXNsb3QuanMg4oCUIHRoZSBtZWRpYSBpbXBvcnQgbGF5ZXIgZm9yIHRoZSBFbmVyZ3kgRGVzayBsYW5kaW5nIHBhZ2UuCgogICBFdmVyeSBwaWN0dXJlLCBncmFwaCwgbWFwIGFuZCB2aWRlbyBvbiB0aGUgcGFnZSBpcyBhIGRlY2xhcmVkIFNMT1QuIE1hcmt1cAogICByZXNlcnZlcyB0aGUgc3BhY2UgYW5kIG5hbWVzIHRoZSBzbG90OyBub3RoaW5nIGluIHRoZSBtYXJrdXAga25vd3Mgd2hlcmUgdGhlCiAgIGFzc2V0IGxpdmVzOgoKICAgICA8ZmlndXJlIGNsYXNzPSJlZC1zbG90IiBkYXRhLXNsb3Q9ImxlYWQtcGhvdG8iIGRhdGEtY2FwdGlvbj0iLi4uIj48L2ZpZ3VyZT4KCiAgIFRvIGZpbGwgYSBzbG90LCBhZGQgYW4gZW50cnkgdG8gYXNzZXRzL21hbmlmZXN0Lmpzb24ga2V5ZWQgYnkgdGhlIHNhbWUgaWQuCiAgIFRocmVlIHNvdXJjZSBzaGFwZXMgYXJlIHN1cHBvcnRlZCwgd2hpY2ggaXMgd2hhdCBtYWtlcyBvbmUgbWVjaGFuaXNtIGNvdmVyCiAgIHBpY3R1cmVzLCBncmFwaHMgYW5kIG1hcHMgYXQgb25jZToKCiAgICAgeyAidHlwZSI6ICJpbWFnZSIsICJzcmMiOiAibWVkaWEvbGVhZC5qcGciLCAiYWx0IjogIi4uLiIgfQogICAgICAgYW55IHJhc3RlciBvciBTVkcgZmlsZSB1bmRlciBhc3NldHMvCgogICAgIHsgInR5cGUiOiAiZW1iZWQiLCAic3JjIjogImh0dHBzOi8vZGF0YS5leGFtcGxlL2NoYXJ0L2RlLWRhP2VtYmVkPTEiIH0KICAgICAgIGEgbGl2ZSBncmFwaCBvciBzbGlwcHkgbWFwIHNlcnZlZCBieSB0aGUgbGl2ZS1kYXRhIGFwcDsgcmVuZGVyZWQgaW4gYQogICAgICAgc2FuZGJveGVkIGlmcmFtZSBzbyBhIHRoaXJkLXBhcnR5IGVtYmVkIGNhbm5vdCByZWFjaCBpbnRvIHRoaXMgcGFnZQoKICAgICB7ICJ0eXBlIjogImlubGluZSIsICJzdmciOiAiPHN2ZyDigKY+4oCmPC9zdmc+IiB9CiAgICAgICBhIHZlY3RvciBleHBvcnQgcGFzdGVkIHN0cmFpZ2h0IGluIOKAlCBzdGF5cyBjcmlzcCBpbiBQTkcvUERGIGV4cG9ydAoKICAgQW4gdW5maWxsZWQgc2xvdCByZW5kZXJzIGEgZGVzaWduZWQgcGxhY2Vob2xkZXIgY2FycnlpbmcgaXRzIGlkLCBraW5kIGFuZAogICB0aGUgc291cmNlIHNwZWMgaXQgd2FudHMsIHNvIGFuIHVuZmluaXNoZWQgcGFnZSBzdGlsbCByZWFkcyBhcyBhIGxheW91dAogICByYXRoZXIgdGhhbiBhcyBhIGhvbGUuIEEgc2xvdCB0aGF0IGFscmVhZHkgY29udGFpbnMgZHJhd24gY29udGVudCDigJQgdGhlCiAgIHNhbXBsZSBwcmljZSBjaGFydCBhbmQgZmxvdyBtYXAgZG8g4oCUIGtlZXBzIGl0IHVudGlsIHRoZSBtYW5pZmVzdCBvdmVycmlkZXMgaXQuCgogICBQbGFpbiA8c2NyaXB0Piwgbm8gbW9kdWxlcywgbm8gYnVpbGQgc3RlcC4gV29ya3MgZnJvbSBmaWxlOi8vIGFzIHdlbGwgYXMKICAgZnJvbSBhIHNlcnZlcjogd2hlbiBmZXRjaCgpIGlzIHVuYXZhaWxhYmxlIG9yIGJsb2NrZWQsIHRoZSBwYWdlJ3Mgb3duCiAgIHdpbmRvdy5FRF9NQU5JRkVTVCBvYmplY3QgaXMgdXNlZCBpbnN0ZWFkLgogICAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gKi8KCihmdW5jdGlvbiAoZ2xvYmFsLCBkb2N1bWVudCkgewogICd1c2Ugc3RyaWN0JzsKCiAgdmFyIE1BTklGRVNUX1VSTCA9ICdhc3NldHMvbWFuaWZlc3QuanNvbic7CiAgdmFyIEFTU0VUX0JBU0UgPSAnYXNzZXRzLyc7CgogIHZhciBHTFlQSCA9IHsKICAgIHBob3RvOiAnPHBhdGggZD0iTTMgNS41aDRsMS40LTJoNy4yTDE3IDUuNWg0djEzSDN6Ii8+PGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iMy42Ii8+JywKICAgIGNoYXJ0OiAnPHBhdGggZD0iTTQgMjBWOS41TTEwIDIwVjQuNU0xNiAyMHYtN00yMiAyMEgyIi8+JywKICAgIG1hcDogICAnPHBhdGggZD0iTTkgMy41IDMgNnYxNC41bDYtMi41IDYgMi41IDYtMi41VjMuNUwxNSA2eiIvPjxwYXRoIGQ9Ik05IDMuNVYxOE0xNSA2djE0LjUiLz4nLAogICAgdmlkZW86ICc8cmVjdCB4PSIyLjUiIHk9IjUiIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgcng9IjEuNSIvPjxwYXRoIGQ9Ik0xNi41IDEwLjUgMjEuNSA3LjV2OWwtNS0zeiIvPicsCiAgICBsb2dvOiAgJzxyZWN0IHg9IjIuNSIgeT0iNyIgd2lkdGg9IjE5IiBoZWlnaHQ9IjEwIiByeD0iMS41Ii8+PHBhdGggZD0iTTYuNSAxMmgxMSIvPicKICB9OwoKICBmdW5jdGlvbiBzdmdHbHlwaChraW5kKSB7CiAgICB2YXIgZCA9IEdMWVBIW2tpbmRdIHx8IEdMWVBILnBob3RvOwogICAgcmV0dXJuICc8c3ZnIHdpZHRoPSIyNiIgaGVpZ2h0PSIyNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiAnICsKICAgICAgJ3N0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjEuMjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgJyArCiAgICAgICdzdHJva2UtbGluZWpvaW49InJvdW5kIiBhcmlhLWhpZGRlbj0idHJ1ZSIgZm9jdXNhYmxlPSJmYWxzZSI+JyArIGQgKyAnPC9zdmc+JzsKICB9CgogIGZ1bmN0aW9uIGVzY2FwZUh0bWwocykgewogICAgcmV0dXJuIFN0cmluZyhzID09PSB1bmRlZmluZWQgfHwgcyA9PT0gbnVsbCA/ICcnIDogcykKICAgICAgLnJlcGxhY2UoLyYvZywgJyZhbXA7JykucmVwbGFjZSgvPC9nLCAnJmx0OycpLnJlcGxhY2UoLz4vZywgJyZndDsnKQogICAgICAucmVwbGFjZSgvIi9nLCAnJnF1b3Q7JykucmVwbGFjZSgvJy9nLCAnJiMzOTsnKTsKICB9CgogIGZ1bmN0aW9uIHNwZWNPZihlbCwgc3BlYykgewogICAgcmV0dXJuIHsKICAgICAgaWQ6IGVsLmdldEF0dHJpYnV0ZSgnZGF0YS1zbG90JykgfHwgJycsCiAgICAgIGtpbmQ6IGVsLmdldEF0dHJpYnV0ZSgnZGF0YS1raW5kJykgfHwgKHNwZWMgJiYgc3BlYy5raW5kKSB8fCAncGhvdG8nLAogICAgICByYXRpbzogZWwuZ2V0QXR0cmlidXRlKCdkYXRhLXJhdGlvJykgfHwgKHNwZWMgJiYgc3BlYy5yYXRpbykgfHwgJzE2LzknLAogICAgICBtaW5XOiBOdW1iZXIoZWwuZ2V0QXR0cmlidXRlKCdkYXRhLW1pbi13aWR0aCcpIHx8IChzcGVjICYmIHNwZWMubWluVykgfHwgMCksCiAgICAgIGNhcHRpb246IGVsLmdldEF0dHJpYnV0ZSgnZGF0YS1jYXB0aW9uJykgfHwgJycKICAgIH07CiAgfQoKICBmdW5jdGlvbiByZW5kZXJFbXB0eShlbCwgcykgewogICAgZWwuY2xhc3NMaXN0LmFkZCgnZWQtc2xvdC0tZW1wdHknKTsKICAgIGVsLnNldEF0dHJpYnV0ZSgnZGF0YS1zdGF0ZScsICdlbXB0eScpOwogICAgZWwuaW5uZXJIVE1MID0KICAgICAgJzxzcGFuIHN0eWxlPSJjb2xvcjonICsgKHMua2luZCA9PT0gJ2NoYXJ0JyB8fCBzLmtpbmQgPT09ICdtYXAnID8gJyMwMGM3YTYnIDogJyM5NzkxOGEnKSArICciPicgKwogICAgICAgIHN2Z0dseXBoKHMua2luZCkgKwogICAgICAnPC9zcGFuPicgKwogICAgICAnPHNwYW4gY2xhc3M9ImVkLXNsb3RfX2lkIj4nICsgZXNjYXBlSHRtbChzLmlkKSArICc8L3NwYW4+JyArCiAgICAgICc8c3BhbiBjbGFzcz0iZWQtc2xvdF9fc3BlYyI+JyArIGVzY2FwZUh0bWwocy5raW5kKSArICcgJm1pZGRvdDsgJyArCiAgICAgICAgZXNjYXBlSHRtbChzLnJhdGlvLnJlcGxhY2UoJy8nLCAnOicpKSArCiAgICAgICAgKHMubWluVyA/ICcgJm1pZGRvdDsgJyArIHMubWluVyArICdweCBtaW4nIDogJycpICsKICAgICAgJzwvc3Bhbj4nOwogIH0KCiAgZnVuY3Rpb24gcmVuZGVyRmlsbGVkKGVsLCBzLCBlbnRyeSkgewogICAgZWwuY2xhc3NMaXN0LnJlbW92ZSgnZWQtc2xvdC0tZW1wdHknKTsKICAgIGVsLnNldEF0dHJpYnV0ZSgnZGF0YS1zdGF0ZScsICdmaWxsZWQnKTsKCiAgICBpZiAoZW50cnkudHlwZSA9PT0gJ2lubGluZScgJiYgZW50cnkuc3ZnKSB7CiAgICAgIGVsLmlubmVySFRNTCA9IGVudHJ5LnN2ZzsKICAgICAgcmV0dXJuOwogICAgfQoKICAgIHZhciBzcmMgPSBlbnRyeS5zcmMgfHwgJyc7CiAgICBpZiAoIXNyYykgeyByZW5kZXJFbXB0eShlbCwgcyk7IHJldHVybjsgfQoKICAgIGlmIChlbnRyeS50eXBlID09PSAnZW1iZWQnKSB7CiAgICAgIC8vIFNhbmRib3hlZDogYSBsaXZlIGNoYXJ0IG9yIG1hcCBlbWJlZCBnZXRzIHRvIHJ1biBzY3JpcHRzLCBub3RoaW5nIGVsc2UuCiAgICAgIGVsLmlubmVySFRNTCA9ICc8aWZyYW1lIHNyYz0iJyArIGVzY2FwZUh0bWwoc3JjKSArICciIGxvYWRpbmc9ImxhenkiICcgKwogICAgICAgICd0aXRsZT0iJyArIGVzY2FwZUh0bWwoZW50cnkuYWx0IHx8IHMuaWQpICsgJyIgJyArCiAgICAgICAgJ3NhbmRib3g9ImFsbG93LXNjcmlwdHMgYWxsb3ctcG9wdXBzIiByZWZlcnJlcnBvbGljeT0ibm8tcmVmZXJyZXIiPjwvaWZyYW1lPic7CiAgICAgIHJldHVybjsKICAgIH0KCiAgICBpZiAoZW50cnkudHlwZSA9PT0gJ3ZpZGVvJykgewogICAgICBlbC5pbm5lckhUTUwgPSAnPHZpZGVvIHNyYz0iJyArIGVzY2FwZUh0bWwocmVzb2x2ZShzcmMpKSArICciIHBsYXlzaW5saW5lIG11dGVkICcgKwogICAgICAgIChlbnRyeS5wb3N0ZXIgPyAncG9zdGVyPSInICsgZXNjYXBlSHRtbChyZXNvbHZlKGVudHJ5LnBvc3RlcikpICsgJyIgJyA6ICcnKSArCiAgICAgICAgJ2NvbnRyb2xzPjwvdmlkZW8+JzsKICAgICAgcmV0dXJuOwogICAgfQoKICAgIGVsLmlubmVySFRNTCA9ICc8aW1nIHNyYz0iJyArIGVzY2FwZUh0bWwocmVzb2x2ZShzcmMpKSArICciICcgKwogICAgICAnYWx0PSInICsgZXNjYXBlSHRtbChlbnRyeS5hbHQgfHwgJycpICsgJyIgbG9hZGluZz0ibGF6eSIgZGVjb2Rpbmc9ImFzeW5jIj4nOwogIH0KCiAgZnVuY3Rpb24gcmVzb2x2ZShzcmMpIHsKICAgIHJldHVybiAvXihodHRwcz86fGRhdGE6fGJsb2I6fFwvKS8udGVzdChzcmMpID8gc3JjIDogQVNTRVRfQkFTRSArIHNyYzsKICB9CgogIGZ1bmN0aW9uIGFwcGx5KG1hbmlmZXN0KSB7CiAgICB2YXIgYXNzZXRzID0gKG1hbmlmZXN0ICYmIG1hbmlmZXN0LmFzc2V0cykgfHwge307CiAgICB2YXIgbm9kZXMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCdbZGF0YS1zbG90XScpOwogICAgdmFyIGZpbGxlZCA9IDA7CgogICAgZm9yICh2YXIgaSA9IDA7IGkgPCBub2Rlcy5sZW5ndGg7IGkrKykgewogICAgICB2YXIgZWwgPSBub2Rlc1tpXTsKICAgICAgdmFyIGRlY2xhcmVkID0gZ2xvYmFsLkVEUyA/IGdsb2JhbC5FRFMuc2xvdChlbC5nZXRBdHRyaWJ1dGUoJ2RhdGEtc2xvdCcpKSA6IG51bGw7CiAgICAgIHZhciBzID0gc3BlY09mKGVsLCBkZWNsYXJlZCk7CgogICAgICBpZiAocy5yYXRpbyAmJiAhZWwuc3R5bGUuYXNwZWN0UmF0aW8pIGVsLnN0eWxlLmFzcGVjdFJhdGlvID0gcy5yYXRpbzsKCiAgICAgIHZhciBlbnRyeSA9IGFzc2V0c1tzLmlkXTsKICAgICAgaWYgKGVudHJ5ICYmIChlbnRyeS5zcmMgfHwgZW50cnkuc3ZnKSkgewogICAgICAgIHJlbmRlckZpbGxlZChlbCwgcywgZW50cnkpOwogICAgICAgIGZpbGxlZCsrOwogICAgICB9IGVsc2UgaWYgKGVsLnF1ZXJ5U2VsZWN0b3IoJ3N2ZywgaW1nLCBpZnJhbWUsIHZpZGVvJykpIHsKICAgICAgICAvLyBUaGUgc2xvdCBzaGlwcyB3aXRoIGRyYXduIGNvbnRlbnQgKHRoZSBzYW1wbGUgY2hhcnQgYW5kIG1hcCBkbykuCiAgICAgICAgLy8gVGhhdCBpcyBpdHMgZGVmYXVsdCwgbm90IGEgaG9sZSDigJQgbGVhdmUgaXQgdW50aWwgdGhlIG1hbmlmZXN0IGZpbGxzIGl0LgogICAgICAgIGVsLnNldEF0dHJpYnV0ZSgnZGF0YS1zdGF0ZScsICdkZWZhdWx0Jyk7CiAgICAgIH0gZWxzZSB7CiAgICAgICAgcmVuZGVyRW1wdHkoZWwsIHMpOwogICAgICB9CgogICAgICBpZiAocy5jYXB0aW9uKSB7CiAgICAgICAgdmFyIGNhcCA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoJ2ZpZ2NhcHRpb24nKTsKICAgICAgICBjYXAuY2xhc3NOYW1lID0gJ2VkLXNsb3RfX2NhcHRpb24nOwogICAgICAgIGNhcC50ZXh0Q29udGVudCA9IHMuY2FwdGlvbjsKICAgICAgICBpZiAoZWwucGFyZW50Tm9kZSkgZWwucGFyZW50Tm9kZS5pbnNlcnRCZWZvcmUoY2FwLCBlbC5uZXh0U2libGluZyk7CiAgICAgIH0KICAgIH0KCiAgICBkb2N1bWVudC5kb2N1bWVudEVsZW1lbnQuc2V0QXR0cmlidXRlKCdkYXRhLXNsb3RzLWZpbGxlZCcsIGZpbGxlZCArICcvJyArIG5vZGVzLmxlbmd0aCk7CiAgICBnbG9iYWwuZGlzcGF0Y2hFdmVudChuZXcgQ3VzdG9tRXZlbnQoJ2VkOnNsb3RzLXJlYWR5JywgewogICAgICBkZXRhaWw6IHsgdG90YWw6IG5vZGVzLmxlbmd0aCwgZmlsbGVkOiBmaWxsZWQgfQogICAgfSkpOwogIH0KCiAgZnVuY3Rpb24gbG9hZCgpIHsKICAgIC8vIEFuIGlubGluZSBtYW5pZmVzdCBhbHdheXMgd2lucyDigJQgaXQgaXMgd2hhdCBtYWtlcyBmaWxlOi8vIHByZXZpZXdzIHdvcmsuCiAgICBpZiAoZ2xvYmFsLkVEX01BTklGRVNUKSB7IGFwcGx5KGdsb2JhbC5FRF9NQU5JRkVTVCk7IHJldHVybjsgfQogICAgaWYgKHR5cGVvZiBmZXRjaCAhPT0gJ2Z1bmN0aW9uJykgeyBhcHBseShudWxsKTsgcmV0dXJuOyB9CiAgICBmZXRjaChNQU5JRkVTVF9VUkwsIHsgY2FjaGU6ICduby1jYWNoZScgfSkKICAgICAgLnRoZW4oZnVuY3Rpb24gKHIpIHsgcmV0dXJuIHIub2sgPyByLmpzb24oKSA6IG51bGw7IH0pCiAgICAgIC50aGVuKGFwcGx5KQogICAgICAuY2F0Y2goZnVuY3Rpb24gKCkgeyBhcHBseShudWxsKTsgfSk7CiAgfQoKICBpZiAoZG9jdW1lbnQucmVhZHlTdGF0ZSA9PT0gJ2xvYWRpbmcnKSBkb2N1bWVudC5hZGRFdmVudExpc3RlbmVyKCdET01Db250ZW50TG9hZGVkJywgbG9hZCk7CiAgZWxzZSBsb2FkKCk7CgogIGdsb2JhbC5FRFNsb3RzID0geyBhcHBseTogYXBwbHksIHJlbG9hZDogbG9hZCB9Owp9KSh0eXBlb2Ygd2luZG93ICE9PSAndW5kZWZpbmVkJyA/IHdpbmRvdyA6IGdsb2JhbFRoaXMsIGRvY3VtZW50KTsKPC9zY3JpcHQ+CjwvYm9keT4KPC9odG1sPgo=</script>
+    var parts = path.split('.');
+    var cur = scope;
+    for (var i = 0; i < parts.length; i++) {
+      if (cur === null || cur === undefined) return undefined;
+      cur = cur[parts[i]];
+    }
+    return cur;
+  }
 
-<script>
-(function () {
-  var raw = atob(document.getElementById('pv-artboard').textContent.trim());
-  var bytes = new Uint8Array(raw.length);
-  for (var b = 0; b < raw.length; b++) bytes[b] = raw.charCodeAt(b);
-  document.getElementById('pv-doc').srcdoc = new TextDecoder('utf-8').decode(bytes);
-
-  var frame = document.getElementById('pv-frame');
-  var buttons = document.querySelectorAll('.pv-btn');
-  for (var i = 0; i < buttons.length; i++) {
-    buttons[i].addEventListener('click', function (e) {
-      for (var j = 0; j < buttons.length; j++) buttons[j].setAttribute('aria-pressed', 'false');
-      e.currentTarget.setAttribute('aria-pressed', 'true');
-      frame.style.width = e.currentTarget.getAttribute('data-w') + 'px';
+  function interpolate(str, scope) {
+    return str.replace(HOLE, function (_, path) {
+      var v = lookup(path, scope);
+      return v === undefined || v === null ? '' : String(v);
     });
   }
-})();
+
+  function truthy(v) {
+    return Array.isArray(v) ? v.length > 0 : !!v;
+  }
+
+  /* Parsing the template is what makes the console noisy. The moment the parser
+     builds <path d="{{ chart.gridPath }}">, SVG tries to read that as a path,
+     fails, and logs — once per attribute, before any of our code has looked at
+     it. The values are of course replaced a moment later, so the page is
+     correct and the log is pure noise; but 77 lines of it on a page load is not
+     something to leave lying around.
+
+     So any attribute whose value still holds a {{ … }} is renamed to a data-*
+     attribute before the markup is parsed. Nothing validates data-*. The
+     original name is restored in renderNode, which is the only thing that reads
+     these attributes anyway. */
+  var HOLE_ATTR = /(\s)((?!data-hole-)[a-zA-Z_:][-\w:.]*)(\s*=\s*(?:"[^"]*\{\{[^"]*"|'[^']*\{\{[^']*'))/g;
+
+  function shield(html) {
+    return html.replace(HOLE_ATTR, function (_, ws, name, rest) {
+      return ws + 'data-hole-' + name + rest;
+    });
+  }
+
+  var SHIELD_PREFIX = 'data-hole-';
+
+  /* Read an attribute that may have been shielded on the way in. */
+  function attrOf(node, name) {
+    return node.getAttribute(name) || node.getAttribute(SHIELD_PREFIX + name) || '';
+  }
+
+  /* --- rendering ---------------------------------------------------------- */
+
+  function renderNodes(sourceNodes, scope, out) {
+    for (var i = 0; i < sourceNodes.length; i++) renderNode(sourceNodes[i], scope, out);
+  }
+
+  function renderNode(node, scope, out) {
+    if (node.nodeType === 3) {                       // text
+      var text = node.nodeValue;
+      out.appendChild(document.createTextNode(
+        HOLE.test(text) ? (HOLE.lastIndex = 0, interpolate(text, scope)) : text
+      ));
+      HOLE.lastIndex = 0;
+      return;
+    }
+    if (node.nodeType === 8) return;                 // comment — drop
+    if (node.nodeType !== 1) return;
+
+    var tag = node.tagName.toLowerCase();
+
+    if (tag === 'sc-for') {
+      var listAttr = attrOf(node, 'list');
+      var m = listAttr.match(WHOLE_HOLE);
+      var list = m ? lookup(m[1], scope) : [];
+      var as = attrOf(node, 'as') || 'item';
+      if (!Array.isArray(list)) list = [];
+      for (var j = 0; j < list.length; j++) {
+        var child = Object.create(scope);
+        child[as] = list[j];
+        child.$index = j;
+        renderNodes(node.childNodes, child, out);
+      }
+      return;
+    }
+
+    if (tag === 'sc-if') {
+      var valAttr = attrOf(node, 'value');
+      var vm = valAttr.match(WHOLE_HOLE);
+      var val = vm ? lookup(vm[1], scope) : valAttr;
+      if (truthy(val)) renderNodes(node.childNodes, scope, out);
+      return;
+    }
+
+    if (tag === 'dc-import') {
+      var name = attrOf(node, 'name') || 'component';
+      var note = document.createElement('div');
+      note.setAttribute('style',
+        'padding:12px;border:1px dashed rgba(246,243,238,.28);border-radius:3px;' +
+        'font:12px ui-monospace,monospace;color:#97918a');
+      note.textContent = '<dc-import name="' + name + '"> renders on the canvas, not in this standalone preview';
+      out.appendChild(note);
+      return;
+    }
+
+    var el = node.namespaceURI === SVG_NS
+      ? document.createElementNS(SVG_NS, node.tagName)
+      : document.createElement(tag);
+
+    for (var a = 0; a < node.attributes.length; a++) {
+      var attr = node.attributes[a];
+      var an = attr.name, av = attr.value;
+      if (an.indexOf(SHIELD_PREFIX) === 0) an = an.slice(SHIELD_PREFIX.length);
+      if (an.indexOf('hint-') === 0) continue;
+
+      var whole = av.match(WHOLE_HOLE);
+
+      if (/^on[a-z]/.test(an)) {
+        var fn = whole ? lookup(whole[1], scope) : null;
+        if (typeof fn === 'function') el.addEventListener(an.slice(2).toLowerCase(), fn);
+        continue;
+      }
+
+      if (whole) {
+        var raw = lookup(whole[1], scope);
+        if (raw === undefined || raw === null || raw === false) continue;
+        el.setAttribute(an, raw === true ? '' : String(raw));
+      } else {
+        el.setAttribute(an, interpolate(av, scope));
+      }
+    }
+
+    renderNodes(node.childNodes, scope, el);
+    out.appendChild(el);
+  }
+
+  /* Render a node's children into a detached fragment (used for the root). */
+  function renderElement(node, scope) {
+    var frag = document.createDocumentFragment();
+    renderNodes(node.childNodes, scope, frag);
+    return frag;
+  }
+
+  /* --- boot --------------------------------------------------------------- */
+
+  function readProps(scriptEl) {
+    var defaults = {};
+    var raw = scriptEl && scriptEl.getAttribute('data-props');
+    if (!raw) return defaults;
+    var spec;
+    try { spec = JSON.parse(raw); } catch (e) {
+      console.warn('[support.js] data-props is not valid JSON:', e.message);
+      return defaults;
+    }
+    for (var k in spec) {
+      if (k === '$preview') continue;
+      if (spec[k] && typeof spec[k] === 'object' && 'default' in spec[k]) defaults[k] = spec[k]['default'];
+    }
+    // The canvas supplies prop values through its tweak chips. Standalone, they
+    // come from app.config.json, injected by tools/build-preview.mjs.
+    var override = global.ED_PROPS;
+    if (override && typeof override === 'object') {
+      for (var o in override) if (Object.prototype.hasOwnProperty.call(override, o)) defaults[o] = override[o];
+    }
+    return defaults;
+  }
+
+  function boot() {
+    var root = document.querySelector('x-dc');
+    if (!root) return;
+
+    /* The static build parks the markup as raw text and hoists the helmet into
+       the head itself. Raw text is the point: an inert template still builds
+       SVG elements, and an SVG element parses "{{ chart.gridPath }}" as a path
+       the moment the attribute is set, fails, and logs it — before any of this
+       has run. Text is never parsed until we hand it over below. Hoisting the
+       styles also stops them applying a frame late. On the canvas, and when the
+       .dc.html is opened straight from disk, nothing is parked and the markup
+       sits inside the x-dc element as authored. */
+    var parked = document.getElementById('ed-artboard-src');
+    var sourceHtml = parked ? (parked.textContent || parked.innerHTML) : root.innerHTML;
+
+    var template = document.createElement('template');
+    template.content.appendChild(document.createRange().createContextualFragment(shield(sourceHtml)));
+
+    var helmet = template.content.querySelector('helmet');
+    if (helmet) {
+      while (helmet.firstChild) document.head.appendChild(helmet.firstChild);
+      helmet.parentNode.removeChild(helmet);
+    }
+
+    var scriptEl = document.querySelector('script[data-dc-script]');
+    var Comp = null;
+    if (scriptEl && scriptEl.textContent.trim()) {
+      try {
+        Comp = new Function('DCLogic', scriptEl.textContent + '\n;return Component;')(DCLogic);
+      } catch (e) {
+        console.error('[support.js] component script failed:', e);
+      }
+    }
+
+    var instance = Comp ? new Comp(readProps(scriptEl)) : new DCLogic(readProps(scriptEl));
+
+    function draw() {
+      var vals = instance.renderVals() || {};
+      var scope = Object.create(vals);
+      scope.props = instance.props;
+      scope.state = instance.state;
+      root.innerHTML = '';
+      root.appendChild(renderElement(template.content, scope));
+    }
+
+    instance.__rerender = draw;
+    draw();
+    if (typeof instance.componentDidMount === 'function') instance.componentDidMount();
+
+    global.__ED_COMPONENT__ = instance;
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
+})(typeof window !== 'undefined' ? window : globalThis, document);
+</script>
+</head>
+<body>
+<x-dc></x-dc>
+<script type="text/plain" id="ed-artboard-src">
+<div class="ed-root ed-root--{{density}}" style="--accent: {{accent}}">
+
+  <!-- ===================================================================
+       Market rail. Values come from SAMPLE_RAIL in the logic block below.
+       Point liveDataUrl at the live data app and the chip flips to LIVE;
+       swap SAMPLE_RAIL for a fetch in componentDidMount to wire it for real.
+       =================================================================== -->
+  <sc-if value="{{showMarketRail}}" hint-placeholder-val="{{true}}">
+  <div style="background: #0d0b09; border-bottom: 1px solid rgba(246,243,238,0.14)">
+    <div class="ed-wrap" style="display: flex; align-items: center; gap: 20px; min-height: 46px">
+      <span class="ed-chip {{feed.chipClass}}">{{feed.label}}</span>
+      <div class="ed-rail-list" style="display: flex; align-items: center; gap: 28px; flex-grow: 1">
+        <sc-for list="{{rail}}" as="row" hint-placeholder-count="7">
+          <div style="display: flex; align-items: baseline; gap: 8px; white-space: nowrap">
+            <span style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; color: #97918a">{{row.code}}</span>
+            <span class="ed-num" style="font-size: 13px; color: #f6f3ee">{{row.value}}</span>
+            <span class="ed-num" style="font-size: 11px; color: {{row.color}}">{{row.change}}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ===== Masthead ==================================================== -->
+  <header class="ed-wrap ed-masthead" style="display: flex; align-items: center; justify-content: space-between; gap: 32px; padding-block: 26px">
+    <a class="ed-story-link" href="#top" style="display: flex; align-items: baseline; gap: 14px">
+      <!-- Slot: masthead-logo. Optional — remove this wordmark if you fill it. -->
+      <span style="font-family: var(--display); font-size: 27px; font-weight: 600; letter-spacing: -0.02em; color: #f6f3ee">{{brandName}}</span>
+      <span style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #6d6861">Nordics&nbsp;&amp;&nbsp;Baltics</span>
+    </a>
+    <nav class="ed-nav" style="display: flex; align-items: center; gap: 26px">
+      <a class="ed-navlink" href="#analysis">Analysis</a>
+      <a class="ed-navlink" href="#markets">Markets</a>
+      <a class="ed-navlink" href="#reports">Reports</a>
+      <a class="ed-cta ed-cta--ghost" style="min-height: 40px; padding: 0 16px; font-size: 14px" href="#subscribe">Subscribe</a>
+    </nav>
+  </header>
+  <hr class="ed-hairline">
+
+  <!-- ===================================================================
+       Hero. Left is the lead analysis, right is the primary conversion.
+       The signup sits above the fold on purpose: the newsletter is the
+       product the page is actually selling.
+       =================================================================== -->
+  <section class="ed-wrap" style="padding-block: 52px 0" id="analysis">
+    <div class="ed-hero-grid" style="display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 52px; align-items: start">
+
+      <div style="display: flex; flex-direction: column; gap: 20px">
+        <p class="ed-kicker">{{lead.kicker}}</p>
+        <a class="ed-story-link" href="{{lead.href}}">
+          <h1>{{lead.title}}</h1>
+        </a>
+        <p style="font-family: var(--display); font-size: 20px; line-height: 1.45; color: #cfc8bf; max-width: 50ch">{{lead.dek}}</p>
+        <p style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #6d6861">
+          {{lead.byline}} &middot; {{lead.dateLabel}} &middot; {{lead.readingTime}}
+        </p>
+
+        <div style="display: flex; flex-direction: column">
+          <figure class="ed-slot ed-slot--empty" data-slot="finland-photo" data-kind="photo" data-ratio="16/9" data-min-width="2000" style="aspect-ratio: 16 / 9">
+            <span style="color: #97918a">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5.5h4l1.4-2h7.2L17 5.5h4v13H3z"></path><circle cx="12" cy="12" r="3.6"></circle></svg>
+            </span>
+            <span class="ed-slot__id">finland-photo</span>
+            <span class="ed-slot__spec">photo &middot; 16:9 &middot; 2000px min</span>
+          </figure>
+          <figcaption class="ed-slot__caption">[PHOTO CAPTION] &middot; [CREDIT]</figcaption>
+        </div>
+
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 14px; padding-top: 4px">
+          <a class="ed-cta" href="{{lead.href}}">
+            Read the analysis
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M12.5 6l6 6-6 6"></path></svg>
+          </a>
+          <a class="ed-cta ed-cta--ghost" href="#markets">See the numbers</a>
+        </div>
+      </div>
+
+      <!-- Primary conversion ------------------------------------------- -->
+      <aside class="ed-signup" id="subscribe">
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <p class="ed-kicker">{{nl.name}}</p>
+          <h2 style="font-size: 27px">{{nl.headline}}</h2>
+          <p style="font-size: 15px; line-height: 1.55; color: #a9a29a">{{nl.promise}}</p>
+        </div>
+
+        <ul class="ed-ticks">
+          <sc-for list="{{nl.bullets}}" as="b" hint-placeholder-count="4">
+            <li>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>
+              <span>{{b}}</span>
+            </li>
+          </sc-for>
+        </ul>
+
+        <sc-if value="{{nl.wired}}">
+          <form class="ed-signup__row" action="{{nl.action}}" method="{{nl.method}}" target="_blank" rel="noopener">
+            <label class="ed-vh" for="ed-email-hero">Email address</label>
+            <input class="ed-input" id="ed-email-hero" type="email" name="{{nl.field}}" placeholder="you@company.com" autocomplete="email" required>
+            <button class="ed-cta" type="submit">{{nl.submitLabel}}</button>
+          </form>
+        </sc-if>
+        <sc-if value="{{nl.unwired}}">
+          <div class="ed-signup__row" aria-hidden="true">
+            <span class="ed-input ed-input--dead">you@company.com</span>
+            <span class="ed-cta ed-cta--dead">{{nl.submitLabel}}</span>
+          </div>
+          <p class="ed-warn">{{nl.warning}}</p>
+        </sc-if>
+
+        <p style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: #6d6861">
+          {{nl.cadence}} &middot; {{nl.reassurance}}
+        </p>
+      </aside>
+
+    </div>
+  </section>
+
+  <!-- ===== Second feature ============================================== -->
+  <section class="ed-wrap" style="padding-block: 72px 0" id="renewables">
+    <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 20px; padding-bottom: 20px">
+      <h2 style="font-size: 24px">Also on the desk</h2>
+      <a href="#reports" style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase">Research catalogue</a>
+    </div>
+    <hr class="ed-hairline">
+
+    <div class="ed-feature-grid" style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 44px; align-items: center; padding-top: 34px">
+      <figure class="ed-slot ed-slot--empty" data-slot="lithuania-chart" data-kind="chart" data-ratio="4/3" data-min-width="1400" style="aspect-ratio: 4 / 3">
+        <span style="color: #00c7a6">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V9.5M10 20V4.5M16 20v-7M22 20H2"></path></svg>
+        </span>
+        <span class="ed-slot__id">lithuania-chart</span>
+        <span class="ed-slot__spec">chart &middot; 4:3 &middot; 1400px min</span>
+      </figure>
+
+      <article style="display: flex; flex-direction: column; gap: 16px">
+        <p class="ed-kicker">{{second.kicker}}</p>
+        <a class="ed-story-link" href="{{second.href}}"><h2>{{second.title}}</h2></a>
+        <p style="font-size: 16px; line-height: 1.6; color: #a9a29a; max-width: 56ch">{{second.dek}}</p>
+        <p style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #6d6861">
+          {{second.byline}} &middot; {{second.dateLabel}} &middot; {{second.readingTime}}
+        </p>
+        <div style="padding-top: 4px">
+          <a class="ed-cta ed-cta--ghost" href="{{second.href}}">
+            Read the analysis
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M12.5 6l6 6-6 6"></path></svg>
+          </a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===================================================================
+       Data panels. Both slots ship with a drawn sample so the layout reads
+       before any asset exists. Filling the slot in assets/manifest.json
+       replaces the drawing — with a file, a pasted SVG, or a live embed URL
+       from the data app.
+       =================================================================== -->
+  <section class="ed-wrap" style="padding-block: 80px 0" id="markets">
+    <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 20px; padding-bottom: 20px">
+      <h2 style="font-size: 24px">The numbers behind the story</h2>
+      <span class="ed-chip {{feed.chipClass}}">{{feed.label}}</span>
+    </div>
+    <hr class="ed-hairline">
+
+    <div class="ed-data-grid" style="display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 32px; padding-top: 32px">
+
+      <!-- Panel: day-ahead power ---------------------------------------- -->
+      <div class="ed-panel" style="display: flex; flex-direction: column; gap: 16px; padding: 24px; background: #0d0b09; border: 1px solid rgba(246,243,238,0.14); border-radius: 3px">
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 16px">
+          <div style="display: flex; flex-direction: column; gap: 4px">
+            <h3 style="font-size: 18px">Day-ahead power, 30 days</h3>
+            <p style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: #6d6861">&euro;/MWh &middot; baseload &middot; FI, SE3, LT</p>
+          </div>
+        </div>
+
+        <div class="ed-chart-scroll">
+        <figure class="ed-slot" data-slot="prices-chart" data-kind="chart" data-ratio="16/9" data-min-width="1800" style="aspect-ratio: 16 / 9; background: transparent; border: 0">
+          <svg viewBox="0 0 960 420" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Day-ahead baseload power prices over thirty days for Finland, Sweden SE3 and Lithuania">
+            <path d="{{chart.gridPath}}" fill="none" stroke="rgba(246,243,238,0.10)" stroke-width="1"></path>
+            <text x="60" y="{{chart.g0.ty}}" text-anchor="end" fill="#6d6861" font-family="IBM Plex Mono, monospace" font-size="19">{{chart.g0.label}}</text>
+            <text x="60" y="{{chart.g1.ty}}" text-anchor="end" fill="#6d6861" font-family="IBM Plex Mono, monospace" font-size="19">{{chart.g1.label}}</text>
+            <text x="60" y="{{chart.g2.ty}}" text-anchor="end" fill="#6d6861" font-family="IBM Plex Mono, monospace" font-size="19">{{chart.g2.label}}</text>
+            <text x="60" y="{{chart.g3.ty}}" text-anchor="end" fill="#6d6861" font-family="IBM Plex Mono, monospace" font-size="19">{{chart.g3.label}}</text>
+            <text x="60" y="{{chart.g4.ty}}" text-anchor="end" fill="#6d6861" font-family="IBM Plex Mono, monospace" font-size="19">{{chart.g4.label}}</text>
+            <line x1="68" x2="880" y1="372" y2="372" stroke="rgba(246,243,238,0.22)" stroke-width="1"></line>
+            <text x="{{chart.t0.x}}" y="408" text-anchor="middle" fill="#6d6861" font-family="IBM Plex Mono, monospace" font-size="19">{{chart.t0.label}}</text>
+            <text x="{{chart.t1.x}}" y="408" text-anchor="middle" fill="#6d6861" font-family="IBM Plex Mono, monospace" font-size="19">{{chart.t1.label}}</text>
+            <text x="{{chart.t2.x}}" y="408" text-anchor="middle" fill="#6d6861" font-family="IBM Plex Mono, monospace" font-size="19">{{chart.t2.label}}</text>
+            <text x="{{chart.t3.x}}" y="408" text-anchor="middle" fill="#6d6861" font-family="IBM Plex Mono, monospace" font-size="19">{{chart.t3.label}}</text>
+            <text x="{{chart.t4.x}}" y="408" text-anchor="middle" fill="#6d6861" font-family="IBM Plex Mono, monospace" font-size="19">{{chart.t4.label}}</text>
+            <path d="{{chart.s0.d}}" fill="none" stroke="{{chart.s0.color}}" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"></path>
+            <path d="{{chart.s1.d}}" fill="none" stroke="{{chart.s1.color}}" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"></path>
+            <path d="{{chart.s2.d}}" fill="none" stroke="{{chart.s2.color}}" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"></path>
+            <text x="890" y="{{chart.s0.ly}}" fill="{{chart.s0.color}}" font-family="IBM Plex Mono, monospace" font-size="20" font-weight="500">{{chart.s0.label}}</text>
+            <text x="890" y="{{chart.s1.ly}}" fill="{{chart.s1.color}}" font-family="IBM Plex Mono, monospace" font-size="20" font-weight="500">{{chart.s1.label}}</text>
+            <text x="890" y="{{chart.s2.ly}}" fill="{{chart.s2.color}}" font-family="IBM Plex Mono, monospace" font-size="20" font-weight="500">{{chart.s2.label}}</text>
+          </svg>
+        </figure>
+        </div>
+
+        <p style="font-size: 12px; line-height: 1.5; color: #6d6861">
+          Sample series, drawn from <span class="ed-num">SAMPLE_PRICES</span> in this artboard&#39;s logic block &mdash; illustrative of the
+          FI&ndash;LT spread, not a quotation. Replace it with the live series, or fill the
+          <span class="ed-num">prices-chart</span> slot with the data app&#39;s embed.
+        </p>
+      </div>
+
+      <!-- Panel: cross-border flows -------------------------------------- -->
+      <div class="ed-panel" style="display: flex; flex-direction: column; gap: 16px; padding: 24px; background: #0d0b09; border: 1px solid rgba(246,243,238,0.14); border-radius: 3px">
+        <div style="display: flex; flex-direction: column; gap: 4px">
+          <h3 style="font-size: 18px">The Nordic&ndash;Baltic corridor</h3>
+          <p style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: #6d6861">Schematic &middot; net flow, share of capacity</p>
+        </div>
+
+        <figure class="ed-slot" data-slot="flows-map" data-kind="map" data-ratio="4/3" data-min-width="1400" style="aspect-ratio: 4 / 3; background: transparent; border: 0">
+          <svg viewBox="0 0 640 480" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Schematic map of net cross-border electricity flows across the Nordic and Baltic bidding zones">
+            <defs>
+              <marker id="ed-flow-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="14" markerHeight="14"
+                      markerUnits="userSpaceOnUse" orient="auto-start-reverse">
+                <path d="M0 1 L9 5 L0 9 z" fill="#e7963d"></path>
+              </marker>
+            </defs>
+            <line x1="{{map.l0.x1}}" y1="{{map.l0.y1}}" x2="{{map.l0.x2}}" y2="{{map.l0.y2}}" stroke="{{map.l0.color}}" stroke-width="{{map.l0.width}}" stroke-linecap="round" marker-end="url(#ed-flow-arrow)"></line>
+            <line x1="{{map.l1.x1}}" y1="{{map.l1.y1}}" x2="{{map.l1.x2}}" y2="{{map.l1.y2}}" stroke="{{map.l1.color}}" stroke-width="{{map.l1.width}}" stroke-linecap="round" marker-end="url(#ed-flow-arrow)"></line>
+            <line x1="{{map.l2.x1}}" y1="{{map.l2.y1}}" x2="{{map.l2.x2}}" y2="{{map.l2.y2}}" stroke="{{map.l2.color}}" stroke-width="{{map.l2.width}}" stroke-linecap="round" marker-end="url(#ed-flow-arrow)"></line>
+            <line x1="{{map.l3.x1}}" y1="{{map.l3.y1}}" x2="{{map.l3.x2}}" y2="{{map.l3.y2}}" stroke="{{map.l3.color}}" stroke-width="{{map.l3.width}}" stroke-linecap="round" marker-end="url(#ed-flow-arrow)"></line>
+            <line x1="{{map.l4.x1}}" y1="{{map.l4.y1}}" x2="{{map.l4.x2}}" y2="{{map.l4.y2}}" stroke="{{map.l4.color}}" stroke-width="{{map.l4.width}}" stroke-linecap="round" marker-end="url(#ed-flow-arrow)"></line>
+            <line x1="{{map.l5.x1}}" y1="{{map.l5.y1}}" x2="{{map.l5.x2}}" y2="{{map.l5.y2}}" stroke="{{map.l5.color}}" stroke-width="{{map.l5.width}}" stroke-linecap="round" marker-end="url(#ed-flow-arrow)"></line>
+            <line x1="{{map.l6.x1}}" y1="{{map.l6.y1}}" x2="{{map.l6.x2}}" y2="{{map.l6.y2}}" stroke="{{map.l6.color}}" stroke-width="{{map.l6.width}}" stroke-linecap="round" marker-end="url(#ed-flow-arrow)"></line>
+            <line x1="{{map.l7.x1}}" y1="{{map.l7.y1}}" x2="{{map.l7.x2}}" y2="{{map.l7.y2}}" stroke="{{map.l7.color}}" stroke-width="{{map.l7.width}}" stroke-linecap="round" marker-end="url(#ed-flow-arrow)"></line>
+            <circle cx="{{map.n0.x}}" cy="{{map.n0.y}}" r="30" fill="#14110e" stroke="rgba(246,243,238,0.28)" stroke-width="1"></circle>
+            <circle cx="{{map.n1.x}}" cy="{{map.n1.y}}" r="30" fill="#14110e" stroke="rgba(246,243,238,0.28)" stroke-width="1"></circle>
+            <circle cx="{{map.n2.x}}" cy="{{map.n2.y}}" r="30" fill="#14110e" stroke="rgba(246,243,238,0.28)" stroke-width="1"></circle>
+            <circle cx="{{map.n3.x}}" cy="{{map.n3.y}}" r="30" fill="#14110e" stroke="rgba(246,243,238,0.28)" stroke-width="1"></circle>
+            <circle cx="{{map.n4.x}}" cy="{{map.n4.y}}" r="30" fill="#14110e" stroke="rgba(246,243,238,0.28)" stroke-width="1"></circle>
+            <circle cx="{{map.n5.x}}" cy="{{map.n5.y}}" r="30" fill="#14110e" stroke="rgba(246,243,238,0.28)" stroke-width="1"></circle>
+            <circle cx="{{map.n6.x}}" cy="{{map.n6.y}}" r="30" fill="#14110e" stroke="rgba(246,243,238,0.28)" stroke-width="1"></circle>
+            <text x="{{map.n0.x}}" y="{{map.n0.ty}}" text-anchor="middle" fill="#f6f3ee" font-family="IBM Plex Mono, monospace" font-size="22" font-weight="500">{{map.n0.code}}</text>
+            <text x="{{map.n1.x}}" y="{{map.n1.ty}}" text-anchor="middle" fill="#f6f3ee" font-family="IBM Plex Mono, monospace" font-size="22" font-weight="500">{{map.n1.code}}</text>
+            <text x="{{map.n2.x}}" y="{{map.n2.ty}}" text-anchor="middle" fill="#f6f3ee" font-family="IBM Plex Mono, monospace" font-size="22" font-weight="500">{{map.n2.code}}</text>
+            <text x="{{map.n3.x}}" y="{{map.n3.ty}}" text-anchor="middle" fill="#f6f3ee" font-family="IBM Plex Mono, monospace" font-size="22" font-weight="500">{{map.n3.code}}</text>
+            <text x="{{map.n4.x}}" y="{{map.n4.ty}}" text-anchor="middle" fill="#f6f3ee" font-family="IBM Plex Mono, monospace" font-size="22" font-weight="500">{{map.n4.code}}</text>
+            <text x="{{map.n5.x}}" y="{{map.n5.ty}}" text-anchor="middle" fill="#f6f3ee" font-family="IBM Plex Mono, monospace" font-size="22" font-weight="500">{{map.n5.code}}</text>
+            <text x="{{map.n6.x}}" y="{{map.n6.ty}}" text-anchor="middle" fill="#f6f3ee" font-family="IBM Plex Mono, monospace" font-size="22" font-weight="500">{{map.n6.code}}</text>
+          </svg>
+        </figure>
+
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 14px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: #6d6861">
+          <span style="display: inline-flex; align-items: center; gap: 6px">
+            <svg width="22" height="8" viewBox="0 0 22 8" aria-hidden="true"><line x1="1" y1="4" x2="16" y2="4" stroke="#e7963d" stroke-width="2" stroke-linecap="round"></line><path d="M15 1 L21 4 L15 7 z" fill="#e7963d"></path></svg>
+            net flow
+          </span>
+          <span>width = share of capacity</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===================================================================
+       Paid research. Tiers come from app.config.json. A tier with no
+       checkoutUrl falls back to the newsletter as a waitlist and says so on
+       the card, rather than showing a button that goes nowhere.
+       =================================================================== -->
+  <section class="ed-wrap" style="padding-block: 88px 0" id="reports">
+    <div style="display: flex; flex-direction: column; gap: 14px; max-width: 62ch">
+      <p class="ed-kicker">Research</p>
+      <h2>The newsletter is free. The working behind it is what you pay for.</h2>
+      <p style="font-size: 16px; line-height: 1.6; color: #a9a29a">
+        Deep-dives on one market and one question at a time, with the series, the assumptions and the
+        scenario ranges shipped alongside the prose. Buy a single report, or subscribe to the lot.
+      </p>
+    </div>
+
+    <div class="ed-tier-grid" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; padding-top: 36px">
+      <sc-for list="{{tiers}}" as="t" hint-placeholder-count="3">
+        <div class="ed-tier {{t.featuredClass}}">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px">
+            <h3 style="font-size: 20px">{{t.name}}</h3>
+            <span class="ed-chip {{t.chipClass}}">{{t.kind}}</span>
+          </div>
+
+          <div class="ed-tier__price">
+            <span class="ed-tier__amount {{t.amountClass}}">{{t.amount}}</span>
+            <span class="ed-tier__unit">{{t.unit}}</span>
+          </div>
+
+          <p style="font-size: 14px; line-height: 1.55; color: #a9a29a">{{t.summary}}</p>
+
+          <ul class="ed-ticks">
+            <sc-for list="{{t.features}}" as="f" hint-placeholder-count="4">
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>
+                <span>{{f}}</span>
+              </li>
+            </sc-for>
+          </ul>
+
+          <div class="ed-tier__spacer"></div>
+          <a class="ed-cta ed-cta--block {{t.ctaClass}}" href="{{t.href}}">{{t.cta}}</a>
+          <p style="font-family: var(--mono); font-size: 11px; line-height: 1.5; letter-spacing: 0.04em; color: {{t.noteColor}}">{{t.note}}</p>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- ===== Newsletter band (second conversion point) ==================== -->
+  <section style="margin-top: var(--band); background: #221e1a; border-block: 1px solid rgba(246,243,238,0.14)" id="subscribe-band">
+    <div class="ed-wrap ed-hero-grid" style="display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 44px; align-items: center; padding-block: 52px">
+      <div style="display: flex; flex-direction: column; gap: 12px; max-width: 56ch">
+        <p class="ed-kicker">{{nl.name}}</p>
+        <h2 style="font-size: 30px">{{nl.bandHeadline}}</h2>
+        <p style="font-size: 16px; line-height: 1.55; color: #a9a29a">{{nl.promise}}</p>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px">
+        <sc-if value="{{nl.wired}}">
+          <form class="ed-signup__row" action="{{nl.action}}" method="{{nl.method}}" target="_blank" rel="noopener">
+            <label class="ed-vh" for="ed-email-band">Email address</label>
+            <input class="ed-input" id="ed-email-band" type="email" name="{{nl.field}}" placeholder="you@company.com" autocomplete="email" required>
+            <button class="ed-cta" type="submit">{{nl.submitLabel}}</button>
+          </form>
+        </sc-if>
+        <sc-if value="{{nl.unwired}}">
+          <div class="ed-signup__row" aria-hidden="true">
+            <span class="ed-input ed-input--dead">you@company.com</span>
+            <span class="ed-cta ed-cta--dead">{{nl.submitLabel}}</span>
+          </div>
+          <p class="ed-warn">{{nl.warning}}</p>
+        </sc-if>
+        <p style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: #6d6861">
+          {{nl.cadence}} &middot; {{nl.reassurance}}
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Live data app band ========================================== -->
+  <section class="ed-wrap" style="padding-block: 56px 0" id="live-data-app">
+    <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 28px; padding: 28px; background: #0d0b09; border: 1px solid rgba(246,243,238,0.14); border-radius: 3px">
+      <div style="display: flex; flex-direction: column; gap: 10px; max-width: 58ch">
+        <p class="ed-kicker">The live data app</p>
+        <h3 style="font-size: 21px">Prices, flows, capture rates and connection queues &mdash; continuously</h3>
+        <p style="font-size: 15px; line-height: 1.55; color: #a9a29a">
+          Every figure on this page is a view onto the same feed. Open it to drill into a bidding zone,
+          pin a spread, or export the series behind any chart.
+        </p>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px; align-items: flex-start">
+        <a class="ed-cta {{feed.ctaClass}}" href="{{liveDataHref}}" target="_blank" rel="noopener">
+          {{liveDataLabel}}
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"></path></svg>
+        </a>
+        <span class="ed-num" style="font-size: 11px; letter-spacing: 0.04em; color: {{feed.hintColor}}">{{feed.hint}}</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Footer ====================================================== -->
+  <footer class="ed-wrap" style="padding-block: 56px 64px">
+    <div class="ed-foot-grid" style="display: grid; grid-template-columns: minmax(0, 1.6fr) repeat(3, minmax(0, 1fr)); gap: 40px">
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <span style="font-family: var(--display); font-size: 22px; font-weight: 600; letter-spacing: -0.02em">{{brandName}}</span>
+        <p style="font-size: 14px; line-height: 1.5; color: #97918a; max-width: 34ch">{{brandTagline}}</p>
+        <p style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: #6d6861">{{brandContact}}</p>
+      </div>
+      <sc-for list="{{footer}}" as="col" hint-placeholder-count="3">
+        <div style="display: flex; flex-direction: column; gap: 10px">
+          <p class="ed-kicker" style="color: #6d6861">{{col.title}}</p>
+          <sc-for list="{{col.links}}" as="link" hint-placeholder-count="4">
+            <a class="ed-navlink" style="font-size: 14px" href="{{link.href}}">{{link.label}}</a>
+          </sc-for>
+        </div>
+      </sc-for>
+    </div>
+    <hr class="ed-hairline" style="margin-top: 44px">
+    <p style="padding-top: 20px; font-family: var(--mono); font-size: 11px; line-height: 1.6; letter-spacing: 0.06em; color: #6d6861">
+      &copy; {{year}} {{brandName}} &middot; Independent research. Nothing here is investment advice.
+      Market figures on this page are sample values until the live data app is connected.
+    </p>
+  </footer>
+
+</div>
 </script>
 
+<script data-dc-script data-props='{
+  "brandName": {"editor": "text", "default": "Boreal Grid", "tsType": "string", "section": "Brand"},
+  "brandTagline": {"editor": "text", "default": "Nordic and Baltic power markets, decomposed.", "tsType": "string", "section": "Brand"},
+  "brandContact": {"editor": "text", "default": "[CONTACT EMAIL]", "tsType": "string", "section": "Brand"},
+  "newsletterJson": {"editor": "text", "default": "", "tsType": "string", "section": "Newsletter"},
+  "tiersJson": {"editor": "text", "default": "", "tsType": "string", "section": "Reports"},
+  "storiesJson": {"editor": "text", "default": "", "tsType": "string", "section": "Stories"},
+  "railJson": {"editor": "text", "default": "", "tsType": "string", "section": "Live data"},
+  "liveDataUrl": {"editor": "text", "default": "", "tsType": "string", "section": "Live data"},
+  "liveDataLabel": {"editor": "text", "default": "Open the live data app", "tsType": "string", "section": "Live data"},
+  "accent": {"editor": "color", "default": "#e7963d", "options": ["#e7963d", "#00c7a6", "#b995f6", "#f6f3ee"], "section": "Theme"},
+  "density": {"editor": "enum", "options": ["editorial", "compact"], "default": "editorial", "section": "Theme"},
+  "showMarketRail": {"editor": "boolean", "default": true, "section": "Layout"},
+  "$preview": {"width": 1440, "height": 3400}
+}'>
+class Component extends DCLogic {
+
+  /* -----------------------------------------------------------------------
+     Sample data. Everything below is illustrative and marked as such in the
+     UI until `liveDataUrl` is set. To go live, replace SAMPLE_RAIL and
+     SAMPLE_PRICES with a fetch in componentDidMount() and call setState.
+
+     The three JSON props (newsletterJson, tiersJson, storiesJson) are how the
+     repo build feeds app.config.json and content/articles.json in. On the
+     canvas they are normally empty, and the defaults below render instead, so
+     the artboard is never a page of blank slots.
+     ----------------------------------------------------------------------- */
+
+  static get SAMPLE_RAIL() {
+    return [
+      { code: 'FI',       value: '14.40', change: -18.6 },
+      { code: 'SE3',      value: '31.05', change: -7.2 },
+      { code: 'NO2',      value: '38.90', change: 2.1 },
+      { code: 'EE',       value: '76.20', change: 3.4 },
+      { code: 'LV',       value: '79.55', change: 3.9 },
+      { code: 'LT',       value: '81.00', change: 4.6 },
+      { code: 'TTF M+1',  value: '31.15', change: -1.2 }
+    ];
+  }
+
+  /* Thirty sessions of day-ahead baseload. Shaped to show the structural
+     FI–LT spread rather than to quote any particular day. */
+  static get SAMPLE_PRICES() {
+    return [
+      { label: 'FI',  color: '#00c7a6', values: [12,8,3,24,41,9,5,2,18,36,52,14,6,3,27,48,11,4,2,21,39,58,72,31,9,4,2,16,44,19] },
+      { label: 'SE3', color: '#b995f6', values: [28,24,19,38,52,26,21,17,33,49,61,30,22,18,41,57,28,20,16,36,51,66,78,45,25,19,17,31,55,34] },
+      { label: 'LT',  color: '#e7963d', values: [74,68,61,83,96,71,65,58,79,92,104,76,66,60,86,99,73,64,57,81,94,108,119,89,70,62,59,77,97,80] }
+    ];
+  }
+
+  /* Schematic, not geographic: nodes are bidding zones, edges are the
+     interconnectors that set the Nordic–Baltic spread — Fenno-Skan, EstLink,
+     the Estonian and Latvian borders, NordBalt, LitPol and SwePol. */
+  static get SAMPLE_FLOWS() {
+    return {
+      nodes: [
+        { code: 'NO', x: 150, y: 96 },
+        { code: 'SE', x: 272, y: 128 },
+        { code: 'FI', x: 434, y: 82 },
+        { code: 'EE', x: 452, y: 218 },
+        { code: 'LV', x: 428, y: 302 },
+        { code: 'LT', x: 392, y: 384 },
+        { code: 'PL', x: 236, y: 428 }
+      ],
+      links: [
+        { from: 'NO', to: 'SE', share: 0.55 },
+        { from: 'SE', to: 'FI', share: 0.78 },
+        { from: 'FI', to: 'EE', share: 0.86 },
+        { from: 'EE', to: 'LV', share: 0.72 },
+        { from: 'LV', to: 'LT', share: 0.64 },
+        { from: 'SE', to: 'LT', share: 0.81 },
+        { from: 'LT', to: 'PL', share: 0.38 },
+        { from: 'SE', to: 'PL', share: 0.29 }
+      ]
+    };
+  }
+
+  static get DEFAULT_NEWSLETTER() {
+    return {
+      name: 'The Monday Curve',
+      headline: 'The week in Nordic and Baltic power, before the week starts',
+      bandHeadline: 'Start Monday knowing what moved, and why',
+      promise: 'One email a week. The Nordic and Baltic price action decomposed, plus the capacity, tender and grid-connection news that actually moves it.',
+      cadence: 'Every Monday, 07:00 EET',
+      submitLabel: 'Get the briefing',
+      reassurance: 'No spam. One click to leave.',
+      action: '',
+      method: 'post',
+      field: 'email',
+      bullets: [
+        'FI, SE, NO, EE, LV and LT day-ahead and balancing spreads, decomposed',
+        'Capture prices for wind and solar, tracked against the baseload curve',
+        'Connection queues, tenders and interconnector milestones that reprice the curve',
+        'Written for people who have to act on it, not for a press round-up'
+      ]
+    };
+  }
+
+  static get DEFAULT_TIERS() {
+    return [
+      { id: 'single', name: 'Single report', kind: 'One-time', price: '', unit: 'per report',
+        summary: 'One market, one question, answered with the working shown.',
+        features: ['40–60 pages, hourly-resolution price decomposition', 'Every chart shipped as the underlying CSV', 'Scenario ranges with the assumptions listed', 'Twelve months of errata and corrections'],
+        checkoutUrl: '', cta: 'Buy this report' },
+      { id: 'quarterly', name: 'Research subscription', kind: 'Quarterly', price: '', unit: 'per quarter', featured: true,
+        summary: 'Everything we publish, plus the tracker that sits behind it.',
+        features: ['Every deep-dive report as it ships', 'Nordic–Baltic capacity and connection-queue tracker', 'Capture-price and spread series for FI, SE3, SE4, EE, LV, LT', 'Analyst Q&A on anything we have published'],
+        checkoutUrl: '', cta: 'Start a subscription' },
+      { id: 'desk', name: 'Desk and enterprise', kind: 'Bespoke', price: '', unit: 'on application',
+        summary: 'Your question, our data, under your assumptions.',
+        features: ['Commissioned analysis on a defined question', 'Seat licences for a team or an investment committee', 'Model review — we mark your capture-price assumptions', 'Data delivered by API into your own stack'],
+        checkoutUrl: '', cta: 'Talk to the desk' }
+    ];
+  }
+
+  static get DEFAULT_STORIES() {
+    return [
+      { kicker: 'Analysis · Finland',
+        title: "Finland is Europe's cheapest power market and its most volatile — for the same reason",
+        dek: 'Day-ahead averages have spent much of 2026 in the low teens per megawatt-hour. Balancing energy in the same country has cleared above €600/MWh on a monthly average. Those two facts are the same fact, seen from two different markets.',
+        byline: 'Boreal Grid Research', published: '2026-09-15', readingTime: '8 min read', href: '#analysis' },
+      { kicker: 'Analysis · Lithuania',
+        title: 'Lithuania is adding renewables faster than it is adding the grid to carry them',
+        dek: 'Solar passed 3 GW in March. Wind and solar together already cover 68% of demand. Another 4 GW of solar holds technical permits. The binding constraint has quietly moved from megawatts to euros per megawatt-hour.',
+        byline: 'Boreal Grid Research', published: '2026-09-16', readingTime: '9 min read', href: '#renewables' }
+    ];
+  }
+
+  /* --- helpers ----------------------------------------------------------- */
+
+  /* Props arrive as JSON strings so the canvas can carry structured content in
+     a plain text tweak. A malformed string falls back to the default rather
+     than blanking the section — a half-rendered page is harder to debug than
+     a page that quietly shows its defaults and logs why. */
+  parseProp(raw, fallback) {
+    const text = (raw ?? '').trim();
+    if (!text) return fallback;
+    try {
+      const parsed = JSON.parse(text);
+      return (parsed === null || parsed === undefined) ? fallback : parsed;
+    } catch (e) {
+      console.warn('[artboard] prop is not valid JSON, using the default:', e.message);
+      return fallback;
+    }
+  }
+
+  formatDate(iso) {
+    const t = Date.parse(iso);
+    if (isNaN(t)) return String(iso);
+    const d = new Date(t);
+    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    return d.getUTCDate() + ' ' + months[d.getUTCMonth()] + ' ' + d.getUTCFullYear();
+  }
+
+  /* -----------------------------------------------------------------------
+     Chart and map geometry.
+
+     Both emit numbered keys (chart.s0, map.n3, ...) rather than arrays, because
+     the markup inside <svg> is written out element by element: a template tag
+     such as <sc-for> inside an <svg> is parsed into the SVG namespace, where it
+     is not a control-flow element. Keeping the SVG free of custom elements is
+     what makes these panels render the same way in the canvas, in the standalone
+     preview and in a PNG/PDF export.
+
+     The counts are therefore fixed by the markup: 3 series, 5 gridlines,
+     5 x-axis ticks, 7 nodes, 8 links. Add a series and you add its two SVG
+     elements too.
+     ----------------------------------------------------------------------- */
+
+  buildChart() {
+    const series = Component.SAMPLE_PRICES;
+    const L = 68, R = 880, T = 26, B = 372;    // plot box inside the 960x420 viewBox
+    const lo = 0, hi = 140, step = 35;         // rounded axis bounds around the data
+    const n = series[0].values.length;
+
+    const px = (i) => L + (R - L) * (i / (n - 1));
+    const py = (v) => B - (B - T) * ((v - lo) / (hi - lo));
+
+    const out = {};
+
+    // One path for every gridline keeps the background to a single element.
+    const grid = [];
+    let g = 0;
+    for (let v = lo; v <= hi; v += step) {
+      const y = py(v);
+      grid.push('M' + L + ' ' + y.toFixed(1) + 'H' + R);
+      out['g' + g] = { ty: (y + 4).toFixed(1), label: String(v) };
+      g += 1;
+    }
+    out.gridPath = grid.join(' ');
+
+    const tickAt = [0, 7, 14, 21, n - 1];
+    for (let t = 0; t < tickAt.length; t += 1) {
+      const i = tickAt[t];
+      out['t' + t] = {
+        x: px(i).toFixed(1),
+        label: i === n - 1 ? 'today' : 'D-' + (n - 1 - i)
+      };
+    }
+
+    // Nudge the right-hand labels apart so two close series never collide.
+    const ends = series
+      .map((sr, i) => ({ i, y: py(sr.values[n - 1]) }))
+      .sort((a, b) => a.y - b.y);
+    const labelY = [];
+    let last = -Infinity;
+    for (const e of ends) {
+      const y = Math.max(e.y, last + 23);
+      labelY[e.i] = y;
+      last = y;
+    }
+
+    for (let i = 0; i < series.length; i += 1) {
+      out['s' + i] = {
+        label: series[i].label,
+        color: series[i].color,
+        d: series[i].values
+          .map((v, j) => (j ? 'L' : 'M') + px(j).toFixed(1) + ' ' + py(v).toFixed(1))
+          .join(' '),
+        ly: (labelY[i] + 7).toFixed(1)
+      };
+    }
+
+    return out;
+  }
+
+  buildMap() {
+    const { nodes, links } = Component.SAMPLE_FLOWS;
+    const at = {};
+    for (const nd of nodes) at[nd.code] = nd;
+
+    const out = {};
+
+    for (let i = 0; i < nodes.length; i += 1) {
+      out['n' + i] = { code: nodes[i].code, x: nodes[i].x, y: nodes[i].y, ty: nodes[i].y + 8 };
+    }
+
+    for (let i = 0; i < links.length; i += 1) {
+      const l = links[i];
+      const a = at[l.from], b = at[l.to];
+      // Pull both ends back to the node rim so the arrowhead sits clear of it.
+      const dx = b.x - a.x, dy = b.y - a.y;
+      const len = Math.hypot(dx, dy) || 1;
+      const r = 34;
+      out['l' + i] = {
+        x1: (a.x + (dx / len) * r).toFixed(1),
+        y1: (a.y + (dy / len) * r).toFixed(1),
+        x2: (b.x - (dx / len) * r).toFixed(1),
+        y2: (b.y - (dy / len) * r).toFixed(1),
+        width: (2 + l.share * 7).toFixed(2),
+        color: l.share >= 0.6 ? '#e7963d' : '#7d6a52'
+      };
+    }
+
+    return out;
+  }
+
+  /* --- render ------------------------------------------------------------ */
+
+  renderVals() {
+    const url = (this.props.liveDataUrl ?? '').trim();
+    const wired = url.length > 0;
+
+    const nlCfg = this.parseProp(this.props.newsletterJson, Component.DEFAULT_NEWSLETTER);
+    const nlDefaults = Component.DEFAULT_NEWSLETTER;
+    const nl = Object.assign({}, nlDefaults, nlCfg);
+    const nlWired = String(nl.action ?? '').trim().length > 0;
+
+    const tiers = this.parseProp(this.props.tiersJson, Component.DEFAULT_TIERS);
+    const stories = this.parseProp(this.props.storiesJson, Component.DEFAULT_STORIES);
+    const rail = this.parseProp(this.props.railJson, Component.SAMPLE_RAIL);
+
+    const story = (i) => {
+      const s = stories[i] || Component.DEFAULT_STORIES[i] || {};
+      return {
+        kicker: s.kicker ?? '',
+        title: s.title ?? '',
+        dek: s.dek ?? '',
+        byline: s.byline ?? '',
+        dateLabel: this.formatDate(s.published),
+        readingTime: s.readingTime ?? '',
+        href: s.href ?? '#analysis'
+      };
+    };
+
+    const symbol = { EUR: '€', USD: '$', GBP: '£' };
+
+    return {
+      accent: this.props.accent ?? '#e7963d',
+      density: this.props.density ?? 'editorial',
+      showMarketRail: this.props.showMarketRail ?? true,
+
+      brandName: this.props.brandName ?? 'Boreal Grid',
+      brandTagline: this.props.brandTagline ?? 'Nordic and Baltic power markets, decomposed.',
+      brandContact: this.props.brandContact ?? '[CONTACT EMAIL]',
+      year: new Date().getFullYear(),
+
+      lead: story(0),
+      second: story(1),
+
+      nl: {
+        name: nl.name,
+        headline: nl.headline,
+        bandHeadline: nl.bandHeadline,
+        promise: nl.promise,
+        cadence: nl.cadence,
+        reassurance: nl.reassurance,
+        submitLabel: nl.submitLabel,
+        bullets: Array.isArray(nl.bullets) ? nl.bullets : nlDefaults.bullets,
+        action: nl.action,
+        method: nl.method || 'post',
+        field: nl.field || 'email',
+        wired: nlWired,
+        unwired: !nlWired,
+        warning: 'Not connected — set newsletter.formAction in app.config.json. The field above stays inert until you do, so no address is taken and dropped.'
+      },
+
+      tiers: (Array.isArray(tiers) ? tiers : Component.DEFAULT_TIERS).map((t) => {
+        const priced = String(t.price ?? '').trim().length > 0;
+        const buyable = String(t.checkoutUrl ?? '').trim().length > 0;
+        const cur = symbol[t.currency] || t.currency || '€';
+        return {
+          name: t.name,
+          kind: t.kind,
+          summary: t.summary,
+          features: Array.isArray(t.features) ? t.features : [],
+          unit: t.unit ?? '',
+          amount: priced ? cur + t.price : 'Price on request',
+          amountClass: priced ? '' : 'ed-tier__amount--tbc',
+          featuredClass: t.featured ? 'ed-tier--featured' : '',
+          chipClass: t.featured ? 'ed-chip--accent' : '',
+          href: buyable ? t.checkoutUrl : '#subscribe',
+          cta: buyable ? (t.cta ?? 'Buy') : 'Join the waitlist',
+          ctaClass: t.featured && buyable ? '' : 'ed-cta--ghost',
+          note: buyable
+            ? 'Secure checkout. Invoice on request.'
+            : 'Not on sale yet — this button subscribes you to the newsletter, and you hear first.',
+          noteColor: buyable ? '#6d6861' : '#e7963d'
+        };
+      }),
+
+      liveDataHref: wired ? url : '#subscribe',
+      liveDataLabel: wired ? (this.props.liveDataLabel ?? 'Open the live data app') : 'Get told when it opens',
+
+      feed: wired
+        ? { label: 'Live', chipClass: 'ed-chip--live', ctaClass: '', hint: url, hintColor: '#6d6861' }
+        : { label: 'Sample feed', chipClass: '', ctaClass: 'ed-cta--ghost', hint: '[SET liveDataUrl TO YOUR LIVE DATA APP]', hintColor: '#e7963d' },
+
+      rail: (Array.isArray(rail) ? rail : Component.SAMPLE_RAIL).map((r) => ({
+        code: r.code,
+        value: r.value,
+        change: (Number(r.change) > 0 ? '+' : '') + Number(r.change).toFixed(2) + '%',
+        color: Number(r.change) > 0 ? '#3fbf7f' : Number(r.change) < 0 ? '#e5644a' : '#97918a'
+      })),
+
+      chart: this.buildChart(),
+      map: this.buildMap(),
+
+      footer: [
+        { title: 'Analysis', links: [
+          { label: 'Finland', href: story(0).href },
+          { label: 'Lithuania', href: story(1).href },
+          { label: 'Markets', href: '#markets' }
+        ] },
+        { title: 'Research', links: [
+          { label: 'Reports', href: '#reports' },
+          { label: 'Methodology', href: '#reports' },
+          { label: 'Live data app', href: wired ? url : '#live-data-app' }
+        ] },
+        { title: 'Desk', links: [
+          { label: 'Newsletter', href: '#subscribe' },
+          { label: 'About', href: '#about' },
+          { label: 'Contact', href: '#contact' }
+        ] }
+      ]
+    };
+  }
+}
+</script>
+<script>/* ---------------------------------------------------------------------------
+   image-slot.js — the media import layer for the Boreal Grid site.
+
+   Every picture, graph, map and video on the page is a declared SLOT. Markup
+   reserves the space and names the slot; nothing in the markup knows where the
+   asset lives:
+
+     <figure class="ed-slot" data-slot="finland-photo" data-caption="..."></figure>
+
+   To fill a slot, add an entry to assets/manifest.json keyed by the same id.
+   Three source shapes are supported, which is what makes one mechanism cover
+   pictures, graphs and maps at once:
+
+     { "type": "image", "src": "media/lead.jpg", "alt": "..." }
+       any raster or SVG file under assets/
+
+     { "type": "embed", "src": "https://data.example/chart/de-da?embed=1" }
+       a live graph or slippy map served by the live-data app; rendered in a
+       sandboxed iframe so a third-party embed cannot reach into this page
+
+     { "type": "inline", "svg": "<svg …>…</svg>" }
+       a vector export pasted straight in — stays crisp in PNG/PDF export
+
+   An unfilled slot renders a designed placeholder carrying its id, kind and
+   the source spec it wants, so an unfinished page still reads as a layout
+   rather than as a hole. A slot that already contains drawn content — the
+   sample price chart and flow map do — keeps it until the manifest overrides it.
+
+   Plain <script>, no modules, no build step. Works from file:// as well as
+   from a server: when fetch() is unavailable or blocked, the page's own
+   window.ED_MANIFEST object is used instead.
+
+   Set window.ED_ASSET_BASE before this script to relocate assets/ for a page
+   that is not at the site root.
+   --------------------------------------------------------------------------- */
+
+(function (global, document) {
+  'use strict';
+
+  /* Pages that do not sit at the site root (the article pages under news/)
+     set window.ED_ASSET_BASE before loading this file, so a manifest entry
+     stays a single repo-relative path no matter which page resolves it. */
+  var ASSET_BASE = global.ED_ASSET_BASE || 'assets/';
+  var MANIFEST_URL = ASSET_BASE + 'manifest.json';
+
+  var GLYPH = {
+    photo: '<path d="M3 5.5h4l1.4-2h7.2L17 5.5h4v13H3z"/><circle cx="12" cy="12" r="3.6"/>',
+    chart: '<path d="M4 20V9.5M10 20V4.5M16 20v-7M22 20H2"/>',
+    map:   '<path d="M9 3.5 3 6v14.5l6-2.5 6 2.5 6-2.5V3.5L15 6z"/><path d="M9 3.5V18M15 6v14.5"/>',
+    video: '<rect x="2.5" y="5" width="14" height="14" rx="1.5"/><path d="M16.5 10.5 21.5 7.5v9l-5-3z"/>',
+    logo:  '<rect x="2.5" y="7" width="19" height="10" rx="1.5"/><path d="M6.5 12h11"/>'
+  };
+
+  function svgGlyph(kind) {
+    var d = GLYPH[kind] || GLYPH.photo;
+    return '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" ' +
+      'stroke="currentColor" stroke-width="1.25" stroke-linecap="round" ' +
+      'stroke-linejoin="round" aria-hidden="true" focusable="false">' + d + '</svg>';
+  }
+
+  function escapeHtml(s) {
+    return String(s === undefined || s === null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  function specOf(el, spec) {
+    return {
+      id: el.getAttribute('data-slot') || '',
+      kind: el.getAttribute('data-kind') || (spec && spec.kind) || 'photo',
+      ratio: el.getAttribute('data-ratio') || (spec && spec.ratio) || '16/9',
+      minW: Number(el.getAttribute('data-min-width') || (spec && spec.minW) || 0),
+      caption: el.getAttribute('data-caption') || ''
+    };
+  }
+
+  function renderEmpty(el, s) {
+    el.classList.add('ed-slot--empty');
+    el.setAttribute('data-state', 'empty');
+    el.innerHTML =
+      '<span style="color:' + (s.kind === 'chart' || s.kind === 'map' ? '#00c7a6' : '#97918a') + '">' +
+        svgGlyph(s.kind) +
+      '</span>' +
+      '<span class="ed-slot__id">' + escapeHtml(s.id) + '</span>' +
+      '<span class="ed-slot__spec">' + escapeHtml(s.kind) + ' &middot; ' +
+        escapeHtml(s.ratio.replace('/', ':')) +
+        (s.minW ? ' &middot; ' + s.minW + 'px min' : '') +
+      '</span>';
+  }
+
+  function renderFilled(el, s, entry) {
+    el.classList.remove('ed-slot--empty');
+    el.setAttribute('data-state', 'filled');
+
+    if (entry.type === 'inline' && entry.svg) {
+      el.innerHTML = entry.svg;
+      return;
+    }
+
+    var src = entry.src || '';
+    if (!src) { renderEmpty(el, s); return; }
+
+    if (entry.type === 'embed') {
+      // Sandboxed: a live chart or map embed gets to run scripts, nothing else.
+      el.innerHTML = '<iframe src="' + escapeHtml(src) + '" loading="lazy" ' +
+        'title="' + escapeHtml(entry.alt || s.id) + '" ' +
+        'sandbox="allow-scripts allow-popups" referrerpolicy="no-referrer"></iframe>';
+      return;
+    }
+
+    if (entry.type === 'video') {
+      el.innerHTML = '<video src="' + escapeHtml(resolve(src)) + '" playsinline muted ' +
+        (entry.poster ? 'poster="' + escapeHtml(resolve(entry.poster)) + '" ' : '') +
+        'controls></video>';
+      return;
+    }
+
+    el.innerHTML = '<img src="' + escapeHtml(resolve(src)) + '" ' +
+      'alt="' + escapeHtml(entry.alt || '') + '" loading="lazy" decoding="async">';
+  }
+
+  function resolve(src) {
+    return /^(https?:|data:|blob:|\/)/.test(src) ? src : ASSET_BASE + src;
+  }
+
+  function apply(manifest) {
+    var assets = (manifest && manifest.assets) || {};
+    var nodes = document.querySelectorAll('[data-slot]');
+    var filled = 0;
+
+    for (var i = 0; i < nodes.length; i++) {
+      var el = nodes[i];
+      var declared = global.EDS ? global.EDS.slot(el.getAttribute('data-slot')) : null;
+      var s = specOf(el, declared);
+
+      if (s.ratio && !el.style.aspectRatio) el.style.aspectRatio = s.ratio;
+
+      var entry = assets[s.id];
+      if (entry && (entry.src || entry.svg)) {
+        renderFilled(el, s, entry);
+        filled++;
+      } else if (el.querySelector('svg, img, iframe, video')) {
+        // The slot ships with drawn content (the sample chart and map do).
+        // That is its default, not a hole — leave it until the manifest fills it.
+        el.setAttribute('data-state', 'default');
+      } else {
+        renderEmpty(el, s);
+      }
+
+      if (s.caption) {
+        var cap = document.createElement('figcaption');
+        cap.className = 'ed-slot__caption';
+        cap.textContent = s.caption;
+        if (el.parentNode) el.parentNode.insertBefore(cap, el.nextSibling);
+      }
+    }
+
+    document.documentElement.setAttribute('data-slots-filled', filled + '/' + nodes.length);
+    global.dispatchEvent(new CustomEvent('ed:slots-ready', {
+      detail: { total: nodes.length, filled: filled }
+    }));
+  }
+
+  function load() {
+    // An inline manifest always wins — it is what makes file:// previews work.
+    if (global.ED_MANIFEST) { apply(global.ED_MANIFEST); return; }
+    if (typeof fetch !== 'function') { apply(null); return; }
+    fetch(MANIFEST_URL, { cache: 'no-cache' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(apply)
+      .catch(function () { apply(null); });
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', load);
+  else load();
+
+  global.EDSlots = { apply: apply, reload: load };
+})(typeof window !== 'undefined' ? window : globalThis, document);
+</script>
 </body>
 </html>

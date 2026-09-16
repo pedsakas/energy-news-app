@@ -1,0 +1,136 @@
+{
+  "comment": "Article content. Body blocks render through tools/build-site.mjs. Block types: h2, p, list, pull, note, figure, table, sources. Every figure references a media slot id declared in _ds/organic-…/_ds_bundle.js and filled from assets/manifest.json.",
+
+  "articles": [
+    {
+      "slug": "finland-cheapest-and-most-volatile",
+      "kicker": "Analysis · Finland",
+      "section": "Markets",
+      "title": "Finland is Europe's cheapest power market and its most volatile — for the same reason",
+      "dek": "Day-ahead averages have spent much of 2026 in the low teens per megawatt-hour. Balancing energy in the same country has cleared above €600/MWh on a monthly average. Those two facts are not in tension; they are the same fact seen from two different markets.",
+      "byline": "Boreal Grid Research",
+      "published": "2026-09-15",
+      "readingTime": "8 min",
+      "leadSlot": "finland-photo",
+      "leadCaption": "Olkiluoto 3 added 1.6 GW of must-run baseload to a system that was already absorbing record wind. · [PHOTO CREDIT]",
+      "summary": "Finland's day-ahead average has collapsed while its balancing markets have become the most volatile in Europe. We decompose where the value moved, and what it means for anyone financing flexibility.",
+      "body": [
+        { "type": "h2", "text": "The average is no longer the story" },
+        { "type": "p", "text": "Finland has recorded day-ahead prices below €15/MWh through stretches of 2026, which puts it among the cheapest wholesale markets in Europe. On 5 September the time-weighted day-ahead average came in at 1.44 c/kWh — €14.40/MWh — with a low of 0.35 c/kWh in the late afternoon and a high of 3.90 c/kWh just after one in the morning." },
+        { "type": "p", "text": "Read that as a monthly average and Finland looks like a solved market: abundant, decarbonised, cheap. Read it as a distribution and it looks like something else entirely. Montel has been calling Finland Europe's most volatile short-term electricity market, and the balancing data from Fingrid supports the label rather than softening it." },
+        { "type": "pull", "text": "The average price tells you what the system costs. The spread tells you what flexibility is worth. In Finland those two numbers have been moving in opposite directions for three years." },
+
+        { "type": "h2", "text": "What changed on the supply side" },
+        { "type": "p", "text": "Two things, and they compounded. Olkiluoto 3 came online in April 2023 with 1.6 GW of effectively must-run output. At the same time Finnish wind went from roughly 2 TWh in 2015 to more than 18 TWh in 2024 — close to a ninefold increase in under a decade, and enough to turn Finland into a structural exporter to the Baltic states." },
+        { "type": "p", "text": "A large inflexible block plus a large weather-driven block, in a system whose demand did not grow at anything like the same rate, produces exactly what has been observed: long periods of very low or zero-marginal-cost supply, punctuated by hours when the wind drops and the residual load has to be met from whatever is left. Finland recorded 467 negative-price hours in 2023, the most in Europe that year." },
+        { "type": "note", "title": "Worth noting", "text": "Negative prices have been conspicuously absent from recent windows — none of the 30 complete days to early September 2026 contained a negatively priced interval. That is a seasonal and hydrological result, not a structural fix. The underlying supply stack has not changed." },
+
+        { "type": "h2", "text": "The volatility has moved into the balancing markets" },
+        { "type": "p", "text": "This is the part that gets missed by anyone modelling Finland off day-ahead averages. Fingrid's aFRR energy activation market averaged €661/MWh in June. The move to 15-minute clearing for mFRR energy in March widened things further, with an average daily spread of €836/MWh." },
+        { "type": "p", "text": "The March overhaul also split Nordic balancing so that production and consumption are now balanced separately for each bidding zone. Alongside it, Fingrid cut its balance service fee from €1.35 to €1.05 per megawatt-hour with effect from 1 March 2026. The direction of travel is clear enough: cheaper to be balanced, far more expensive to be the one doing the balancing at the wrong moment." },
+        { "type": "table", "caption": "Where the price signal actually sits, 2026",
+          "head": ["Market", "Recent level", "What it prices"],
+          "rows": [
+            ["Day-ahead, FI", "low teens €/MWh on windy days", "energy"],
+            ["aFRR energy activation", "≈ €661/MWh average, June", "seconds-to-minutes flexibility"],
+            ["mFRR energy, 15-min", "≈ €836/MWh average daily spread", "within-hour flexibility"]
+          ] },
+        { "type": "p", "text": "A battery in Finland is not being paid for energy arbitrage in any meaningful sense. It is being paid for the option to be available in the intervals when the balancing market breaks three figures — and there are enough of those intervals now to underwrite a project." },
+
+        { "type": "h2", "text": "Storage is the marginal asset, and it knows it" },
+        { "type": "p", "text": "Roughly 1,050 MW of storage is installed in Finland, with close to 400 MW more under construction. Statkraft's 235 MW battery deal is the kind of transaction that follows from the numbers above rather than from a subsidy. Fingrid's own scenarios put the system's requirement at 1–4 GW of battery storage by 2035." },
+        { "type": "p", "text": "The gap between 1 GW installed and a 1–4 GW requirement is the whole investment case, and the wide upper bound is the whole risk. If the correct answer is 1 GW, Finland is close to built out and revenues compress. If it is 4 GW, the current fleet is a rounding error against what is needed. Nobody financing a Finnish battery in 2026 should be treating that range as a detail." },
+        { "type": "figure", "slot": "finland-chart", "caption": "Day-ahead versus balancing energy, Finland. Fill this slot from assets/manifest.json with the exported chart or a live embed from the data app." },
+
+        { "type": "h2", "text": "Why the Baltics should care more than they do" },
+        { "type": "p", "text": "Finland's surplus does not stay in Finland. It moves south through EstLink, and the Baltic price level is partly a function of how much of it gets through. The December 2024 EstLink 2 failure — the cable was damaged when the tanker Eagle S is believed to have dragged its anchor across the seabed — is the cleanest natural experiment anyone could ask for." },
+        { "type": "p", "text": "With the link out, Baltic prices rose 41% week-on-week, from €56/MWh to €79/MWh. Repair costs ran to €50–60 million, split evenly between Elering and Fingrid, and the connection returned to the market on 15 July 2025." },
+        { "type": "pull", "text": "A single cable fault repriced three national markets by 41% in a week. That is not a resilient system; that is a system with one dominant import corridor and a plan to build a second." },
+        { "type": "p", "text": "That episode is why our Lithuanian coverage treats interconnection as a price variable rather than as infrastructure trivia. The Baltic bidding zones do not clear on Baltic fundamentals alone." },
+
+        { "type": "h2", "text": "What we are watching next" },
+        { "type": "list", "items": [
+          "Whether the separated per-zone balancing design holds its spreads through a full winter, or whether March–June was a transition artefact.",
+          "The pace of battery commissioning against Fingrid's 1–4 GW range — the commissioning curve, not the pipeline, is the number that matters.",
+          "Whether industrial demand response shows up at scale now that the within-hour price signal is this sharp.",
+          "EstLink availability through the winter, and what the redundancy plan looks like in practice rather than on a slide."
+        ] },
+        { "type": "note", "title": "In the full report", "text": "Our Finland deep-dive decomposes the 2026 price series hour by hour, separates the wind-driven component from the hydrology-driven one, and prices a 2-hour and a 4-hour battery against the actual aFRR and mFRR clearing history rather than against a modelled duration curve." },
+
+        { "type": "sources", "items": [
+          { "title": "Montel — Finland: Europe's Most Volatile Short-term Electricity Market", "url": "https://montel.energy/commentary/finland-europes-most-volatile-short-term-electricity-market" },
+          { "title": "Fingrid — Management's Review 1.1.–31.3.2026", "url": "https://www.fingrid.fi/en/news/news/2026/fingrid-group--managements-review-1.1.31.3.2026/" },
+          { "title": "Fingrid — Electricity consumption is set to increase sharply; more balancing power will also be needed", "url": "https://www.fingrid.fi/en/news/news/2026/electricity-consumption-is-set-to-increase-sharply--more-balancing-power-will-also-be-needed" },
+          { "title": "Enlit World — Statkraft signs 235 MW battery deal in Finland", "url": "https://www.enlit.world/library/statkraft-signs-235mw-battery-deal-in-finland-as-storage-becomes-system-critical" },
+          { "title": "Nexans — Completion of the EstLink 2 repair", "url": "https://www.nexans.com/news/completes-critical-repair-of-estlink-2-subsea-interconnector-between-finland-and-estonia/" },
+          { "title": "CEENERGYNEWS — EstLink 2 failure: no effect on security of supply, but prices", "url": "https://ceenergynews.com/electricity/estlink2-failure-security-prices/" },
+          { "title": "IEA — Electricity 2026: Prices", "url": "https://www.iea.org/reports/electricity-2026/prices" }
+        ] }
+      ]
+    },
+
+    {
+      "slug": "lithuania-renewables-speed-and-capture-prices",
+      "kicker": "Analysis · Lithuania",
+      "section": "Renewables",
+      "title": "Lithuania is adding renewables faster than it is adding the grid to carry them",
+      "dek": "Solar passed 3 GW in March. Wind and solar together already cover 68% of demand. Another 4 GW of solar holds technical permits. The binding constraint has quietly moved from megawatts to euros per megawatt-hour.",
+      "byline": "Boreal Grid Research",
+      "published": "2026-09-16",
+      "readingTime": "9 min",
+      "leadSlot": "lithuania-chart",
+      "leadCaption": "Lithuanian solar and wind output against the day-ahead price. Fill this slot from assets/manifest.json. · [CHART SOURCE]",
+      "summary": "Lithuania's build-out speed is genuine and close to world-leading for a market this size. The question for anyone financing the next gigawatt is no longer whether it gets built, but what price it captures when it runs.",
+      "body": [
+        { "type": "h2", "text": "The speed is real" },
+        { "type": "p", "text": "Lithuania added roughly 600 MW of solar in 2025, taking installed capacity to 3,040 MW, and crossed the 3 GW mark in March 2026. On 15 May, Lithuanian solar plants hit an instantaneous 1,547 MW — 112 MW above the previous record of 1,435 MW set on 2 July 2025." },
+        { "type": "p", "text": "The generation mix in mid-2026 tells the same story from the other direction: wind 42%, solar 39%, thermal 9%, hydro 6%, other 4%. Wind and solar together are covering 68.1% of Lithuanian electricity demand. For a country that was a net importer of most of its power a decade ago, and that only desynchronised from the post-Soviet BRELL ring in February 2025, that is a genuinely fast transition by any European standard." },
+        { "type": "note", "title": "The target", "text": "Lithuania's National Energy Independence Strategy sets 100% of electricity from renewables by 2030. On build rate alone, that is not an obviously unreasonable target. On system integration, it is the hard part, and the rest of this piece is about why." },
+
+        { "type": "h2", "text": "Prices fell — and then the question changed" },
+        { "type": "p", "text": "Lithuanian day-ahead prices averaged €82.15/MWh in Q1 2026. Across late June and early July the average in the Lithuanian bidding zone fell about 20%, from roughly €100/MWh to €81/MWh, with wind doing most of the work." },
+        { "type": "p", "text": "A 20% fall in the wholesale price is unambiguously good for consumers and for industrial competitiveness. It is more complicated for the people financing the assets that caused it, because the number that matters to them is not the baseload average — it is the capture price, and the two diverge precisely when renewables succeed." },
+        { "type": "pull", "text": "Every megawatt of solar Lithuania adds makes the next megawatt of solar slightly less bankable. That is not a reason to stop building. It is a reason to stop modelling revenue off the baseload curve." },
+
+        { "type": "h2", "text": "The cannibalisation arithmetic" },
+        { "type": "p", "text": "Because solar generates concentrated around midday — exactly when every other solar plant in the bidding zone is also generating — its capture price typically runs 15–40% below the baseload average. That gap is the cannibalisation effect, and it widens mechanically with penetration. When wind and solar output overlap, net load collapses and the price can go through zero." },
+        { "type": "p", "text": "Germany is the leading indicator here, and it is not a comfortable one. April solar capture factors fell from around 0.40 in 2025 to roughly 0.26 in 2026. The share of German solar generation produced during negative-price periods went from 32.6% to 46.8% year on year, and the longest continuous negative-price run stretched from seven hours to seventeen." },
+        { "type": "note", "title": "Read this carefully", "text": "Those capture-factor figures are German, not Lithuanian, and Lithuania's smaller, better-interconnected zone will not follow the same path at the same speed. We cite them because they show the shape of the curve at high penetration, not because they are a forecast for LT. Anyone quoting them as Lithuanian numbers is misusing them." },
+        { "type": "p", "text": "The practical consequence is visible in how projects are now being structured. Lithuanian developers are increasingly pairing solar with batteries — partly to improve grid connection prospects, partly to shift output into the evening peak, and partly because storage reduces curtailment risk where the local network cannot absorb midday output." },
+
+        { "type": "h2", "text": "The grid is the actual constraint" },
+        { "type": "p", "text": "Technical permits have already been issued for around 4 GW of additional solar. There is no serious prospect of the existing network absorbing that on current topology, and the connection-queue question is now the one that determines which projects are real." },
+        { "type": "p", "text": "Litgrid has tendered the Gižai substation, which will be Lithuania's largest and the pivot point for the Harmony Link interconnection, with completion scheduled for end-2030. Litgrid's published preliminary connection conditions set out the transmission expansion plan, and place the cost of infrastructure expansion on the tender winner." },
+        { "type": "figure", "slot": "lithuania-grid-chart", "caption": "Connection-queue volume against firm transmission capacity by region. Fill this slot from assets/manifest.json with the tracker export." },
+        { "type": "p", "text": "Harmony Link itself has been rescoped: the 2025 agreement between Litgrid and PSE settled on a 700 MW land-based interconnection at 220 kV, rather than the original subsea concept. PSE has now approved the financial investment decision for onshore construction, complementing Litgrid's own commitment made in September. Completion is scheduled for end-2030." },
+        { "type": "p", "text": "That date matters. Until Harmony Link energises, Lithuania's access to continental European prices runs through LitPol and, for Nordic supply, through NordBalt and the EstLink corridor further north. As the Finnish EstLink 2 outage demonstrated, that corridor is thin enough that a single fault repriced the whole Baltic region by 41% in a week." },
+
+        { "type": "h2", "text": "Offshore keeps not happening" },
+        { "type": "p", "text": "Lithuania's second offshore wind tender, for a 700 MW site, was declared invalid and has been relaunched. Two failed processes in a row is a signal about the terms on offer rather than about the resource, and it should be read as one." },
+        { "type": "p", "text": "The more interesting offshore development is the Baltic–German PowerLink. Lithuania, Latvia and Germany have signed a declaration on a joint 2 GW interconnector that would open direct trade between the Baltics and Germany and provide a route to market for up to 2 GW of Lithuanian and Latvian offshore wind. Decisions on next steps were planned for the end of Q3 2026 — which is now." },
+
+        { "type": "h2", "text": "What this means if you are deploying capital" },
+        { "type": "list", "items": [
+          "Model the capture price, not the baseload curve. A solar project underwritten on the LT baseload average is mispriced by a margin that grows every year the pipeline delivers.",
+          "Treat the connection queue as the real pipeline. Four gigawatts of technical permits is not four gigawatts of projects; it is a filter that has not yet been applied.",
+          "Price storage as a revenue instrument, not as a grid-compliance cost. The evening-peak spread is where solar economics are being rebuilt.",
+          "Put a date and a probability on Harmony Link and PowerLink in your price deck. Post-2030 Lithuanian prices are a different distribution depending on whether both, one or neither is delivered.",
+          "Watch the Q3 2026 PowerLink decision. It is the nearest-term event that moves the long-dated Baltic curve."
+        ] },
+        { "type": "note", "title": "In the full report", "text": "Our Baltic renewables tracker holds the connection queue by substation, the monthly capacity additions by technology, and modelled capture prices for solar and wind in EE, LV and LT out to 2032 under three interconnection scenarios." },
+
+        { "type": "sources", "items": [
+          { "title": "pv magazine — Lithuania's solar capacity surpasses 3 GW", "url": "https://www.pv-magazine.com/2026/03/30/lithuanias-solar-capacity-surpasses-3-gw/" },
+          { "title": "Infoerdve — Lithuania hits solar energy record as wholesale prices drop", "url": "https://infoerdve.lt/en/lithuania-hits-solar-energy-record-as-wholesale-prices-drop-4/" },
+          { "title": "Infoerdve — Wind cuts Lithuania's wholesale electricity price by 20%", "url": "https://infoerdve.lt/en/wind-cuts-lithuania-s-wholesale-electricity-price-by-20/" },
+          { "title": "Elenger — Power market overview Q1 2026", "url": "https://elenger.ee/en/power-market-overview-q1-2026/" },
+          { "title": "Pexapark — European solar capture factors collapse as April oversupply triggers negative prices", "url": "https://pexapark.com/blog/european-solar-capture-factors-collapse-as-april-oversupply-triggers-wave-of-negative-prices/" },
+          { "title": "energynews.pro — Litgrid launches tender for Lithuania's largest electrical substation", "url": "https://energynews.pro/en/litgrid-launches-tender-for-lithuanias-largest-electrical-substation" },
+          { "title": "Baltic Wind — Financial decisions finalised for Harmony Link onshore construction", "url": "https://balticwind.eu/financial-decisions-finalized-for-harmony-link-onshore-construction/" },
+          { "title": "CEENERGYNEWS — Lithuania's second offshore wind tender declared invalid", "url": "https://ceenergynews.com/renewables/lithuanias-second-offshore-wind-tender-invalid/" },
+          { "title": "Windtech International — Lithuania, Latvia and Germany sign declaration on 2 GW Baltic–German PowerLink", "url": "https://www.windtech-international.com/industry-news/lithuania-latvia-and-germany-sign-declaration-on-2-gw-baltic-german-powerlink-interconnector" }
+        ] }
+      ]
+    }
+  ]
+}

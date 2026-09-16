@@ -1,13 +1,86 @@
 {
   "brand": {
-    "name": "Energy Desk",
-    "tagline": "Markets, policy and the grid, reported daily.",
-    "city": "[CITY]",
-    "contact": "[CONTACT EMAIL]"
+    "name": "Boreal Grid",
+    "shortName": "Boreal Grid",
+    "tagline": "Nordic and Baltic power markets, decomposed.",
+    "description": "Independent analysis of the Nordic and Baltic electricity markets — prices, flows, renewables build-out and the grid that has to carry it.",
+    "city": "Vilnius",
+    "contact": "[CONTACT EMAIL]",
+    "established": "2026",
+    "siteUrl": "",
+    "comment": "brand.name is a working title. Confirm it is clear of existing marks in the markets you publish into before you print it on anything."
+  },
+
+  "newsletter": {
+    "comment": "formAction is the POST endpoint of your email provider (Buttondown, Kit, Mailchimp, Beehiiv, Listmonk...). emailField is the input name that provider expects. Until formAction is set, every signup form on the site renders in an unconnected state and says so rather than silently dropping addresses.",
+    "formAction": "",
+    "method": "post",
+    "emailField": "email",
+    "name": "The Monday Curve",
+    "cadence": "Every Monday, 07:00 EET",
+    "promise": "One email a week. The Nordic and Baltic price action decomposed, plus the capacity, tender and grid-connection news that actually moves it.",
+    "subscriberCount": "",
+    "successUrl": ""
+  },
+
+  "reports": {
+    "comment": "Paid research. Set checkoutUrl on a tier to wire it to Stripe, Lemon Squeezy, Paddle or an invoice form. A tier with no checkoutUrl and no price falls back to the newsletter as a waitlist, and the card says so.",
+    "currency": "EUR",
+    "tiers": [
+      {
+        "id": "single",
+        "name": "Single report",
+        "kind": "One-time",
+        "price": "",
+        "unit": "per report",
+        "summary": "One market, one question, answered with the working shown.",
+        "features": [
+          "40–60 pages, hourly-resolution price decomposition",
+          "Every chart shipped as the underlying CSV",
+          "Scenario ranges with the assumptions listed, not buried",
+          "Twelve months of errata and data corrections"
+        ],
+        "checkoutUrl": "",
+        "cta": "Buy this report"
+      },
+      {
+        "id": "quarterly",
+        "name": "Research subscription",
+        "kind": "Quarterly",
+        "price": "",
+        "unit": "per quarter",
+        "summary": "Everything we publish, plus the tracker that sits behind it.",
+        "featured": true,
+        "features": [
+          "Every deep-dive report as it ships",
+          "Nordic–Baltic capacity and connection-queue tracker, updated monthly",
+          "Capture-price and spread series for FI, SE3, SE4, EE, LV, LT",
+          "Analyst Q&A on anything we have published"
+        ],
+        "checkoutUrl": "",
+        "cta": "Start a subscription"
+      },
+      {
+        "id": "desk",
+        "name": "Desk and enterprise",
+        "kind": "Bespoke",
+        "price": "",
+        "unit": "on application",
+        "summary": "Your question, our data, under your assumptions.",
+        "features": [
+          "Commissioned analysis on a defined question",
+          "Seat licences for a team or an investment committee",
+          "Model review — we mark your capture-price assumptions",
+          "Data delivered by API into your own stack"
+        ],
+        "checkoutUrl": "",
+        "cta": "Talk to the desk"
+      }
+    ]
   },
 
   "liveDataApp": {
-    "comment": "Set url to the live data app. Until it is set, the landing page labels its market rail as a sample feed and the call to action points at an anchor rather than pretending to be wired up.",
+    "comment": "The live data app the market rail and the data panels will read from. Until url is set, the rail is labelled SAMPLE FEED and the calls to action point at the newsletter rather than pretending to be wired up.",
     "url": "",
     "label": "Open the live data app",
     "embedBase": ""

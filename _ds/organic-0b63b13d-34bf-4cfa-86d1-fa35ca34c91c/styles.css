@@ -156,3 +156,160 @@
   color: var(--muted-on-ink);
   padding-top: var(--gap-xs);
 }
+
+/* --- Type ---------------------------------------------------------------- */
+
+.ed-root h1, .ed-root h2, .ed-root h3 {
+  font-family: var(--display);
+  font-weight: 500;
+  margin: 0;
+  letter-spacing: -0.012em;
+}
+.ed-root h1 { font-size: clamp(38px, 4.9vw, 62px); line-height: 1.03; }
+.ed-root h2 { font-size: var(--fs-h2); line-height: 1.12; }
+.ed-root h3 { font-size: var(--fs-h3); line-height: 1.2; }
+.ed-root p { margin: 0; }
+
+.ed-hairline { height: 1px; background: var(--rule-on-ink); border: 0; margin: 0; }
+.ed-navlink { color: var(--text-on-ink); font-size: var(--fs-small); letter-spacing: 0.01em; text-decoration: none; }
+.ed-navlink:hover { color: var(--thermal); text-decoration: none; }
+
+.ed-story-link { color: inherit; text-decoration: none; display: block; }
+.ed-story-link:hover { color: inherit; text-decoration: none; }
+.ed-story-link:hover h1,
+.ed-story-link:hover h2,
+.ed-story-link:hover h3 {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+}
+
+/* --- Primary action ------------------------------------------------------ */
+
+.ed-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 24px;
+  background: var(--thermal);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  border: 0;
+  border-radius: var(--radius);
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.ed-cta:hover { background: var(--thermal-bright); color: var(--ink); text-decoration: none; }
+.ed-cta--ghost { background: transparent; color: var(--paper); border: 1px solid var(--rule-strong); }
+.ed-cta--ghost:hover { background: rgba(246,243,238,0.06); color: var(--paper); border-color: var(--paper); }
+.ed-cta--block { width: 100%; }
+/* The unconnected state. Deliberately inert: it looks like the control it will
+   become, but it is not a control, so nothing is silently swallowed. */
+.ed-cta--dead { background: #3a322a; color: var(--muted-on-ink); cursor: not-allowed; }
+.ed-cta--dead:hover { background: #3a322a; color: var(--muted-on-ink); }
+
+.ed-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gap-xs);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 2px;
+  border: 1px solid var(--rule-strong);
+  color: var(--muted-on-ink);
+  white-space: nowrap;
+}
+.ed-chip--live { color: var(--renewable); border-color: rgba(0,199,166,0.45); }
+.ed-chip--accent { color: var(--thermal); border-color: rgba(231,150,61,0.45); }
+
+/* --- Signup -------------------------------------------------------------- */
+
+.ed-vh {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+.ed-signup {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 28px;
+  background: var(--ink-raised);
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius);
+}
+.ed-signup__row { display: flex; gap: 10px; flex-wrap: wrap; }
+/* An <input> sizes itself from its `size` attribute, so without min-width: 0 it
+   refuses to shrink below roughly 180px and pushes the row wider than the page.
+   Below 520px the row stacks instead of wrapping awkwardly. */
+/* An <input> derives its width from its `size` attribute, and neither min-width
+   nor align-items: stretch shrinks it below that. width: 100% does. In a row the
+   flex-basis takes over, so this is correct in both directions. */
+.ed-signup__row > .ed-input { flex: 1 1 220px; min-width: 0; width: 100%; }
+@media (max-width: 520px) {
+  .ed-signup__row { flex-direction: column; align-items: stretch; }
+  .ed-signup__row > .ed-cta { width: 100%; }
+}
+.ed-input {
+  min-height: 48px;
+  padding: 0 14px;
+  background: var(--ink-sunk);
+  color: var(--paper);
+  font-family: var(--body);
+  font-size: 15px;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius);
+}
+.ed-input::placeholder { color: var(--muted-on-paper); }
+.ed-input:focus { outline: 2px solid var(--thermal); outline-offset: 1px; }
+.ed-input--dead { display: flex; align-items: center; color: var(--muted-on-paper); }
+.ed-warn {
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  color: var(--thermal);
+}
+.ed-ticks { display: flex; flex-direction: column; gap: 9px; margin: 0; padding: 0; list-style: none; }
+.ed-ticks li { display: flex; gap: 10px; font-size: var(--fs-small); line-height: 1.45; color: #cfc8bf; }
+.ed-ticks svg { flex: none; margin-top: 3px; color: var(--renewable); }
+
+/* --- Pricing ------------------------------------------------------------- */
+
+.ed-tier {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 28px 24px;
+  background: var(--ink-sunk);
+  border: 1px solid var(--rule-on-ink);
+  border-radius: var(--radius);
+}
+.ed-tier--featured { background: var(--ink-raised); border-color: rgba(231,150,61,0.45); }
+.ed-tier__price { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.ed-tier__amount { font-family: var(--display); font-size: 34px; font-weight: 500; letter-spacing: -0.02em; }
+.ed-tier__amount--tbc { font-size: 22px; color: var(--muted-on-ink); }
+.ed-tier__unit {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-on-paper);
+}
+.ed-tier__spacer { flex-grow: 1; }
+
+/* --- Rail ---------------------------------------------------------------- */
+
+/* The rail is a flex child, so it needs min-width: 0 before overflow can do
+   anything — without it the row of quotes widens the whole page instead. */
+.ed-rail-list { min-width: 0; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; }
+.ed-rail-list::-webkit-scrollbar { display: none; }
+.ed-chart-scroll { overflow-x: auto; }
