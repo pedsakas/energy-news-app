@@ -78,6 +78,32 @@
     return Array.isArray(v) ? v.length > 0 : !!v;
   }
 
+  /* Parsing the template is what makes the console noisy. The moment the parser
+     builds <path d="{{ chart.gridPath }}">, SVG tries to read that as a path,
+     fails, and logs — once per attribute, before any of our code has looked at
+     it. The values are of course replaced a moment later, so the page is
+     correct and the log is pure noise; but 77 lines of it on a page load is not
+     something to leave lying around.
+
+     So any attribute whose value still holds a {{ … }} is renamed to a data-*
+     attribute before the markup is parsed. Nothing validates data-*. The
+     original name is restored in renderNode, which is the only thing that reads
+     these attributes anyway. */
+  var HOLE_ATTR = /(\s)((?!data-hole-)[a-zA-Z_:][-\w:.]*)(\s*=\s*(?:"[^"]*\{\{[^"]*"|'[^']*\{\{[^']*'))/g;
+
+  function shield(html) {
+    return html.replace(HOLE_ATTR, function (_, ws, name, rest) {
+      return ws + 'data-hole-' + name + rest;
+    });
+  }
+
+  var SHIELD_PREFIX = 'data-hole-';
+
+  /* Read an attribute that may have been shielded on the way in. */
+  function attrOf(node, name) {
+    return node.getAttribute(name) || node.getAttribute(SHIELD_PREFIX + name) || '';
+  }
+
   /* --- rendering ---------------------------------------------------------- */
 
   function renderNodes(sourceNodes, scope, out) {
@@ -99,10 +125,10 @@
     var tag = node.tagName.toLowerCase();
 
     if (tag === 'sc-for') {
-      var listAttr = node.getAttribute('list') || '';
+      var listAttr = attrOf(node, 'list');
       var m = listAttr.match(WHOLE_HOLE);
       var list = m ? lookup(m[1], scope) : [];
-      var as = node.getAttribute('as') || 'item';
+      var as = attrOf(node, 'as') || 'item';
       if (!Array.isArray(list)) list = [];
       for (var j = 0; j < list.length; j++) {
         var child = Object.create(scope);
@@ -114,7 +140,7 @@
     }
 
     if (tag === 'sc-if') {
-      var valAttr = node.getAttribute('value') || '';
+      var valAttr = attrOf(node, 'value');
       var vm = valAttr.match(WHOLE_HOLE);
       var val = vm ? lookup(vm[1], scope) : valAttr;
       if (truthy(val)) renderNodes(node.childNodes, scope, out);
@@ -122,7 +148,7 @@
     }
 
     if (tag === 'dc-import') {
-      var name = node.getAttribute('name') || 'component';
+      var name = attrOf(node, 'name') || 'component';
       var note = document.createElement('div');
       note.setAttribute('style',
         'padding:12px;border:1px dashed rgba(246,243,238,.28);border-radius:3px;' +
@@ -139,6 +165,7 @@
     for (var a = 0; a < node.attributes.length; a++) {
       var attr = node.attributes[a];
       var an = attr.name, av = attr.value;
+      if (an.indexOf(SHIELD_PREFIX) === 0) an = an.slice(SHIELD_PREFIX.length);
       if (an.indexOf('hint-') === 0) continue;
 
       var whole = av.match(WHOLE_HOLE);
@@ -197,14 +224,25 @@
     var root = document.querySelector('x-dc');
     if (!root) return;
 
-    var helmet = root.querySelector('helmet');
+    /* The static build parks the markup as raw text and hoists the helmet into
+       the head itself. Raw text is the point: an inert template still builds
+       SVG elements, and an SVG element parses "{{ chart.gridPath }}" as a path
+       the moment the attribute is set, fails, and logs it — before any of this
+       has run. Text is never parsed until we hand it over below. Hoisting the
+       styles also stops them applying a frame late. On the canvas, and when the
+       .dc.html is opened straight from disk, nothing is parked and the markup
+       sits inside the x-dc element as authored. */
+    var parked = document.getElementById('ed-artboard-src');
+    var sourceHtml = parked ? (parked.textContent || parked.innerHTML) : root.innerHTML;
+
+    var template = document.createElement('template');
+    template.content.appendChild(document.createRange().createContextualFragment(shield(sourceHtml)));
+
+    var helmet = template.content.querySelector('helmet');
     if (helmet) {
       while (helmet.firstChild) document.head.appendChild(helmet.firstChild);
       helmet.parentNode.removeChild(helmet);
     }
-
-    var template = document.createElement('template');
-    template.content.appendChild(document.createRange().createContextualFragment(root.innerHTML));
 
     var scriptEl = document.querySelector('script[data-dc-script]');
     var Comp = null;

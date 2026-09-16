@@ -3,4 +3,11 @@
 energy-news-landing.html
 
 node_modules/
+package-lock.json
 .DS_Store
+
+# Local render checks
+.check.mjs
+.count.mjs
+.find*.mjs
+.shot.mjs

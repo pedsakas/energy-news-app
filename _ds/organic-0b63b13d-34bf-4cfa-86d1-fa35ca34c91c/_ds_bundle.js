@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
-   Energy Desk — design-system bundle
+   Boreal Grid — design-system bundle
    Design system id: organic-0b63b13d-34bf-4cfa-86d1-fa35ca34c91c
 
    Exposes the tokens that cannot live in CSS alone: the categorical series
@@ -48,20 +48,20 @@
        minW    smallest source width that still looks sharp at 2x
      ------------------------------------------------------------------------- */
   var SLOTS = [
-    { id: 'masthead-logo',  kind: 'logo',  ratio: '4/1',  minW: 480,
+    { id: 'masthead-logo',      kind: 'logo',  ratio: '4/1',  minW: 480,
       note: 'Optional. Replaces the wordmark set in type.' },
-    { id: 'lead-photo',     kind: 'photo', ratio: '16/9', minW: 2000,
-      note: 'Lead story. Full-bleed within the hero column.' },
-    { id: 'story-1-chart',  kind: 'chart', ratio: '4/3',  minW: 1200,
-      note: 'Secondary story 1. Static export or a live embed URL.' },
-    { id: 'story-2-photo',  kind: 'photo', ratio: '4/3',  minW: 1200,
-      note: 'Secondary story 2.' },
-    { id: 'story-3-photo',  kind: 'photo', ratio: '4/3',  minW: 1200,
-      note: 'Secondary story 3.' },
-    { id: 'prices-chart',   kind: 'chart', ratio: '16/9', minW: 1800,
+    { id: 'finland-photo',      kind: 'photo', ratio: '16/9', minW: 2000,
+      note: 'Finland lead story. Full-bleed within the hero column, and the article lead.' },
+    { id: 'finland-chart',      kind: 'chart', ratio: '16/9', minW: 1800,
+      note: 'Finland article: day-ahead against balancing energy.' },
+    { id: 'lithuania-chart',    kind: 'chart', ratio: '4/3',  minW: 1400,
+      note: 'Lithuania feature. Static export or a live embed URL.' },
+    { id: 'lithuania-grid-chart', kind: 'chart', ratio: '16/9', minW: 1800,
+      note: 'Lithuania article: connection queue against firm transmission capacity.' },
+    { id: 'prices-chart',       kind: 'chart', ratio: '16/9', minW: 1800,
       note: 'Day-ahead power panel. Ships with a drawn sample; replace with the live chart.' },
-    { id: 'flows-map',      kind: 'map',   ratio: '4/3',  minW: 1400,
-      note: 'Cross-border flow map. Ships with a drawn sample; replace with the live map.' }
+    { id: 'flows-map',          kind: 'map',   ratio: '4/3',  minW: 1400,
+      note: 'Nordic-Baltic corridor map. Ships with a drawn sample; replace with the live map.' }
   ];
 
   var SLOT_BY_ID = {};

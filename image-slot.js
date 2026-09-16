@@ -1,11 +1,11 @@
 /* ---------------------------------------------------------------------------
-   image-slot.js — the media import layer for the Energy Desk landing page.
+   image-slot.js — the media import layer for the Boreal Grid site.
 
    Every picture, graph, map and video on the page is a declared SLOT. Markup
    reserves the space and names the slot; nothing in the markup knows where the
    asset lives:
 
-     <figure class="ed-slot" data-slot="lead-photo" data-caption="..."></figure>
+     <figure class="ed-slot" data-slot="finland-photo" data-caption="..."></figure>
 
    To fill a slot, add an entry to assets/manifest.json keyed by the same id.
    Three source shapes are supported, which is what makes one mechanism cover
@@ -29,13 +29,19 @@
    Plain <script>, no modules, no build step. Works from file:// as well as
    from a server: when fetch() is unavailable or blocked, the page's own
    window.ED_MANIFEST object is used instead.
+
+   Set window.ED_ASSET_BASE before this script to relocate assets/ for a page
+   that is not at the site root.
    --------------------------------------------------------------------------- */
 
 (function (global, document) {
   'use strict';
 
-  var MANIFEST_URL = 'assets/manifest.json';
-  var ASSET_BASE = 'assets/';
+  /* Pages that do not sit at the site root (the article pages under news/)
+     set window.ED_ASSET_BASE before loading this file, so a manifest entry
+     stays a single repo-relative path no matter which page resolves it. */
+  var ASSET_BASE = global.ED_ASSET_BASE || 'assets/';
+  var MANIFEST_URL = ASSET_BASE + 'manifest.json';
 
   var GLYPH = {
     photo: '<path d="M3 5.5h4l1.4-2h7.2L17 5.5h4v13H3z"/><circle cx="12" cy="12" r="3.6"/>',
